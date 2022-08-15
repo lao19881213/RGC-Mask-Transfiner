@@ -30,9 +30,9 @@ MODEL:
     NUM_CONV: 4
     POOLER_RESOLUTION: 14
 DATASETS:
-  TRAIN: ("coco_2017_train",)
+  TRAIN: ("coco_2022_train",)
   #TEST: ("coco_2017_val",)
-  TEST: ("coco_2017_test-dev",)
+  TEST: ("coco_2022_val",)
 SOLVER:
   IMS_PER_BATCH: 16 #16
   BASE_LR: 0.02

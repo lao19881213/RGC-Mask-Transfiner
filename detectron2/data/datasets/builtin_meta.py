@@ -17,6 +17,13 @@ COCO model (with correct class names and colors).
 
 # All coco categories, together with their nice-looking visualization colors
 # It's from https://github.com/cocodataset/panopticapi/blob/master/panoptic_coco_categories.json
+COCO_HeTu_CATEGORIES = [
+    {"color": [220, 20, 60], "isthing": 1, "id": 1, "name": "cs"},
+    {"color": [119, 11, 32], "isthing": 1, "id": 2, "name": "fr1"},
+    {"color": [0, 0, 142], "isthing": 1, "id": 3, "name": "fr2"},
+    {"color": [0, 0, 230], "isthing": 1, "id": 4, "name": "ht"},
+    {"color": [106, 0, 228], "isthing": 1, "id": 5, "name": "cj"},
+]
 COCO_CATEGORIES = [
     {"color": [220, 20, 60], "isthing": 1, "id": 1, "name": "person"},
     {"color": [119, 11, 32], "isthing": 1, "id": 2, "name": "bicycle"},
@@ -231,6 +238,20 @@ ADE20K_SEM_SEG_CATEGORIES = [
 # After processed by `prepare_ade20k_sem_seg.py`, id 255 means ignore
 # fmt: on
 
+def _get_hetu_instances_meta():
+    thing_ids = [k["id"] for k in COCO_HeTu_CATEGORIES if k["isthing"] == 1]
+    thing_colors = [k["color"] for k in COCO_HeTu_CATEGORIES if k["isthing"] == 1]
+    assert len(thing_ids) == 5, len(thing_ids)
+    # Mapping from the incontiguous COCO category id to an id in [0, 79]
+    thing_dataset_id_to_contiguous_id = {k: i for i, k in enumerate(thing_ids)}
+    thing_classes = [k["name"] for k in COCO_HeTu_CATEGORIES if k["isthing"] == 1]
+    ret = {
+        "thing_dataset_id_to_contiguous_id": thing_dataset_id_to_contiguous_id,
+        "thing_classes": thing_classes,
+        "thing_colors": thing_colors,
+    }
+    return ret
+
 
 def _get_coco_instances_meta():
     thing_ids = [k["id"] for k in COCO_CATEGORIES if k["isthing"] == 1]
@@ -282,7 +303,8 @@ def _get_coco_panoptic_separated_meta():
 
 def _get_builtin_metadata(dataset_name):
     if dataset_name == "coco":
-        return _get_coco_instances_meta()
+        return _get_hetu_instances_meta()
+        #return _get_coco_instances_meta()
     if dataset_name == "coco_panoptic_separated":
         return _get_coco_panoptic_separated_meta()
     elif dataset_name == "coco_panoptic_standard":
