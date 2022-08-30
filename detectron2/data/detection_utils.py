@@ -617,6 +617,20 @@ def build_augmentation(cfg, is_train):
                 vertical=cfg.INPUT.RANDOM_FLIP == "vertical",
             )
         )
+    #if is_train:
+    #    augmentation.append(
+    #        T.RandomRotation(
+    #                45 #expand=False, sample_style="choice"
+    #        )
+    #    )
+
+    #if is_train:
+    #    for angle in range(10,360,10):
+    #        augmentation.append(
+    #            T.RandomRotation(
+    #                angle, expand=False, sample_style="choice"
+    #            )
+    #        )
     return augmentation
 
 

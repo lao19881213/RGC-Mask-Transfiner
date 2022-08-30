@@ -79,9 +79,9 @@ Prepare for [coco2017](http://cocodataset.org/#home) dataset and [Cityscapes](ht
 ```
   mkdir -p datasets/coco
   ln -s /path_to_coco_dataset/annotations datasets/coco/annotations
-  ln -s /path_to_coco_dataset/train2017 datasets/coco/train2017
-  ln -s /path_to_coco_dataset/test2017 datasets/coco/test2017
-  ln -s /path_to_coco_dataset/val2017 datasets/coco/val2017
+  ln -s /path_to_coco_dataset/train2022 datasets/coco/train2022
+  ln -s /path_to_coco_dataset/test2022 datasets/coco/test2022
+  ln -s /path_to_coco_dataset/val2022 datasets/coco/val2022
 ```
 
 Multi-GPU Training and Evaluation on Validation set
@@ -98,7 +98,7 @@ bash scripts/train_transfiner_1x_50.sh
 
 Pretrained Models
 ---------------
-Download the pretrained models from [detectron2 ImageNet Pretrained Models](https://dl.fbaipublicfiles.com/detectron2/ImageNetPretrained/MSRA/R-101.pkl): 
+Download the pretrained models from [detectron2 ImageNet Pretrained Models](https://github.com/facebookresearch/detectron2/blob/main/MODEL_ZOO.md): [R-50.pkl](https://dl.fbaipublicfiles.com/detectron2/ImageNetPretrained/MSRA/R-50.pkl) and [R-101.pkl](https://dl.fbaipublicfiles.com/detectron2/ImageNetPretrained/MSRA/R-101.pkl). 
 ```
   mkdir pre_trained_model
   #And put the downloaded pretrained models in this directory.

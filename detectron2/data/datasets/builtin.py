@@ -47,7 +47,7 @@ _PREDEFINED_SPLITS_COCO["coco"] = {
     "coco_2017_test-dev": ("coco/test2017", "coco/annotations/image_info_test-dev2017.json"),
     "coco_2017_val_100": ("coco/val2017", "coco/annotations/instances_val2017_100.json"),
     "coco_2022_train": ("coco/train2022", "coco/annotations/instances_train2022.json"),
-    "coco_2022_val": ("coco/val2022", "coco/annotations/instances_train2022.json"),
+    "coco_2022_val": ("coco/val2022", "coco/annotations/instances_val2022.json"),
 }
 
 _PREDEFINED_SPLITS_COCO["coco_person"] = {

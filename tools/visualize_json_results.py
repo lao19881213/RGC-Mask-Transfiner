@@ -81,8 +81,8 @@ if __name__ == "__main__":
 
         predictions = create_instances(pred_by_image[dic["image_id"]], img.shape[:2])
         vis = Visualizer(img, metadata)
+        print(predictions)
         vis_pred = vis.draw_instance_predictions(predictions).get_image()
-
         vis = Visualizer(img, metadata)
         vis_gt = vis.draw_dataset_dict(dic).get_image()
 

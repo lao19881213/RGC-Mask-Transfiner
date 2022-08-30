@@ -690,6 +690,7 @@ class Visualizer:
                 #for segment in masks[i]
                 #print('enter draw polygon')
 	            #self.draw_polygon(segment.reshape(-1, 2), color, alpha=alpha)
+                #print(masks[i])
                 binary_mask = masks[i].astype(np.uint8)
                 #alpha = 0.7
                 #print('binary mask:', binary_mask)

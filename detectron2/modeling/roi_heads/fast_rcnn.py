@@ -100,7 +100,7 @@ def _log_classification_stats(pred_logits, gt_classes, prefix="fast_rcnn"):
     bg_class_ind = pred_logits.shape[1] - 1
 
     fg_inds = (gt_classes >= 0) & (gt_classes < bg_class_ind)
-    num_fg = fg_inds.nonzero().numel()
+    num_fg = fg_inds.nonzero(as_tuple=False).numel()
     fg_gt_classes = gt_classes[fg_inds]
     fg_pred_classes = pred_classes[fg_inds]
 
