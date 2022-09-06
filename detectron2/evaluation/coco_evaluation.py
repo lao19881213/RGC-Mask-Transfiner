@@ -354,7 +354,10 @@ class COCOEvaluator(DatasetEvaluator):
             # max dets index -1: typically 100 per image 
             # AP: precisions[:, :, idx, 0, -1]
             # AP50: precisions[0, :, idx, 0, -1]
-            # AP75: precisions[1, :, idx, 0, -1] ? 
+            # AP75: precisions[5, :, idx, 0, -1] 
+            # APsmall: precisions[:, :, idx, 1, -1] 
+            # APmedium: precisions[:, :, idx, 2, -1]
+            # APlarge: precisions[:, :, idx, 3, -1]
             precision = precisions[:, :, idx, 0, -1] #AP50: precisions[0, :, idx, 0, -1] 
             precision = precision[precision > -1]
             ap = np.mean(precision) if precision.size else float("nan")
@@ -461,9 +464,9 @@ def _evaluate_box_proposals(dataset_predictions, coco_api, thresholds=None, area
     }
     area_ranges = [
         [0 ** 2, 1e5 ** 2],  # all
-        [0 ** 2, 32 ** 2],  # small
-        [32 ** 2, 96 ** 2],  # medium
-        [96 ** 2, 1e5 ** 2],  # large
+        [0 ** 2, 16 ** 2],  # small 32 --> 16
+        [16 ** 2, 32 ** 2],  # medium 32 --> 16, 96 --> 32
+        [32 ** 2, 1e5 ** 2],  # large 96 --> 32
         [96 ** 2, 128 ** 2],  # 96-128
         [128 ** 2, 256 ** 2],  # 128-256
         [256 ** 2, 512 ** 2],  # 256-512

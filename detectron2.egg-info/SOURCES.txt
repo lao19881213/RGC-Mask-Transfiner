@@ -138,6 +138,7 @@ detectron2/model_zoo/configs/common/models/panoptic_fpn.py
 detectron2/model_zoo/configs/common/models/retinanet.py
 detectron2/model_zoo/configs/transfiner/mask_rcnn_R_101_FPN_3x.yaml
 detectron2/model_zoo/configs/transfiner/mask_rcnn_R_101_FPN_3x_deform.yaml
+detectron2/model_zoo/configs/transfiner/mask_rcnn_R_101_FPN_3x_deform_test.yaml
 detectron2/model_zoo/configs/transfiner/mask_rcnn_R_50_FPN_1x.yaml
 detectron2/model_zoo/configs/transfiner/mask_rcnn_R_50_FPN_3x.yaml
 detectron2/model_zoo/configs/transfiner/mask_rcnn_R_50_FPN_3x_deform.yaml
@@ -297,6 +298,7 @@ tools/benchmark.py
 tools/convert-torchvision-to-d2.py
 tools/lazyconfig_train_net.py
 tools/lightning_train_net.py
+tools/offline_aug.py
 tools/plain_train_net.py
 tools/train_net.py
 tools/train_net_swinb.py
