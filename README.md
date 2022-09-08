@@ -38,10 +38,10 @@ git clone https://github.com/cocodataset/cocoapi.git
 cd cocoapi/PythonAPI
 python setup.py build_ext install
  
-# install transfiner
+# install RGC-Mask-Transfiner
 cd $INSTALL_DIR
 git clone https://github.com/lao19881213/RGC-Mask-Transfiner.git
-cd transfiner/
+cd RGC-Mask-Transfiner/
 python3 setup.py build develop
  
 unset INSTALL_DIR

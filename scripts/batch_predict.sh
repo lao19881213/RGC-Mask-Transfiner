@@ -19,9 +19,10 @@ export PYTHONPATH=$PYTHONPATH:`pwd`
 # export CUDA_LAUNCH_BLOCKING=1 # for debug
 
 CUDA_VISIBLE_DEVICES=0 python3 demo/batch_predict.py --config-file configs/transfiner/mask_rcnn_R_101_FPN_3x_deform.yaml \
-  --input 'datasets/coco/LOFAR/*.png' \
+  --input 'datasets/coco/LOFAR' \
+  --pnglists 'datasets/coco/lofar.txt' \
   --output 'vis_lofar/' \
-  --confidence-threshold 0.5 \
+  --confidence-threshold 0.7 \
   --nosourcefinding \
   --catalogfn lofar \
   --opts MODEL.WEIGHTS ./output_101_3x_deform/model_0219999.pth 
