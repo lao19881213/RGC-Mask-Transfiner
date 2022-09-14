@@ -7,7 +7,7 @@
 #SBATCH --partition=hw
 
 
-source /home/blao/rgz_resnet_fpn/bashrc
+source /home/blao/RGC-Mask-Transfiner/bashrc
 
 python /home/blao/RGC-Mask-Transfiner/tools/viz_hetu/plot_results_bbox_mask.py 
 
