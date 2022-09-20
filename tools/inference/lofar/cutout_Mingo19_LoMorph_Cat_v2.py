@@ -32,8 +32,17 @@ for i in range(len(RA)):
                 status, msg = subprocess.getstatusoutput(cutout_cmd)
 
                 #print(status)
-                if status == 1:
-                   print(source_name[i],RA[i],DEC[i]) 
+                if status == 0:
+                   try:
+                      hdu_o = fits.open(os.path.join(dst_path, filename_fits))
+                      centre_data = hdu_o[0].data[80, 80]
+                      if np.isnan(centre_data):
+                         continue
+                      else:
+                         break
+                   except:
+                      continue
+                   #print(source_name[i],RA[i],DEC[i]) 
                 #try:
                 #   os.system('/home/software/wcstools-3.9.6/bin/getfits -o %s -d %s %s %d %d %d %d' % (filename_fits, dst_path, os.path.join(input_dir, fn), source_x, source_y, 160,160))
                 #except:

@@ -26,6 +26,12 @@ from detectron2.utils.logger import create_small_table
 
 from .evaluator import DatasetEvaluator
 
+import matplotlib
+matplotlib.use('Agg')
+
+from matplotlib.ticker import (MultipleLocator, FormatStrFormatter,
+                               AutoMinorLocator)
+import matplotlib.pyplot as plt
 
 class COCOEvaluator(DatasetEvaluator):
     """
@@ -617,7 +623,91 @@ def _evaluate_predictions_on_coco(
     coco_eval.evaluate()
     coco_eval.accumulate()
     coco_eval.summarize()
+    # P-R curve
+    # AP: precisions[:, :, idx, 0, -1]
+    # AP50: precisions[0, :, idx, 0, -1]
+    # AP75: precisions[5, :, idx, 0, -1] 
+    # APsmall: precisions[:, :, idx, 1, -1] 
+    # APmedium: precisions[:, :, idx, 2, -1]
+    # APlarge: precisions[:, :, idx, 3, -1]
+    class_names = ['cs','fr1','fr2','ht','cj']
+    if iou_type == "segm":
+       plt.figure(1)
+       ax1 = plt.gca()
+       for idx, name in enumerate(class_names):  
+           pr_ap = coco_eval.eval['precision'][:,:,idx,0,-1]
+           pr_ap = pr_ap.mean(axis=0)
+           x = np.arange(0.0,1.01,0.01)
+           plt.plot(x, pr_ap,linewidth=2,label=name)
+       plt.xlabel('Recall', fontsize=16)
+       plt.ylabel('Precision', fontsize=16)
+       plt.xlim(0, 1.0)
+       plt.ylim(0,1.01)
+       plt.tick_params(labelsize=16)
+       #ax.xaxis.set_minor_locator(AutoMinorLocator())
+       #ax.yaxis.set_minor_locator(AutoMinorLocator())
+       #ax.xaxis.set_minor_locator(AutoMinorLocator())
+       #ax.yaxis.set_minor_locator(AutoMinorLocator())
+       ax1.tick_params(which='both', width=2)
+       #ax.tick_params(which='major', length=7)
+       #ax.tick_params(which='minor', length=4, color='k')
 
+       plt.tick_params(axis="x", direction="in")
+       plt.tick_params(axis="y", direction="in")
+       plt.legend(loc='lower left', fontsize=16)
+       plt.text(0.8,0.5,'(a)',fontsize=16)
+       plt.savefig('P-R-AP.pdf', dpi=300)
+       
+       plt.figure(2)
+       ax2 = plt.gca()
+       for idx, name in enumerate(class_names):
+           pr_ap50 = coco_eval.eval['precision'][0,:,idx,0,-1]
+           x = np.arange(0.0,1.01,0.01)
+           plt.plot(x, pr_ap50,linewidth=2,label=name)
+       plt.xlabel('Recall', fontsize=16)
+       plt.ylabel('Precision', fontsize=16)
+       plt.xlim(0, 1.0)
+       plt.ylim(0,1.01)
+       plt.tick_params(labelsize=16)
+       #ax.xaxis.set_minor_locator(AutoMinorLocator())
+       #ax.yaxis.set_minor_locator(AutoMinorLocator())
+       #ax.xaxis.set_minor_locator(AutoMinorLocator())
+       #ax.yaxis.set_minor_locator(AutoMinorLocator())
+       ax2.tick_params(which='both', width=2)
+       #ax.tick_params(which='major', length=7)
+       #ax.tick_params(which='minor', length=4, color='k')
+
+       plt.tick_params(axis="x", direction="in")
+       plt.tick_params(axis="y", direction="in")
+       plt.legend(loc='lower left', fontsize=16)
+       plt.text(0.8,0.5,'(b)',fontsize=16)
+       plt.savefig('P-R-AP50.pdf', dpi=300)
+
+       plt.figure(3)
+       ax3 = plt.gca()
+       for idx, name in enumerate(class_names):
+           pr_ap75 = coco_eval.eval['precision'][5,:,idx,0,-1]
+           x = np.arange(0.0,1.01,0.01)
+           plt.plot(x, pr_ap75,linewidth=2,label=name)
+       plt.xlabel('Recall', fontsize=16)
+       plt.ylabel('Precision', fontsize=16)
+       plt.xlim(0, 1.0)
+       plt.ylim(0,1.01)
+       plt.tick_params(labelsize=16)
+       #ax.xaxis.set_minor_locator(AutoMinorLocator())
+       #ax.yaxis.set_minor_locator(AutoMinorLocator())
+       #ax.xaxis.set_minor_locator(AutoMinorLocator())
+       #ax.yaxis.set_minor_locator(AutoMinorLocator())
+       ax3.tick_params(which='both', width=2)
+       #ax.tick_params(which='major', length=7)
+       #ax.tick_params(which='minor', length=4, color='k')
+
+       plt.tick_params(axis="x", direction="in")
+       plt.tick_params(axis="y", direction="in")
+       plt.legend(loc='lower left', fontsize=16)
+       plt.text(0.8,0.5,'(c)',fontsize=16)
+       plt.savefig('P-R-AP75.pdf', dpi=300)
+ 
     return coco_eval
 
 
