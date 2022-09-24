@@ -110,9 +110,9 @@ def display_instances(image, boxes, masks, class_ids, class_names,
         ax = plt.Axes(fig, [0., 0., 1., 1.])
         auto_show = True
 
-    # Generate random colors
-    colors = colors or random_colors(N)
-
+    # Generate random colors -> using fixed colors
+    colors = [(0.0, 0.9, 0), (0.8, 0.0, 1.0), (1.0, 0.0, 0.0), (0.7, 1.0, 1.0), (0.7, 0.7, 0.7)]#colors or random_colors(N)
+    
     # Show area outside image boundaries.
     my_dpi = 100
     #fig = plt.figure()
@@ -128,11 +128,18 @@ def display_instances(image, boxes, masks, class_ids, class_names,
     ax.set_ylim([height, 0])
     #ax.axis('off')
     #ax.set_title(title)
-
     masked_image = image.astype(np.uint32).copy()
+    clns = ['cs','fr1','fr2','ht','cj']
     for i in range(N):
-        color = colors[i]
-
+        #color = colors[i]
+        ################################
+        class_id = class_ids[i]
+        label = class_names[class_id]
+        #print(class_id)
+        c_id = clns.index(label)
+        print(c_id)
+        color = colors[c_id]
+        ################################
         # Bounding box
         if not np.any(boxes[i]):
             # Skip this instance. Has no bbox. Likely lost in image cropping.

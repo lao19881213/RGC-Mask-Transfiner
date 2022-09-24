@@ -20,7 +20,7 @@ import visualize
 
 parser = argparse.ArgumentParser(description='plot v3 mask results')
 
-parser.add_argument('--resultsfile', dest='results_file', type=str, default='/home/blao/RGC-Mask-Transfiner/output_101_3x_deform/inference/coco_instances_results.json', help='object detect results json file')
+parser.add_argument('--resultsfile', dest='results_file', type=str, default='/home/blao/RGC-Mask-Transfiner/output_101_3x_deform/inference/coco_instances_results_val.json', help='object detect results json file')
 parser.add_argument('--annsfile', dest='anns_file', type=str, default='/home/blao/RGC-Mask-Transfiner/datasets/coco/annotations/instances_val2022.json', help='annotations test json file')
 
 
