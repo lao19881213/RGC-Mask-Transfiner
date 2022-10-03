@@ -26,7 +26,7 @@ CUDA_VISIBLE_DEVICES=0 python3 demo/batch_predict.py --config-file configs/trans
   --mirdir 'Mingo_mir' \
   --rmsdir '/p9550/LOFAR/LoTSS-DR1/Mingo_rms' \
   --output '/p9550/LOFAR/LoTSS-DR1/Mingo_hetu/' \
-  --confidence-threshold 0.5 \
+  --confidence-threshold 0.7 \
   --catalogfn Mingo \
   --opts MODEL.WEIGHTS ./output_101_3x_deform_infer/model_0249999.pth 
   #./pretrained_model/output_3x_transfiner_r50.pth

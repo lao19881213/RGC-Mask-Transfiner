@@ -3,9 +3,9 @@
 #SBATCH --nodes=1
 ##SBATCH --time=16:00:00
 ##SBATCH --ntasks-per-node=1
-#SBATCH --gres=gpu:8
+#SBATCH --gres=gpu:4
 #SBATCH --mem=200g
-#SBATCH --partition=inspur-gpu-ib
+#SBATCH --partition=sugon-gpu
 ##SBATCH --export=ALL
 
 #python3 setup.py build develop #--no-deps
@@ -26,7 +26,7 @@ CUDA_VISIBLE_DEVICES=0 python3 demo/batch_predict.py --config-file configs/trans
   --mirdir 'Mingo_mir' \
   --rmsdir '/p9550/LOFAR/LoTSS-DR1/Mingo_rms' \
   --output '/p9550/LOFAR/LoTSS-DR1/Mingo_hetu/' \
-  --confidence-threshold 0.5 \
+  --confidence-threshold 0.7 \
   --catalogfn Mingo \
   --opts MODEL.WEIGHTS ./output_101_3x_deform/model_0219999.pth 
   #./pretrained_model/output_3x_transfiner_r50.pth

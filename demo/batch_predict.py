@@ -406,32 +406,54 @@ if __name__ == "__main__":
                          peak_flux, err_peak_flux, int_flux, err_int_flux, \
                          ra, dec, major, err_major, minor, err_minor,pa, \
                          err_pa, deconv_major, deconv_minor, deconv_pa = derive_miriad_from_msg(msg)
-                         
-                         c_deg = coordinates.SkyCoord('%s %s' % (ra, dec), unit=(u.hourangle, u.deg))
-                         ra_deg = c_deg.ra.degree
-                         dec_deg = c_deg.dec.degree
+                       
+                         # Fatal Error:  Too few pixels to fit to --> point source
+                         if ra == []:
+                            logger.info("imfit in=%s 'region=boxes(%d,%d,%d,%d)' object=point clip=%f" \
+                             % (mir_file, x1, int(hdu.data.shape[0]-y2), \
+                                x2, int(hdu.data.shape[0]-y1), clip_level))
+                            miriad_cmd = "imfit in=%s 'region=boxes(%d,%d,%d,%d)' object=point clip=%f" \
+                             % (mir_file, x1, int(hdu.data.shape[0]-y2), \
+                                x2, int(hdu.data.shape[0]-y1), clip_level)
+                            status, msg = subprocess.getstatusoutput(miriad_cmd)
+                            peak_flux, err_peak_flux, int_flux, err_int_flux, \
+                            ra, dec, major, err_major, minor, err_minor,pa, \
+                            err_pa, deconv_major, deconv_minor, deconv_pa = derive_miriad_from_msg(msg)
+                            int_flux = peak_flux
+                            err_int_flux = err_peak_flux
+                            major = hdu.header['BMAJ']*3600
+                            err_major = np.nan 
+                            minor = hdu.header['BMIN']*3600
+                            err_minor = np.nan
+                            pa = hdu.header['BPA']
+                            err_pa = np.nan
 
-                         y1_new = hdu.data.shape[0]-y2
-                         y2_new = hdu.data.shape[0]-y1
-                         centre_y = int(y1_new + (y2_new - y1_new)/2)
-                         centre_x = int(x1 + (x2 - x1)/2)
-                         centre_ra, centre_dec = w.wcs_pix2world([[centre_x, centre_y]], 0)[0][0:2]
+                         if ra != []:
+                            c_deg = coordinates.SkyCoord('%s %s' % (ra, dec), unit=(u.hourangle, u.deg))
+                            ra_deg = c_deg.ra.degree
+                            dec_deg = c_deg.dec.degree
 
-                         if centre_ra < 0 :
-                            centre_ra = centre_ra + 360
+                            y1_new = hdu.data.shape[0]-y2
+                            y2_new = hdu.data.shape[0]-y1
+                            centre_y = int(y1_new + (y2_new - y1_new)/2)
+                            centre_x = int(x1 + (x2 - x1)/2)
+                            centre_ra, centre_dec = w.wcs_pix2world([[centre_x, centre_y]], 0)[0][0:2]
 
-                         c1 = coordinates.SkyCoord(ra=centre_ra, dec=centre_dec, unit=(u.deg, u.deg), frame='fk5')
-                         c_new = c1.to_string('hmsdms', decimal=False, precision=1)
-                         c_new = c_new.replace('h','').replace('d','').replace('m','').replace('s','').replace(' ','')
-                         objname = "J%s" % c_new
-                         if peak_flux == []:
-                            logger.info("Too few pixels to fit to or fitting failed on %s" % fn)
-                         else:
-                            tags.append(
-                               "{},{},{},{:.2f},{},{},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f}".format(\
-                                objname, imagefilename, labels[classes[k]], \
-                                scores[k], box_str, rles[k]['counts'], local_rms, peak_flux, err_peak_flux, int_flux, err_int_flux, ra_deg, \
-                                dec_deg, centre_ra, centre_dec, major, err_major, minor, err_minor, pa, err_pa, deconv_major, deconv_minor, deconv_pa))
+                            if centre_ra < 0 :
+                               centre_ra = centre_ra + 360
+                            
+                            c1 = coordinates.SkyCoord(ra=centre_ra, dec=centre_dec, unit=(u.deg, u.deg), frame='fk5')
+                            c_new = c1.to_string('hmsdms', decimal=False, precision=1)
+                            c_new = c_new.replace('h','').replace('d','').replace('m','').replace('s','').replace(' ','')
+                            objname = "J%s" % c_new
+                            if peak_flux == []:
+                               logger.info("Too few pixels to fit to or fitting failed on %s" % fn)
+                            else:
+                               tags.append(
+                                  "{},{},{},{:.2f},{},{},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f},{:.5f}".format(\
+                                   objname, imagefilename, labels[classes[k]], \
+                                   scores[k], box_str, rles[k]['counts'], local_rms, peak_flux, err_peak_flux, int_flux, err_int_flux, ra_deg, \
+                                   dec_deg, centre_ra, centre_dec, major, err_major, minor, err_minor, pa, err_pa, deconv_major, deconv_minor, deconv_pa))
                       else:
                          #logger.info('%d %d %d %d' % (x1,y1,x2,y2))
                          box_data = hdu.data[hdu.data.shape[0]-y2:hdu.data.shape[0]-y1,x1:x2]
