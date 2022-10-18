@@ -5,7 +5,7 @@
 ##SBATCH --ntasks-per-node=1
 #SBATCH --gres=gpu:4
 #SBATCH --mem=200g
-#SBATCH --partition=inspur-gpu-ib
+#SBATCH --partition=sugon-gpu
 ##SBATCH --export=ALL
 
 #python3 setup.py build develop #--no-deps
@@ -22,12 +22,12 @@ export PYTHONPATH=$PYTHONPATH:`pwd`
 
 CUDA_VISIBLE_DEVICES=0 python3 demo/batch_predict.py --config-file configs/transfiner/mask_rcnn_R_101_FPN_3x_deform_infer.yaml \
   --input '/p9550/MWA/GLEAM/blao/hetu_images/deep_learn/inference_sets/FIRST_fits' \
-  --pnglists '/p9550/MWA/GLEAM/blao/hetu_images/deep_learn/inference_sets/FIRST_final_png.txt' \
+  --pnglists '/p9550/MWA/GLEAM/blao/hetu_images/deep_learn/inference_sets/FIRST_final_maxmin.txt' \
   --rmsdir /p9550/MWA/GLEAM/blao/hetu_images/deep_learn/inference_sets/FIRST_rms \
   --mirdir FIRST_mir \
   --output '/p9550/MWA/GLEAM/blao/hetu_images/deep_learn/inference_sets/FIRST_pred' \
-  --confidence-threshold 0.5 \
-  --catalogfn FIRST_infer \
+  --confidence-threshold 0.7 \
+  --catalogfn FIRST_minmax_infer \
   --opts MODEL.WEIGHTS ./output_101_3x_deform_infer/model_0259999.pth 
   #./pretrained_model/output_3x_transfiner_r50.pth
                                                   

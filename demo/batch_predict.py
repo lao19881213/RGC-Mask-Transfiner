@@ -455,9 +455,11 @@ if __name__ == "__main__":
                                    scores[k], box_str, rles[k]['counts'], local_rms, peak_flux, err_peak_flux, int_flux, err_int_flux, ra_deg, \
                                    dec_deg, centre_ra, centre_dec, major, err_major, minor, err_minor, pa, err_pa, deconv_major, deconv_minor, deconv_pa))
                       else:
-                         #logger.info('%d %d %d %d' % (x1,y1,x2,y2))
+                         #fits_file = os.path.splitext(imagefilename)[0] + ".fits" #fn.split('.')[0] + ".fits"
+                         #hdu = fits.open(os.path.join(input_dir, fits_file))[0]
                          box_data = hdu.data[hdu.data.shape[0]-y2:hdu.data.shape[0]-y1,x1:x2]
                          peak_flux = np.nanmax(box_data)
+                         #logger.info('%d, %d, %d, %d' % (hdu.data.shape[0]-y2, hdu.data.shape[0]-y1, x1,x2))
                          peak_xy_offset = np.where(box_data==np.nanmax(box_data))
                          peak_x = x1 + peak_xy_offset[0][0]
                          peak_y = hdu.data.shape[0]-y2 + peak_xy_offset[1][0]

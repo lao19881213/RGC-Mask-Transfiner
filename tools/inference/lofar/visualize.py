@@ -111,7 +111,7 @@ def display_instances(image, boxes, masks, class_ids, class_names,
         auto_show = True
 
     # Generate random colors -> using fixed colors
-    colors = [(0.0, 0.9, 0), (0.8, 0.0, 1.0), (1.0, 0.0, 0.0), (0.7, 1.0, 1.0), (0.7, 0.7, 0.7)]#colors or random_colors(N)
+    colors = [(0.0, 0.9, 0), (0.8, 0.0, 1.0), (1.0, 0.0, 0.0), (0.7, 1.0, 1.0), (0.8, 0.6, 0.1)]#colors or random_colors(N)
     
     # Show area outside image boundaries.
     my_dpi = 100

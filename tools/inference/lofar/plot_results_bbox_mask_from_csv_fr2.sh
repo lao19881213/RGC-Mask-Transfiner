@@ -10,8 +10,8 @@
 source /home/blao/RGC-Mask-Transfiner/bashrc
 
 python /home/blao/RGC-Mask-Transfiner/tools/inference/lofar/plot_results_bbox_mask_from_csv.py \
-       --resultsfile /home/blao/RGC-Mask-Transfiner/Mingo_20221003.csv \
-       --imagedir /p9550/LOFAR/LoTSS-DR1/Mingo_png \
-       --outdir /p9550/LOFAR/LoTSS-DR1/Mingo_hetu 
+       --resultsfile /home/blao/RGC-Mask-Transfiner/Mingo_fr2_1.csv \
+       --imagedir /p9550/LOFAR/LoTSS-DR1/Mingo_png_fr2_resize \
+       --outdir /p9550/LOFAR/LoTSS-DR1/Mingo_hetu_fr2 
 
 
