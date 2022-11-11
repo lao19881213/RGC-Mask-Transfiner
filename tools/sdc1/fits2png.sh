@@ -2,6 +2,6 @@
 
 #ssh -Y blao@202.127.3.157
  
-source /home/blao/sdc1_resnet/bashrc
+source /home/blao/RGC-Mask-Transfiner/bashrc
 
-python /home/blao/sdc1_resnet/data/scripts/data_prep.py --rank=$1 --totalproc=$2
+python /home/blao/RGC-Mask-Transfiner/tools/sdc1/fits2png.py --rank=$1 --totalproc=$2

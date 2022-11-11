@@ -9,31 +9,40 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 import argparse
+from pyds9 import *
 
 
 def fits2png(fits_dir, png_dir, myrank, total_proc):
     """
     Convert fits to png files based on the D1 method
     """
-    cmd_tpl = '%s -cmap Heat'\
-        ' -zoom to fit -scale asinh -scale mode minmax -export %s -exit'
+    #cmd_tpl = '%s -cmap Heat'\
+    #    ' -zoom to fit -scale asinh -scale mode minmax -export %s -exit'
     # cmd_tpl = '%s -cmap gist_heat -cmap value 0.684039 0'\
     #     ' -zoom to fit -scale log -scale mode minmax -export %s -exit'
-    from sh import Command
-    ds9_path = '/home/app/ds9/8.2/cpu/bin/ds9'#'/home/app/ds9/bin/ds9'
-    ds9 = Command(ds9_path)
+    #from sh import Command
+    #ds9_path = '/home/app/ds9/8.2/cpu/bin/ds9'#'/home/app/ds9/bin/ds9'
+    #ds9 = Command(ds9_path)
     file_nms = os.listdir(fits_dir)
     file_nms = file_nms[myrank:][::total_proc]
+    d = DS9()
     for fits in file_nms:
         if (fits.endswith('.fits')):
             png = fits.replace('.fits', '.png')
             if os.path.exists(osp.join(png_dir, png)):
                print("%s was exists.\n"  % osp.join(png_dir, png))
             else:
-               cmd = cmd_tpl % (osp.join(fits_dir, fits), osp.join(png_dir, png))
-               print(cmd)
+               d.set("file "+ "%s" % os.path.join(fits_dir, fits))
+               d.set('zoom to fit')
+               d.set('scale mode minmax')
+               d.set('scale asinh')
+               d.set('cmap Heat')
+               d.set('export %s' % osp.join(png_dir, png))
+
+               #cmd = cmd_tpl % (osp.join(fits_dir, fits), osp.join(png_dir, png))
+               #print(cmd)
                #os.system(cmd)
-               ds9(*(cmd.split())) #need to open x11
+               #ds9(*(cmd.split())) #need to open x11
                #print(ds9(*(cmd.split())))
 
 
@@ -51,4 +60,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
     myrank = args.rank - 1
     total_proc = args.totalproc
+    
     fits2png(fits_cutout_dir, png_dir, myrank, total_proc)

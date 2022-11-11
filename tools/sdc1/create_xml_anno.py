@@ -26,8 +26,8 @@ mad2sigma = np.sqrt(2) * erfinv(2 * 0.75 - 1)
 
 
 cons = 2 ** 0.5
-pixel_res_x = 1.67847000000E-04 #1.02168000000E-05#6.71387000000E-05#1.67847000000E-04 #abs(float(fhead['CDELT1']))
-pixel_res_y = 1.67847000000E-04 #1.02168000000E-05#6.71387000000E-05#1.67847000000E-04 #abs(float(fhead['CDELT2']))
+pixel_res_x =  6.71387000000E-05 #1.02168000000E-05#6.71387000000E-05#1.67847000000E-04 #abs(float(fhead['CDELT1']))
+pixel_res_y =  6.71387000000E-05 #1.02168000000E-05#6.71387000000E-05#1.67847000000E-04 #abs(float(fhead['CDELT2']))
 g = 2 * (pixel_res_x * 3600) # gridding kernel size as per specs
 g2 = g ** 2
 BMAJ = 1.66666679434E-04 #2.53611124208E-05#1.66666679434E-04#4.16666676756E-04
@@ -707,20 +707,20 @@ if __name__ == '__main__':
     #parser.add_argument('--totalproc', dest='totalproc', type=int, default='1', help='total proc')
      
     cur_dir = os.path.dirname(os.path.abspath(__file__))
-    data_dir = "/o9000/MWA/GLEAM/data_challenge1" #os.path.join(cur_dir, '..', 'data')
-    train_csv =  "/o9000/MWA/GLEAM/data_challenge1/training_set/TrainingSet_B1_v2_ML.csv"#osp.join(data_dir, 'TrainingSet_B5_v2.csv')
-    tablename = 'b1_1000h_1'
-    fits_cutout_dir = osp.join(data_dir, 'split_B1_1000h')
+    data_dir = "/p9550/MWA/GLEAM/blao/hetu_images/deep_learn/sdc1/data" #os.path.join(cur_dir, '..', 'data')
+    train_csv =  "/p9550/MWA/GLEAM/blao/hetu_images/deep_learn/sdc1/data/training_set/TrainingSet_B2_v2.csv"#osp.join(data_dir, 'TrainingSet_B5_v2.csv')
+    tablename = 'b2_1000h_1'
+    fits_cutout_dir = osp.join(data_dir, 'split_B2_1000h')
     build_fits_cutout_index(fits_cutout_dir, tablename)
     #png_dir = osp.join(data_dir, 'split_B5_1000h_png_val')
-    tgt_png_dir = osp.join(data_dir, 'split_B1_1000h_png_gt')
+    tgt_png_dir = osp.join(data_dir, 'split_B2_1000h_png_gt')
     #png_dir = osp.join(data_dir, 'split_B5_1000h_png_val')
-    png_dir = osp.join(data_dir, 'split_B1_1000h_png')
+    png_dir = osp.join(data_dir, 'split_B2_1000h_png')
     #args = parser.parse_args()
     #myrank = args.rank - 1
     #total_proc = args.totalproc
     #fits2png(fits_cutout_dir, png_dir, myrank, total_proc)
-    pb = osp.join('/o9000/MWA/GLEAM/data_challenge1/Ancillary_data', 'PrimaryBeam_B1.fits')
+    pb = osp.join('/p9550/MWA/GLEAM/blao/hetu_images/deep_learn/sdc1/data/Ancillary_data', 'PrimaryBeam_B2.fits')
     draw_gt(train_csv, fits_cutout_dir, png_dir, tablename, pb, tgt_png_dir, fancy=True)
     images, annolist = prepare_xml(train_csv, fits_cutout_dir, png_dir, tablename, pb)
     create_xml(annolist, png_dir)
