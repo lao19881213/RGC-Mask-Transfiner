@@ -20,8 +20,8 @@ import visualize
 
 parser = argparse.ArgumentParser(description='plot v3 mask results')
 
-parser.add_argument('--resultsfile', dest='results_file', type=str, default='/home/blao/RGC-Mask-Transfiner/output_101_3x_deform/inference/coco_instances_results_val.json', help='object detect results json file')
-parser.add_argument('--annsfile', dest='anns_file', type=str, default='/home/blao/RGC-Mask-Transfiner/datasets/coco/annotations/instances_val2022.json', help='annotations test json file')
+parser.add_argument('--resultsfile', dest='results_file', type=str, default='/home/blao/RGC-Mask-Transfiner/output_101_3x_deform_v1/inference/coco_instances_results_val.json', help='object detect results json file')
+parser.add_argument('--annsfile', dest='anns_file', type=str, default='/home/blao/RGC-Mask-Transfiner/datasets/coco/annotations/instances_val2022_v1.json', help='annotations test json file')
 
 
 args = parser.parse_args()
@@ -84,7 +84,7 @@ with open(img_file, 'r') as fin:
          captions: (optional) A list of strings to use as captions for each object
          """
          print(np.array(masks).shape)
-         image_dir = "/home/blao/RGC-Mask-Transfiner/datasets/coco/val2022"
+         image_dir = "/home/blao/RGC-Mask-Transfiner/datasets/coco/val2022.v1"
          image_data = skimage.io.imread(os.path.join(image_dir, image_name))
          boxes = np.array(boxes)
          masks = np.array(masks)

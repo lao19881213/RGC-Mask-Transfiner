@@ -1,0 +1,28 @@
+export PATH=/usr/bin
+export LD_LIBRARY_PATH=/usr/lib64
+export CPATH=/usr/include
+
+export PATH=/home/data0/lbq/gcc/bin:$PATH
+export CPATH=/home/data0/lbq/gcc/include:$CPATH
+export LD_LIBRARY_PATH=/home/data0/lbq/gcc/lib:/home/data0/lbq/gcc/lib64:$LD_LIBRARY_PATH
+
+export CC=/home/data0/lbq/gcc/bin/gcc
+export CXX=/home/data0/lbq/gcc/bin/g++
+
+#hdf5
+export PATH=/home/data0/lbq/hdf5/bin:$PATH
+export LD_LIBRARY_PATH=/home/data0/lbq/hdf5/lib:$LD_LIBRARY_PATH
+export CPATH=/home/data0/lbq/hdf5/include:$CPATH
+
+#cuda 11.0
+export PATH=/usr/local/cuda/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+export CPATH=/usr/local/cuda/include:$CPATH
+
+export PATH=/home/data0/lbq/anaconda3-2022/bin:$PATH
+export CPATH=/home/data0/lbq/anaconda3-2022/include/python3.7m:$CPATH
+export CPATH=/home/data0/lbq/anaconda3-2022/lib/python3.7/site-packages/numpy/core/include:$CPATH
+
+
+export HDF5_USE_FILE_LOCKING="FALSE"
+
