@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source /home/blao/RGC-Mask-Transfiner/bashrc
+source /home/data0/lbq/RGC-Mask-Transfiner/bashrc_gznu
 
-python json2csv.py --inpdir /p9550/MWA/GLEAM/blao/hetu_images/deep_learn/training_sets/v3_mask/fr2_add_2_bbox \
-       --outdir /p9550/MWA/GLEAM/blao/hetu_images/deep_learn/training_sets/v3_mask \
-       --csvfn fr2_add_2.csv 
+python json2csv.py --inpdir /home/data0/lbq/training_sets/cs_add_bbox \
+       --outdir /home/data0/lbq/training_sets \
+       --csvfn cs_add.csv 
