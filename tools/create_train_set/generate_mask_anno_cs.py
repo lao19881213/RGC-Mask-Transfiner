@@ -98,12 +98,12 @@ for fits_file in file_nms:
     img_data = hdu[0].data
     #print(img_data.shape)
     data = img_data #make_100gaussians_image()
-    threshold = detect_threshold(data, nsigma=4)
+    threshold = detect_threshold(data, nsigma=3)
     #print(threshold)
     sigma = 3.0 * gaussian_fwhm_to_sigma  # FWHM = 3.
     kernel = Gaussian2DKernel(sigma, x_size=3, y_size=3)
     kernel.normalize()
-    segm = detect_sources(data, threshold, npixels=5, kernel=kernel)
+    segm = detect_sources(data, threshold, npixels=1, kernel=kernel)
     #segm_deblend = deblend_sources(data, segm, npixels=5, kernel=kernel)
     
     #slc = (slice(273, 297), slice(425, 444))
