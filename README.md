@@ -22,10 +22,10 @@ Two-stage and query-based instance segmentation methods have achieved remarkable
 ./Anaconda3-2020.02-Linux-x86_64.sh  
  
 conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=11.0 -c pytorch
+
 # on gznu 380
-```
-conda install pytorch torchvision torchaudio cudatoolkit=11.7 -c pytorch -c nvidia
-``` 
+conda install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia
+
 # Coco api and visualization dependencies
 pip install ninja yacs cython matplotlib tqdm
 pip install opencv-python==4.4.0.40
@@ -121,6 +121,12 @@ bash scripts/visual.sh
 for swin-based model:
 ```
 bash scripts/visual_swinb.sh
+```
+
+Batch Inference 
+------------------
+```
+nohup ./batch_predict_FIRST_sourcefinding_gznu_part3.sh >> part3.out &
 ```
 
 Citation

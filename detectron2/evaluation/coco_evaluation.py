@@ -634,11 +634,12 @@ def _evaluate_predictions_on_coco(
     if iou_type == "segm":
        plt.figure(1)
        ax1 = plt.gca()
+       colors = ['k','r','b','g','m']
        for idx, name in enumerate(class_names):  
            pr_ap = coco_eval.eval['precision'][:,:,idx,0,-1]
            pr_ap = pr_ap.mean(axis=0)
            x = np.arange(0.0,1.01,0.01)
-           plt.plot(x, pr_ap,linewidth=2,label=name)
+           plt.plot(x, pr_ap,linewidth=2,label=name, color=colors[idx])
        plt.xlabel('Recall', fontsize=16)
        plt.ylabel('Precision', fontsize=16)
        plt.xlim(0, 1.0)
@@ -663,7 +664,7 @@ def _evaluate_predictions_on_coco(
        for idx, name in enumerate(class_names):
            pr_ap50 = coco_eval.eval['precision'][0,:,idx,0,-1]
            x = np.arange(0.0,1.01,0.01)
-           plt.plot(x, pr_ap50,linewidth=2,label=name)
+           plt.plot(x, pr_ap50,linewidth=2,label=name, color=colors[idx])
        plt.xlabel('Recall', fontsize=16)
        plt.ylabel('Precision', fontsize=16)
        plt.xlim(0, 1.0)
@@ -688,7 +689,7 @@ def _evaluate_predictions_on_coco(
        for idx, name in enumerate(class_names):
            pr_ap75 = coco_eval.eval['precision'][5,:,idx,0,-1]
            x = np.arange(0.0,1.01,0.01)
-           plt.plot(x, pr_ap75,linewidth=2,label=name)
+           plt.plot(x, pr_ap75,linewidth=2,label=name, color=colors[idx])
        plt.xlabel('Recall', fontsize=16)
        plt.ylabel('Precision', fontsize=16)
        plt.xlim(0, 1.0)

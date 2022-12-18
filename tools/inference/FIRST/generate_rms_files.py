@@ -29,6 +29,8 @@ for n in pro_arr[rank]:
 #for fn in file_nms:
     line = linecache.getline(args.fitslists, n+1)
     fits_file = line.split('\n')[0]
-
-    os.system('BANE %s/%s --out %s/%s' % (input_dir, fits_file, args.outdir, os.path.splitext(fits_file)[0]))
-    print("Successful generate %s" % fits_file)
+    if os.path.exists('%s/%s_rms.fits' % (args.outdir, os.path.splitext(fits_file)[0])) and os.path.exists('%s/%s_bkg.fits' % (args.outdir, os.path.splitext(fits_file)[0])):
+       print('%s/%s_rms.fits already exists' % (args.outdir, os.path.splitext(fits_file)[0]))
+    else:
+       os.system('BANE --cores 1 %s/%s --out %s/%s' % (input_dir, fits_file, args.outdir, os.path.splitext(fits_file)[0]))
+       print("Successful generate %s" % fits_file)
