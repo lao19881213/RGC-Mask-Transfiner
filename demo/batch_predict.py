@@ -392,6 +392,8 @@ if __name__ == "__main__":
 
 
                       if labels[classes[k]] == 'cs':
+                         if (x1-x2==0) or (y1-y2==0):
+                            continue
                          med = np.nanmedian(hdu.data)
                          clip_level = med + 3 * local_sigma
                          mir_file = mir_dir +"/" + os.path.splitext(imagefilename)[0] + ".mir"

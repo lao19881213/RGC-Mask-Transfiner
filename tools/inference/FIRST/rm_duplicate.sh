@@ -1,9 +1,9 @@
 #!/bin/bash
 
-source /home/blao/rgz_resnet_fpn/bashrc
-module load topcat/v4.8
+source /home/data0/lbq/RGC-Mask-Transfiner/bashrc_gznu
+export PATH=/home/data0/lbq/software/topcat:$PATH
 
-RESULT_DIR=/p9550/MWA/GLEAM/blao/hetu_images/deep_learn/inference_sets/hetu_results/final
+RESULT_DIR=/home/data0/lbq/RGC-Mask-Transfiner
 
 echo "Processing FIRST catalog ... ..."
-python /home/blao/rgz_resnet_fpn/tools/FIRST/rm_duplicate.py --inpfn ${RESULT_DIR}/FIRST_all_infer.csv --outdir ${RESULT_DIR}
+python /home/data0/lbq/RGC-Mask-Transfiner/tools/inference/FIRST/rm_duplicate.py --inpfn ${RESULT_DIR}/FIRST_infer_part0-4_cs.csv --outdir ${RESULT_DIR}
