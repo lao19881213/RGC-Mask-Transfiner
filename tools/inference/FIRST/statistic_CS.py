@@ -16,27 +16,14 @@ import seaborn as sns
 import os
 from matplotlib.ticker import (MultipleLocator, FormatStrFormatter,
                                AutoMinorLocator)
-#get_ipython().run_line_magic('matplotlib', 'inline')
 
 
-# In[2]:
+data_dir = "/home/data0/lbq/RGC-Mask-Transfiner"
 
-data_dir = "/p9550/MWA/GLEAM/blao/hetu_images/deep_learn/inference_sets/hetu_results/final"
-
-#pd.read_csv('../catalogue/DR1_170-231MHz.csv',sep=",")
-# DR1=pd.read_csv('../old/catalogue/DR1.csv',sep=",")
-#hetu=pd.read_csv(os.path.join(data_dir,'FIRST_all_final.csv'))
-match=pd.read_csv(os.path.join(data_dir,'FIRST_hetu_14dec17_matched_cs.csv'),sep=',')
-#non_DR1=pd.read_csv('../catalogue/non_match_DR1_170-231MHz.csv',sep=',')
-#non_hetu=pd.read_csv('../catalogue/non_match_hetu_170-231MHz.csv',sep=',')
-
-
-# # DR1 和 hetu 的星表做对比
-
-# In[3]:
+match=pd.read_csv(os.path.join(data_dir,'FIRST_infer_part0-4_th0.4_first_14dec17_matched_cs.csv'),sep=',')
 
 major_first = match['FITTED_MAJOR'].values
-major_hetu = match['major_1'].values
+major_hetu = match['major_2'].values
 
 plt.figure(10)
 ax = plt.gca()
@@ -65,7 +52,7 @@ plt.tight_layout()
 plt.savefig('major.png', dpi=600,format="png",bbox_inches = 'tight')
 
 minor_first = match['FITTED_MINOR'].values
-minor_hetu = match['minor_1'].values
+minor_hetu = match['minor_2'].values
 
 plt.figure(11)
 ax = plt.gca()
@@ -124,7 +111,7 @@ plt.savefig('pa.png', dpi=600,format="png",bbox_inches = 'tight')
 
 
 
-major_first = match['MAJOR_2'].values
+major_first = match['MAJOR_1'].values
 major_hetu = match['deconv_major'].values
 
 major_first_new = []
@@ -163,7 +150,7 @@ plt.tick_params(which="minor", axis="y", direction="in")
 plt.tight_layout()
 plt.savefig('major_deconv.png', dpi=600,format="png",bbox_inches = 'tight')
 
-minor_first = match['MINOR_2'].values
+minor_first = match['MINOR_1'].values
 minor_hetu = match['deconv_minor'].values
 
 minor_first_new = []
@@ -178,8 +165,8 @@ minor_hetu_new = np.array(minor_hetu_new)
 
 print("deconv len: %d" % len(minor_first_new))
 
-minor_first_maj = match['MINOR_2'].values
-minor_first_min = match['MINOR_2'].values
+minor_first_maj = match['MINOR_1'].values
+minor_first_min = match['MINOR_1'].values
 minor_first_maj_new = []
 minor_first_min_new = []
 for m in range(len(minor_first_min)):
@@ -326,14 +313,14 @@ plt.savefig('peak_flux.png', dpi=600,format="png",bbox_inches = 'tight')
 plt.figure(3)
 ax = plt.gca()
 #plt.hist(offset_x, bins=33, label=r'$\Delta x$', color='b')
-plt.hist(match1['peak_flux']*1000.0/match1['FPEAK'],bins=200, facecolor='#FF7F0E', align='mid', histtype='bar', edgecolor='r', linewidth=0.2, linestyle='-',alpha=0.5)
+plt.hist(match1['peak_flux']*1000/match1['FPEAK'],bins=1000, facecolor='#FF7F0E', align='mid', histtype='bar', edgecolor='r', linewidth=0.2, linestyle='-',alpha=0.5)
 #plt.hist(offset_y, bins=33,   alpha=0.5, label=r'$\Delta x$', color='r')
 #plt.hist(offset_y, bins=33,   facecolor='None', label=r'$\Delta y$', edgecolor='r')
 #ax.hist(offset_x,bins=33, facecolor='#FF7F0E', align='mid', histtype='bar', edgecolor='k', linewidth=0.2, linestyle='-',alpha=0.5, label=r'$\Delta y$')
-plt.xlabel(r'$S_{Hetu}/S_{FIRST\_{14dec17}}$', fontsize=18)
+plt.xlabel(r'$S_{\rm Hetu}/S_{\rm FIRST\_{14dec17}}$', fontsize=18)
 plt.tick_params(labelsize=16)
-plt.yscale('log')
-plt.xlim(0,20)
+#plt.yscale('log')
+plt.xlim(0,5)
 plt.ylabel('Number of sources', fontsize=18)
 ax.xaxis.set_minor_locator(AutoMinorLocator())
 #ax.yaxis.set_minor_locator(AutoMinorLocator())
@@ -445,13 +432,13 @@ ax1 = ax[0]#plt.subplot(211)
 ax2 = ax[1]#plt.subplot(212)
 #plt.hist(offset_x, bins=33, label=r'$\Delta x$', color='b')
 #plt.hist(match1['centre_ra']-match1['RA_2'],bins=200, facecolor='None', align='mid', histtype='bar', edgecolor='r', linewidth=0.2, linestyle='-',alpha=0.5)
-print(np.mean((match1['ra_1']-match1['RA_2'])*3600))
-print(np.mean((match1['dec_1']-match1['DEC_2'])*3600))
+print(np.mean((match1['ra_2']-match1['RA_1'])*3600))
+print(np.mean((match1['dec_2']-match1['DEC_1'])*3600))
 #plt.hist((match1['centre_ra']-match1['RA_2'])*3600, bins=50, facecolor='#1F77B4', align='mid', histtype='step', edgecolor='#1F77B4', linewidth=0.2, linestyle='-',alpha=0.5, label=r'$\Delta\alpha$')
 #plt.hist((match1['centre_dec']-match1['DEC_2'])*3600, bins=50,   facecolor='#FF7F0E', align='mid', histtype='step', edgecolor='#FF7F0E', linewidth=0.2, linestyle='-',alpha=0.5, label=r'$\Delta\delta$')
 #ax.hist(offset_x,bins=33, facecolor='#FF7F0E', align='mid', histtype='bar', edgecolor='k', linewidth=0.2, linestyle='-',alpha=0.5, label=r'$\Delta y$')
-samples1 = (match1['ra_1']-match1['RA_2'])*3600
-samples2 = (match1['dec_1']-match1['DEC_2'])*3600
+samples1 = (match1['ra_2']-match1['RA_1'])*3600
+samples2 = (match1['dec_2']-match1['DEC_1'])*3600
 #samples = (match['peak_flux']*1000.0)/match['FPEAK']
 #samples_1 = samples1[samples1 <=0.75]
 #samples1 = samples_1[samples_1 >=-0.75]
@@ -462,19 +449,19 @@ sigma1 = np.std(samples1)
 mean2 =np.mean(samples2)
 sigma2 = np.std(samples2)
 
-bin_heights1, bin_borders1, _ = ax1.hist(samples1, bins=50, facecolor='#1F77B4', align='mid', histtype='step', edgecolor='#1F77B4', linewidth=2, linestyle='-', label=r'$\Delta_{RA}$ mean=%.1f std=%.1f' % (mean1, sigma1))
-bin_heights2, bin_borders2, _ = ax2.hist(samples2, bins=50,   facecolor='#FF7F0E', align='mid', histtype='step', edgecolor='#FF7F0E', linewidth=2, linestyle='-', label=r'$\Delta_{DEC}$ mean=%.1f std=%.1f' % (mean2, sigma2))
+bin_heights1, bin_borders1, _ = ax1.hist(samples1, bins=500, facecolor='#1F77B4', align='mid', histtype='step', edgecolor='#1F77B4', linewidth=2, linestyle='-', label=r'$\Delta_{RA}$ mean=%.1f std=%.1f' % (mean1, sigma1))
+bin_heights2, bin_borders2, _ = ax2.hist(samples2, bins=500,   facecolor='#FF7F0E', align='mid', histtype='step', edgecolor='#FF7F0E', linewidth=2, linestyle='-', label=r'$\Delta_{DEC}$ mean=%.1f std=%.1f' % (mean2, sigma2))
 
 #bin_heights, bin_borders, _ = plt.hist(samples_new, bins = 40, histtype='step', color='b',linewidth=2, label='histogram')
 bin_centers1 = bin_borders1[:-1] + np.diff(bin_borders1) / 2
 bin_centers2 = bin_borders2[:-1] + np.diff(bin_borders2) / 2
-popt1, _ = curve_fit(gaussian, bin_centers1, bin_heights1, p0=[1., mean1, sigma1])
+popt1, _ = curve_fit(gaussian, bin_centers1, bin_heights1, p0=[1., mean1, sigma1],  maxfev=500000)
 popt2, _ = curve_fit(gaussian, bin_centers2, bin_heights2, p0=[1., mean2, sigma2],  maxfev=500000)
 print("ra fitted para: %s" % popt1)
 print("dec fitted para: %s" % popt2)
 
-x_interval_for_fit1 = np.linspace(-0.75, 0.75, len(samples1))
-x_interval_for_fit2 = np.linspace(-0.75, 0.75, len(samples2))
+x_interval_for_fit1 = np.linspace(-5, 5, len(samples1))
+x_interval_for_fit2 = np.linspace(-5, 5, len(samples2))
 ax1.plot(x_interval_for_fit1, gaussian(x_interval_for_fit1, *popt1), '--r', linewidth=2, label=r'gaussian fit hist $\Delta_{RA}$')
 ax2.plot(x_interval_for_fit2, gaussian(x_interval_for_fit2, *popt2), '--b', linewidth=2, label=r'gaussian fit hist $\Delta_{DEC}$')
 x_data1 = x_interval_for_fit1
@@ -491,7 +478,8 @@ ax2.set_xlabel(r'Separation (asec)', fontsize=12)
 ax1.tick_params(labelsize=12)
 ax2.tick_params(labelsize=12)
 #plt.yscale('log')
-plt.xlim(-0.75,0.75)
+ax1.set_xlim(-5,5)
+ax2.set_xlim(-5,5)
 ax1.set_ylabel('Number of sources', fontsize=12)
 ax2.set_ylabel('Number of sources', fontsize=12)
 ax2.xaxis.set_minor_locator(AutoMinorLocator())
@@ -521,6 +509,15 @@ ax2.legend(loc='upper left', fontsize=10)
 plt.tight_layout()
 plt.subplots_adjust(hspace=0)
 plt.savefig('ra_dec_separation.png', dpi=600,format="png",bbox_inches = 'tight')
+
+ax3 = plt.figure(200)
+import seaborn as sns
+samples1 = (match1['ra_2']-match1['RA_1'])*3600
+samples2 = (match1['dec_2']-match1['DEC_1'])*3600
+sns.kdeplot(x=samples1, y=samples2, fill=True) #, cmap='Blues')
+#ax3.set_ylim(-5,5)
+#ax3.set_xlim(-5,5)
+plt.savefig('ra_dec_density.png', dpi=600,format="png") #,bbox_inches = 'tight')
 
 import scipy
 from scipy.optimize import curve_fit
@@ -605,27 +602,27 @@ plt.rcParams["font.serif"] = ["Times New Roman"] + plt.rcParams["font.serif"]
 
 plt.figure(6)
 samples = (match['peak_flux']*1000.0)/match['FPEAK']
-samples_1 = samples[samples <=2]
-samples_new = samples_1[samples_1 >=0]
+samples_1 = samples#[samples <=2]
+samples_new = samples_1#[samples_1 >=0]
 mean =np.mean(samples_new)
 sigma = np.std(samples_new)
 
-bin_heights, bin_borders, _ = plt.hist(samples_new, bins = 40, histtype='step', color='b',linewidth=2, label='histogram')
+bin_heights, bin_borders, _ = plt.hist(samples_new, bins = 200, histtype='step', color='b',linewidth=2, label='histogram')
 bin_centers = bin_borders[:-1] + np.diff(bin_borders) / 2
-popt, _ = curve_fit(gaussian, bin_centers, bin_heights, p0=[1., mean, sigma])
-print("flux fitted para: %s" % popt)
+#popt, _ = curve_fit(gaussian, bin_centers, bin_heights, p0=[1., mean, sigma])
+#print("flux fitted para: %s" % popt)
 x_interval_for_fit = np.linspace(0, 2, len(samples_new))
-plt.plot(x_interval_for_fit, gaussian(x_interval_for_fit, *popt), '--r', linewidth=2, label='fit')
+#plt.plot(x_interval_for_fit, gaussian(x_interval_for_fit, *popt), '--r', linewidth=2, label='fit')
 x_data = x_interval_for_fit 
-coeff = popt
+#coeff = popt
 ax=plt.gca()
-try:
-    y_errors
-    chisquare_nu = calc_chisquare(samples_new, gaussian, y_sigma=y_errors, verbose=True)
-except NameError:
-    chisquare_nu = calc_chisquare(samples_new, gaussian, y_sigma=None, verbose=True)
+#try:
+#    y_errors
+#    chisquare_nu = calc_chisquare(samples_new, gaussian, y_sigma=y_errors, verbose=True)
+#except NameError:
+#    chisquare_nu = calc_chisquare(samples_new, gaussian, y_sigma=None, verbose=True)
 #calc_chisquare(samples_new, gaussian(x_interval_for_fit, *popt))
-plt.xlim((0,2))
+plt.xlim((0,20))
 #plt.ylim((0,14000))
 ax.set_xlabel(r'$S_{Hetu}/S_{FIRST\_{14dec17}}$', fontdict={'family' : 'Times New Roman', 'size'   : 18})
 ax.tick_params(labelsize=16)
