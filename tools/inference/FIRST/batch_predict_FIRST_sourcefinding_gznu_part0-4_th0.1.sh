@@ -18,8 +18,8 @@ export PATH=/home/data0/lbq/software/miriad/linux64/bin:$PATH
 #  --rmsdir /home/data0/lbq/inference_data/FIRST_rms \
 #  --mirdir FIRST_mir \
 #  --output '/home/data0/lbq/inference_data/FIRST_pred' \
-#  --confidence-threshold 0.2 \
-#  --catalogfn FIRST_infer_part0_th0.2 \
+#  --confidence-threshold 0.1 \
+#  --catalogfn FIRST_infer_part0_th0.1 \
 #  --opts MODEL.WEIGHTS ./output_101_3x_deform/model_0229999.pth 
   #./pretrained_model/output_3x_transfiner_r50.pth
 
@@ -29,8 +29,8 @@ CUDA_VISIBLE_DEVICES=0 python3 demo/batch_predict.py --config-file configs/trans
   --rmsdir /home/data0/lbq/inference_data/FIRST_rms \
   --mirdir FIRST_mir \
   --output '/home/data0/lbq/inference_data/FIRST_pred' \
-  --confidence-threshold 0.2 \
-  --catalogfn FIRST_infer_part1_th0.2 \
+  --confidence-threshold 0.1 \
+  --catalogfn FIRST_infer_part1_th0.1 \
   --opts MODEL.WEIGHTS ./output_101_3x_deform/model_0229999.pth         
 
 CUDA_VISIBLE_DEVICES=0 python3 demo/batch_predict.py --config-file configs/transfiner/mask_rcnn_R_101_FPN_3x_deform_infer.yaml \
@@ -39,8 +39,8 @@ CUDA_VISIBLE_DEVICES=0 python3 demo/batch_predict.py --config-file configs/trans
   --rmsdir /home/data0/lbq/inference_data/FIRST_rms \
   --mirdir FIRST_mir \
   --output '/home/data0/lbq/inference_data/FIRST_pred' \
-  --confidence-threshold 0.2 \
-  --catalogfn FIRST_infer_part2_th0.2 \
+  --confidence-threshold 0.1 \
+  --catalogfn FIRST_infer_part2_th0.1 \
   --opts MODEL.WEIGHTS ./output_101_3x_deform/model_0229999.pth
   #./pretrained_model/output_3x_transfiner_r50.pth
 
@@ -50,16 +50,16 @@ CUDA_VISIBLE_DEVICES=0 python3 demo/batch_predict.py --config-file configs/trans
   --rmsdir /home/data0/lbq/inference_data/FIRST_rms \
   --mirdir FIRST_mir \
   --output '/home/data0/lbq/inference_data/FIRST_pred' \
-  --confidence-threshold 0.2 \
-  --catalogfn FIRST_infer_part3_th0.2 \
+  --confidence-threshold 0.1 \
+  --catalogfn FIRST_infer_part3_th0.1 \
   --opts MODEL.WEIGHTS ./output_101_3x_deform/model_0229999.pth  
 
-#CUDA_VISIBLE_DEVICES=0 python3 demo/batch_predict.py --config-file configs/transfiner/mask_rcnn_R_101_FPN_3x_deform_infer.yaml \
-#  --input '/home/data0/lbq/inference_data/FIRST_fits' \
-#  --pnglists '/home/data0/lbq/inference_data/FIRST_final_png_part4.txt' \
-#  --rmsdir /home/data0/lbq/inference_data/FIRST_rms \
-#  --mirdir FIRST_mir \
-#  --output '/home/data0/lbq/inference_data/FIRST_pred' \
-#  --confidence-threshold 0.2 \
-#  --catalogfn FIRST_infer_part4_th0.2 \
-#  --opts MODEL.WEIGHTS ./output_101_3x_deform/model_0229999.pth                                       
+CUDA_VISIBLE_DEVICES=0 python3 demo/batch_predict.py --config-file configs/transfiner/mask_rcnn_R_101_FPN_3x_deform_infer.yaml \
+  --input '/home/data0/lbq/inference_data/FIRST_fits' \
+  --pnglists '/home/data0/lbq/inference_data/FIRST_final_png_part4.txt' \
+  --rmsdir /home/data0/lbq/inference_data/FIRST_rms \
+  --mirdir FIRST_mir \
+  --output '/home/data0/lbq/inference_data/FIRST_pred' \
+  --confidence-threshold 0.1 \
+  --catalogfn FIRST_infer_part4_th0.1 \
+  --opts MODEL.WEIGHTS ./output_101_3x_deform/model_0229999.pth                                       

@@ -459,6 +459,8 @@ if __name__ == "__main__":
                       else:
                          #fits_file = os.path.splitext(imagefilename)[0] + ".fits" #fn.split('.')[0] + ".fits"
                          #hdu = fits.open(os.path.join(input_dir, fits_file))[0]
+                         if (x1-x2==0) or (y1-y2==0):
+                            continue
                          box_data = hdu.data[hdu.data.shape[0]-y2:hdu.data.shape[0]-y1,x1:x2]
                          peak_flux = np.nanmax(box_data)
                          #logger.info('%d, %d, %d, %d' % (hdu.data.shape[0]-y2, hdu.data.shape[0]-y1, x1,x2))
