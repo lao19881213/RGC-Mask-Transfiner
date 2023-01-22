@@ -6,6 +6,7 @@ import astropy.wcs as wcs
 import argparse
 import pandas as pd
 import linecache
+import gc
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--FIRSTcsv', help='FIRST csv file')
@@ -44,9 +45,13 @@ dec = csv['centre_dec'].values
 tags = []
 tags_first = []
 #12501
-pro_arr = np.array_split(np.arange(len(image_file)),8)
+pro_arr = np.array_split(np.arange(len(image_file)),24)
 print(len(pro_arr[0])+len(pro_arr[1])+len(pro_arr[2])+len(pro_arr[3])\
-      +len(pro_arr[4])+len(pro_arr[5])+len(pro_arr[6])+len(pro_arr[7]))
+          +len(pro_arr[4])+len(pro_arr[5])+len(pro_arr[6])+len(pro_arr[7])\
+          +len(pro_arr[8])+len(pro_arr[9])+len(pro_arr[10])+len(pro_arr[11])\
+          +len(pro_arr[12])+len(pro_arr[13])+len(pro_arr[14])+len(pro_arr[15])\
+          +len(pro_arr[16])+len(pro_arr[17])+len(pro_arr[18])+len(pro_arr[19])\
+          +len(pro_arr[20])+len(pro_arr[21])+len(pro_arr[22])+len(pro_arr[23]))
 for n in pro_arr[int(args.rank)]:
    print(n)
    fits_file = os.path.splitext(image_file[n])[0] + ".fits"
@@ -120,7 +125,23 @@ for n in pro_arr[int(args.rank)]:
           if img_x <= x2 and img_x >= x1 and img_y <= y2_new and img_y >= y1_new: 
              comp_cnt = comp_cnt + 1
              tags_first.append('{},{},{},{}'.format(n, image_file[n], ra_first, dec_first))
+             del ra_first
+             del dec_first, img_x, img_y
+             gc.collect(0)
+             gc.collect(1)
    tags.append('{},{},{},{}'.format(n,image_file[n],label,comp_cnt))                 
+
+   del x1
+   del y1
+   del x2
+   del y2
+   del y1_new
+   del y2_new
+   del w
+   #del img_x, img_y
+   del m
+   gc.collect()
+
 
 
 outdir = args.outdir

@@ -7,7 +7,8 @@ RESULT_DIR=/home/data0/lbq/RGC-Mask-Transfiner/FIRST_results
 DATA_DIR=/home/data0/lbq/inference_data
 CODE_DIR=/home/data0/lbq/RGC-Mask-Transfiner/tools/inference/FIRST
 
-classes="fr1 fr2 ht cj"
+#classes="fr1 fr2 ht cj"
+classes="cj"
 
 for cls in $classes;
 do

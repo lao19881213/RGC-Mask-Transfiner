@@ -8,12 +8,10 @@ import pandas as pd
 import linecache
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--FIRSTcsv', help='FIRST csv file')
+parser.add_argument('--ApJscsv', help='HT csv file')
 parser.add_argument('--result', help='result file')
 parser.add_argument('--inpdir', help='pred input png file directory')
 parser.add_argument('--outdir', help='pred output png file directory')
-parser.add_argument('--cls', help='cls')
-parser.add_argument('--rank', help='rank')
 args = parser.parse_args()
 
 result_file = args.result 
@@ -22,13 +20,13 @@ result_file = args.result
 input_dir = args.inpdir 
 #file_nms = os.listdir(input_dir)
 
-FIRST_csv = args.FIRSTcsv
+ApJs_csv = args.ApJscsv
 
-csv_FIRST = pd.read_csv(FIRST_csv)
+csv_FIRST = pd.read_csv(ApJs_csv)
 
 ra_FIRST = csv_FIRST['RA'].values
 
-dec_FIRST = csv_FIRST['DEC'].values
+dec_FIRST = csv_FIRST['Dec'].values
 
 
 csv=pd.read_csv(result_file)
@@ -44,10 +42,9 @@ dec = csv['centre_dec'].values
 tags = []
 tags_first = []
 #12501
-pro_arr = np.array_split(np.arange(len(image_file)),8)
-print(len(pro_arr[0])+len(pro_arr[1])+len(pro_arr[2])+len(pro_arr[3])\
-      +len(pro_arr[4])+len(pro_arr[5])+len(pro_arr[6])+len(pro_arr[7]))
-for n in pro_arr[int(args.rank)]:
+#pro_arr = np.array_split(np.arange(len(image_file)),4)
+#print(len(pro_arr[0])+len(pro_arr[1])+len(pro_arr[2])+len(pro_arr[3]))
+for n in range(len(image_file)):#pro_arr[int(args.rank)]:
    print(n)
    fits_file = os.path.splitext(image_file[n])[0] + ".fits"
    hdu = fits.open(os.path.join(input_dir, fits_file))
@@ -119,7 +116,7 @@ for n in pro_arr[int(args.rank)]:
        if ra_first <= RA_max and ra_first >= RA_min and dec_first <= DEC_max and dec_first >= DEC_min:
           if img_x <= x2 and img_x >= x1 and img_y <= y2_new and img_y >= y1_new: 
              comp_cnt = comp_cnt + 1
-             tags_first.append('{},{},{},{}'.format(n, image_file[n], ra_first, dec_first))
+             tags_first.append('{},{},{},{},{}'.format(n, m, image_file[n], ra_first, dec_first))
    tags.append('{},{},{},{}'.format(n,image_file[n],label,comp_cnt))                 
 
 
@@ -128,7 +125,7 @@ outdir = args.outdir
 resultsData = tags
 firstdata = tags_first
 #print(resultsData)
-with open(os.path.join(outdir, 'extended_components_%s_%s.csv' % (args.cls, args.rank)), 'w') as f:
+with open(os.path.join(outdir, 'ht_ApJs.csv'), 'w') as f:
      f.write(os.linesep.join(resultsData))
-with open(os.path.join(outdir, 'matched_FIRST_extended_components_%s_%s.csv' % (args.cls, args.rank)), 'w') as f:
+with open(os.path.join(outdir, 'matched_ApJs.csv'), 'w') as f:
      f.write(os.linesep.join(firstdata))

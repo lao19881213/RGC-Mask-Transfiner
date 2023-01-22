@@ -24,7 +24,7 @@ import astropy.wcs as wcs
 
 cls = ['cs','fr1','fr2','ht','cj']
 
-img_fns = ['J141653.051+104828.53.png', 'J140813.859+101013.77.png', 'J131616.979+070246.57.png']
+img_fns = ['J141653.051+104828.53.png', 'J140813.859+101013.77.png', 'J131616.979+070246.57.png', 'J130904.395+102952.52.png']
 
 for img_fn in img_fns:
     boxes = []

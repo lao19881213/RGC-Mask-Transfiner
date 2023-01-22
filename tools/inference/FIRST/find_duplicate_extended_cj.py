@@ -37,8 +37,9 @@ def find():
     len_s = len(ras)
     #del csv_fr12
     #gc.collect()
-    pro_arr = np.array_split(np.arange(len(image_files)),5)
-    print(len(pro_arr[0])+len(pro_arr[1])+len(pro_arr[2])+len(pro_arr[3])+len(pro_arr[4])
+    pro_arr = np.array_split(np.arange(len(image_files)),8)
+    print(len(pro_arr[0])+len(pro_arr[1])+len(pro_arr[2])+len(pro_arr[3])+len(pro_arr[4]) \
+         +len(pro_arr[5])+len(pro_arr[6])+len(pro_arr[7]))
     for n in pro_arr[int(args.rank)]: 
     #for n in range(len_s):
        print(n)
