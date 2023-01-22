@@ -1,19 +1,18 @@
-# Radio Galaxy Classification based on Mask Transfiner -- HeTu2
-HeTu2 is built on the pioneering work of [Transfiner](https://arxiv.org/abs/2111.13673) and [detectron2](https://github.com/facebookresearch/detectron2).
+# Radio Galaxy Classification based on Mask Transfiner -- HeTu-v2
+HeTu-v2 is built on the pioneering work of [Transfiner](https://arxiv.org/abs/2111.13673) and [detectron2](https://github.com/facebookresearch/detectron2) to support high-quality segmentation and morphological classification of radio sources for modern radio continuum surveys.
 
 
 Highlights
 -----------------
-- **Transfiner:** High-quality instance segmentation with state-of-the-art performance and extreme details.
-- **Novelty:** An efficient transformer targeting for high-resolution instance masks predictions based on the quadtree structure.
-- **Efficacy:** Large mask and boundary AP improvements on three instance segmentation benchmarks, including COCO, Cityscapes and BDD100k. 
-- **Simple:** Small additional computation burden compared to standard transformer and easy to use.
+- **Build morphological classification catalog:** 
+- **Build accurate sky mode:** .
+- **Automatic radio component association:** . 
+- **Radio galaxy classification:** .
 
 
 
 Introduction
 -----------------
-Two-stage and query-based instance segmentation methods have achieved remarkable results. However, their segmented masks are still very coarse. In this paper, we present Mask Transfiner for high-quality and efficient instance segmentation. Instead of operating on regular dense tensors, our Mask Transfiner decomposes and represents the image regions as a quadtree. Our transformer-based approach only processes detected error-prone tree nodes and self-corrects their errors in parallel. While these sparse pixels only constitute a small proportion of the total number, they are critical to the final mask quality. This allows Mask Transfiner to predict highly accurate instance masks, at a low computational cost. Extensive experiments demonstrate that Mask Transfiner outperforms current instance segmentation methods on three popular benchmarks, significantly improving both two-stage and query-based frameworks by a large margin of +3.0 mask AP on COCO and BDD100K, and +6.6 boundary AP on Cityscapes. 
 
 
 ## Step-by-step Installation
@@ -131,21 +130,8 @@ nohup ./batch_predict_FIRST_sourcefinding_gznu_part3.sh >> part3.out &
 
 Citation
 ---------------
-If you find Mask Transfiner useful in your research or refer to the provided baseline results, please star :star: this repository and consider citing :pencil::
+If you find HeTu-v2 useful in your research or refer to the provided baseline results, please consider citing :pencil::
 ```
-@inproceedings{transfiner,
-    author={Ke, Lei and Danelljan, Martin and Li, Xia and Tai, Yu-Wing and Tang, Chi-Keung and Yu, Fisher},
-    title={Mask Transfiner for High-Quality Instance Segmentation},
-    booktitle = {CVPR},
-    year = {2022}
-}  
 ```
-Related Links
----------------
-Related NeurIPS 2021 Work on multiple object tracking & segmentation: [PCAN](https://github.com/SysCV/pcan)
-
-Related CVPR 2021 Work on occlusion-aware instance segmentation: [BCNet](https://github.com/lkeab/BCNet)
-
-Related ECCV 2020 Work on partially supervised instance segmentation: [CPMask](https://www.ecva.net/papers/eccv_2020/papers_ECCV/papers/123530375.pdf)
 
 
