@@ -30,11 +30,14 @@ major_hetu = match1['major_2'].values
 plt.figure(10)
 ax = plt.gca()
 #plt.hist(offset_x, bins=33, label=r'$\Delta x$', color='b')
-plt.hist(major_hetu/major_first,bins=16000, facecolor='#FF7F0E', align='mid', histtype='bar', edgecolor='r', linewidth=0.2, linestyle='-',alpha=0.5)
+#16000
+n, bins, patches = plt.hist(major_hetu/major_first,bins=15000, facecolor='#FF7F0E', align='mid', histtype='bar', edgecolor='r', linewidth=0.2, linestyle='-',alpha=0.5)
 #plt.hist(offset_y, bins=33,   alpha=0.5, label=r'$\Delta x$', color='r')
 #plt.hist(offset_y, bins=33,   facecolor='None', label=r'$\Delta y$', edgecolor='r')
 #ax.hist(offset_x,bins=33, facecolor='#FF7F0E', align='mid', histtype='bar', edgecolor='k', linewidth=0.2, linestyle='-',alpha=0.5, label=r'$\Delta y$')
-plt.xlabel(r'$Major_{\rm Hetu}/Major_{\rm FIRST-14dec17}}$', fontsize=18)
+print(n)
+print(np.max(n))
+plt.xlabel(r'$Major_{\rm FIRST-Hetu}/Major_{\rm FIRST-14dec17}}$', fontsize=18)
 plt.tick_params(labelsize=16)
 #plt.yscale('log')
 plt.xlim(0,2)
@@ -51,6 +54,14 @@ plt.tick_params(which="minor", axis="x", direction="in")
 plt.tick_params(which="minor", axis="y", direction="in")
 #plt.legend(loc='upper left', fontsize=16)
 plt.tight_layout()
+#yy=np.linspace(0, 300000, 50)
+#xx=np.ones(yy.shape)*1.0
+#ax.plot(xx,yy,'--k')
+print(ax.get_ylim())
+yy=np.linspace(0, np.max(n), 50)
+xx=np.ones(yy.shape)*1.0
+ax.plot(xx,yy,'--k')
+#plt.ylim(0,250200)
 plt.savefig('major.png', dpi=600,format="png",bbox_inches = 'tight')
 plt.savefig('major.pdf', dpi=300,format="pdf")
 
@@ -60,11 +71,11 @@ minor_hetu = match1['minor_2'].values
 plt.figure(11)
 ax = plt.gca()
 #plt.hist(offset_x, bins=33, label=r'$\Delta x$', color='b')
-plt.hist(minor_hetu/minor_first,bins=50, facecolor='#FF7F0E', align='mid', histtype='bar', edgecolor='r', linewidth=0.2, linestyle='-',alpha=0.5)
+n, bins, patches = plt.hist(minor_hetu/minor_first,bins=50, facecolor='#FF7F0E', align='mid', histtype='bar', edgecolor='r', linewidth=0.2, linestyle='-',alpha=0.5)
 #plt.hist(offset_y, bins=33,   alpha=0.5, label=r'$\Delta x$', color='r')
 #plt.hist(offset_y, bins=33,   facecolor='None', label=r'$\Delta y$', edgecolor='r')
 #ax.hist(offset_x,bins=33, facecolor='#FF7F0E', align='mid', histtype='bar', edgecolor='k', linewidth=0.2, linestyle='-',alpha=0.5, label=r'$\Delta y$')
-plt.xlabel(r'$Minor_{\rm Hetu}/Minor_{\rm FIRST-14dec17}}$', fontsize=18)
+plt.xlabel(r'$Minor_{\rm FIRST-Hetu}/Minor_{\rm FIRST-14dec17}}$', fontsize=18)
 plt.tick_params(labelsize=16)
 #plt.yscale('log')
 plt.xlim(0,2)
@@ -81,6 +92,10 @@ plt.tick_params(which="minor", axis="x", direction="in")
 plt.tick_params(which="minor", axis="y", direction="in")
 #plt.legend(loc='upper left', fontsize=16)
 plt.tight_layout()
+print(ax.get_ylim())
+yy=np.linspace(0, np.max(n), 50)
+xx=np.ones(yy.shape)*1.0
+ax.plot(xx,yy,'--k')
 plt.savefig('minor.png', dpi=600,format="png",bbox_inches = 'tight')
 plt.savefig('minor.pdf', dpi=300,format="pdf")
 
@@ -270,7 +285,7 @@ p_flux= np.poly1d(z_flux)
 flux_unmatched=match1[match1['peak_flux']*1000>match1['FPEAK']*m_flux+0.9]
 flux_unmatched1=match1[match1['peak_flux']*1000<match1['FPEAK']*m_flux-0.9]
 
-flux_unmatched.to_csv(os.path.join(data_dir, 'peak_flux_unmatched_14dec17.csv'),index=0)
+#flux_unmatched.to_csv(os.path.join(data_dir, 'peak_flux_unmatched_14dec17.csv'),index=0)
 #flux_unmatched1.to_csv('../catalogue/flux_unmatched1.csv',index=0)
 
 
@@ -300,9 +315,9 @@ ax1.tick_params(axis = 'x', which = 'major', labelsize = 18, pad=4,direction='in
 ax1.tick_params(axis = 'y', which = 'major', labelsize = 18, pad=4,direction='in')
 
 plt.xlabel(r'$S_{FIRST\_{14dec17}}$(mJy)',fontsize=20,labelpad=0)
-plt.ylabel(r'$S_{HeTu}$(mJy)',fontsize=20,labelpad=0)
+plt.ylabel(r'$S_{FIRST-HeTu}$(mJy)',fontsize=20,labelpad=0)
 plt.title('peak flux',fontsize=20)
-ax1.annotate(r'$\frac{S_{HeTu}}{S_{FIRST\_{14dec17}}}=%.2f \pm %.3f$' % (m_flux,m_err_flux) ,xy=(0.2,0.85),xycoords='figure fraction',color='k',fontsize=20)
+ax1.annotate(r'$\frac{S_{FIRST-HeTu}}{S_{FIRST\_{14dec17}}}=%.2f \pm %.3f$' % (m_flux,m_err_flux) ,xy=(0.2,0.85),xycoords='figure fraction',color='k',fontsize=20)
 
 #plt.xlim(-0.5,5000)
 #plt.ylim(-0.5,5000)
@@ -318,11 +333,11 @@ plt.figure(3)
 ax = plt.gca()
 #plt.hist(offset_x, bins=33, label=r'$\Delta x$', color='b')
 samples_peak = match1['peak_flux']*1000/match1['FPEAK']
-plt.hist(match1['peak_flux']*1000/match1['FPEAK'],bins=1000, facecolor='#FF7F0E', align='mid', histtype='bar', edgecolor='r', linewidth=0.2, linestyle='-',alpha=0.5)
+n, bins, patches = plt.hist(match1['peak_flux']*1000/match1['FPEAK'],bins=1000, facecolor='#FF7F0E', align='mid', histtype='bar', edgecolor='r', linewidth=0.2, linestyle='-',alpha=0.5)
 #plt.hist(offset_y, bins=33,   alpha=0.5, label=r'$\Delta x$', color='r')
 #plt.hist(offset_y, bins=33,   facecolor='None', label=r'$\Delta y$', edgecolor='r')
 #ax.hist(offset_x,bins=33, facecolor='#FF7F0E', align='mid', histtype='bar', edgecolor='k', linewidth=0.2, linestyle='-',alpha=0.5, label=r'$\Delta y$')
-plt.xlabel(r'$S_{\rm HeTu}/S_{\rm FIRST-{14dec17}}$', fontsize=18)
+plt.xlabel(r'$S_{\rm FIRST-HeTu}/S_{\rm FIRST-{14dec17}}$', fontsize=18)
 plt.tick_params(labelsize=16)
 #plt.yscale('log')
 plt.xlim(0,2)
@@ -337,8 +352,14 @@ plt.tick_params(axis="x", direction="in")
 plt.tick_params(axis="y", direction="in")
 plt.tick_params(which="minor", axis="x", direction="in")
 plt.tick_params(which="minor", axis="y", direction="in")
+
+
 #plt.legend(loc='upper left', fontsize=16)
 plt.tight_layout()
+print(ax.get_ylim())
+yy=np.linspace(0, np.max(n), 50)
+xx=np.ones(yy.shape)*1.0
+ax.plot(xx,yy,'--k')
 plt.savefig('peak_flux_hetu_first.png', dpi=600,format="png",bbox_inches = 'tight')
 plt.savefig('peak_flux_hetu_first.pdf', dpi=300,format="pdf")
 # In[20]:
@@ -351,7 +372,7 @@ plt.hist(match1['int_flux']*1000/match1['FINT'],bins=5000, facecolor='#FF7F0E', 
 #plt.hist(offset_y, bins=33,   alpha=0.5, label=r'$\Delta x$', color='r')
 #plt.hist(offset_y, bins=33,   facecolor='None', label=r'$\Delta y$', edgecolor='r')
 #ax.hist(offset_x,bins=33, facecolor='#FF7F0E', align='mid', histtype='bar', edgecolor='k', linewidth=0.2, linestyle='-',alpha=0.5, label=r'$\Delta y$')
-plt.xlabel(r'$S_{\rm HeTu}/S_{\rm FIRST-{14dec17}}$', fontsize=18)
+plt.xlabel(r'$S_{\rm FIRST-HeTu}/S_{\rm FIRST-{14dec17}}$', fontsize=18)
 plt.tick_params(labelsize=16)
 #plt.yscale('log')
 plt.xlim(0,2)
@@ -442,9 +463,9 @@ ax1.tick_params(axis = 'x', which = 'major', labelsize = 18, pad=4,direction='in
 ax1.tick_params(axis = 'y', which = 'major', labelsize = 18, pad=4,direction='in')
 
 plt.xlabel(r'$S_{FIRST\_{14dec17}}$(mJy)',fontsize=20,labelpad=0)
-plt.ylabel(r'$S_{HeTu}$(mJy)',fontsize=20,labelpad=0)
+plt.ylabel(r'$S_{FIRST-HeTu}$(mJy)',fontsize=20,labelpad=0)
 plt.title('int flux',fontsize=20)
-ax1.annotate(r'$\frac{S_{HeTu}}{S_{FIRST\_{14dec17}}}=%.2f \pm %.3f$' % (m_flux,m_err_flux) ,xy=(0.2,0.85),xycoords='figure fraction',color='k',fontsize=20)
+ax1.annotate(r'$\frac{S_{FIRST-HeTu}}{S_{FIRST\_{14dec17}}}=%.2f \pm %.3f$' % (m_flux,m_err_flux) ,xy=(0.2,0.85),xycoords='figure fraction',color='k',fontsize=20)
 
 #plt.xlim(-0.5,5000)
 #plt.ylim(-0.5,5000)

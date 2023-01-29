@@ -8,7 +8,9 @@ DATA_DIR=/home/data0/lbq/inference_data
 CODE_DIR=/home/data0/lbq/RGC-Mask-Transfiner/tools/inference/FIRST
 
 
-ranks="0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23"
+ranks="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23"
+
+#ranks="0"
 
 for rank in $ranks;
 do

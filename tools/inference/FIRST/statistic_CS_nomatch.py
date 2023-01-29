@@ -26,15 +26,18 @@ peak = nomatch['peak_flux'].values
 local_rms = nomatch['local_rms'].values
 SNR = peak / local_rms
 
+print(len(SNR[SNR<=5]))
+
+print(np.min(SNR))
 plt.figure()
 ax = plt.gca()
 #plt.hist(offset_x, bins=33, label=r'$\Delta x$', color='b')
-plt.hist(SNR,bins=5000, facecolor='#1F77B4', align='mid', histtype='bar', edgecolor='r', linewidth=0.2, linestyle='-',alpha=0.5)
+plt.hist(SNR,bins=10000, facecolor='#1F77B4', align='mid', histtype='bar', edgecolor='r', linewidth=0.2, linestyle='-',alpha=0.5)
 #ax.hist(offset_x,bins=33, facecolor='#FF7F0E', align='mid', histtype='bar', edgecolor='k', linewidth=0.2, linestyle='-',alpha=0.5, label=r'$\Delta y$')
 plt.xlabel(r'S/N', fontsize=18)
 plt.tick_params(labelsize=16)
 #plt.yscale('log')
-plt.xlim(0,100)
+plt.xlim(0,200)
 plt.ylabel('Number of sources', fontsize=18)
 ax.xaxis.set_minor_locator(AutoMinorLocator())
 #ax.yaxis.set_minor_locator(AutoMinorLocator())
