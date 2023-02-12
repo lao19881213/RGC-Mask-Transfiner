@@ -314,13 +314,13 @@ ax1.tick_params(axis='both', which='both', width=1,direction='in')
 ax1.tick_params(axis = 'x', which = 'major', labelsize = 18, pad=4,direction='in')
 ax1.tick_params(axis = 'y', which = 'major', labelsize = 18, pad=4,direction='in')
 
-plt.xlabel(r'$S_{FIRST\_{14dec17}}$(mJy)',fontsize=20,labelpad=0)
-plt.ylabel(r'$S_{FIRST-HeTu}$(mJy)',fontsize=20,labelpad=0)
-plt.title('peak flux',fontsize=20)
-ax1.annotate(r'$\frac{S_{FIRST-HeTu}}{S_{FIRST\_{14dec17}}}=%.2f \pm %.3f$' % (m_flux,m_err_flux) ,xy=(0.2,0.85),xycoords='figure fraction',color='k',fontsize=20)
+plt.xlabel(r'$S_{FIRST-{14dec17}}$ (mJy)',fontsize=20,labelpad=0)
+plt.ylabel(r'$S_{FIRST-HeTu}$ (mJy)',fontsize=20,labelpad=0)
+#plt.title('peak flux',fontsize=20)
+ax1.annotate(r'$\frac{S_{FIRST-HeTu}}{S_{FIRST-{14dec17}}}=%.2f \pm %.3f$' % (m_flux,m_err_flux) ,xy=(0.2,0.85),xycoords='figure fraction',color='k',fontsize=20)
 
-#plt.xlim(-0.5,5000)
-#plt.ylim(-0.5,5000)
+#plt.xlim(-0.5,17000)
+#plt.ylim(-0.5,17000)
 
 xminors = matplotlib.ticker.AutoMinorLocator(5)
 yminors = matplotlib.ticker.AutoMinorLocator(5)
@@ -838,11 +838,13 @@ ax3 = ax[1][1]
 
 def gaussian(x, mean, amplitude, standard_deviation):
     return (amplitude * np.exp( - (x - mean)**2 / (2*standard_deviation ** 2)))
-print(np.mean((match['ra_2']-match['RA_1'])*3600))
-samples1 = (match['ra_2']-match['RA_1'])*3600
+#print(np.mean((match['ra_2']-match['RA_1'])*3600))
+#samples1 = (match['ra_2']-match['RA_1'])*3600
+samples1 = (match['ra_2']-match['RA_1'])*3600*np.cos(match['dec_2']/180.0*np.pi)
 mean1 =np.mean(samples1)
 sigma1 = np.std(samples1)
 
+print("new ra mean %f" % mean1)
 bin_heights1, bin_borders1, _ = ax1.hist(samples1, bins=20, facecolor='#1F77B4', align='mid', histtype='step', edgecolor='#1F77B4', linewidth=2, linestyle='-', label=r'$\Delta_{RA}$')
 #bin_heights2, bin_borders2, _ = plt.hist(samples2, bins=50,   facecolor='#FF7F0E', align='mid', histtype='step', edgecolor='#FF7F0E', linewidth=2, linestyle='-', label=r'$\Delta_{DEC}$ mean=%.1f std=%.1f' % (mean2, sigma2))
 
@@ -863,7 +865,7 @@ ax1.set_xticklabels([])
 ax1.tick_params(labelsize=12)
 #plt.yscale('log')
 ax1.set_xlim(-5,5)
-ax1.set_ylim(0,500000)
+#ax1.set_ylim(0,500000)
 ax1.set_ylabel('Number of sources', fontsize=12)
 ax1.xaxis.set_minor_locator(AutoMinorLocator())
 ax1.yaxis.set_minor_locator(AutoMinorLocator())
@@ -876,9 +878,9 @@ ax1.tick_params(axis="y", direction="in")
 ax1.tick_params(which="minor", axis="x", direction="in")
 ax1.tick_params(which="minor", axis="y", direction="in")
 
-
+import math
 import seaborn as sns
-samples1 = (match['ra_2']-match['RA_1'])*3600
+samples1 = (match['ra_2']-match['RA_1'])*3600*np.cos(match['DEC_1']/180.0*np.pi)
 samples2 = (match['dec_2']-match['DEC_1'])*3600
 #ax=axes[1]
 kde = sns.kdeplot(x=samples1, y=samples2, fill=True, levels=18, cmap="viridis", ax=ax2) #, cbar=True, cbar_kws={"location":"left", "label":"Kernel density", "pad": -0.8}) #, "labelsize": 12}) #, shade_lowest=False) #, alpha=0.5)# ,cmap='gist_gray_r')
@@ -967,3 +969,4 @@ plt.subplots_adjust(hspace=0)
 plt.subplots_adjust(wspace=0)
 plt.savefig('ra_dec_density_hist.png', dpi=600,format="png")
 plt.savefig('ra_dec_density_hist.pdf', dpi=300,format="pdf")
+
