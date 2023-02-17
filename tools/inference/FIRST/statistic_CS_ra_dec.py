@@ -17,7 +17,13 @@ match=pd.read_csv(os.path.join(data_dir,'FIRST_infer_part0-4_th0.1_first_14dec17
 
 match1=match[match['int_flux']>0]
 
-
+ra = np.array(match['ra_2'].values).astype(np.float)
+#ra = float(np.array(match['ra_2'].values))
+#ra_first = []
+#for m in range(len(ra)):
+#    ra_first.append(float('%.5f' % match['RA_1'][m]))
+#    #print(float('%.5f' % match['RA_1'][m]))
+#ra_first = np.array(ra_first)
 
 plt.figure(600)
 #fig,ax=plt.subplots(nrows=1,ncols=2)# , sharex='col', sharey='row')
@@ -30,7 +36,7 @@ def gaussian(x, mean, amplitude, standard_deviation):
     return (amplitude * np.exp( - (x - mean)**2 / (2*standard_deviation ** 2)))
 #print(np.mean((match['ra_2']-match['RA_1'])*3600))
 #samples1 = (match['ra_2']-match['RA_1'])*3600
-samples1 = (match['ra_2']-match['RA_1'])*3600*np.cos(match['dec_2']/180.0*np.pi)
+samples1 = (ra-match['RA_1'])*3600*np.cos(match['dec_2']/180.0*np.pi)
 mean1 =np.mean(samples1)
 sigma1 = np.std(samples1)
 
@@ -49,6 +55,7 @@ x_data1 = x_interval_for_fit1
 coeff1 = popt1
 yy=np.linspace(0, popt1[1], 50)
 xx=np.ones(yy.shape)*popt1[0]
+print(popt1[0])
 ax1.plot(xx,yy,'-r')
 plt.xlabel(r'$\Delta_{RA}$ (arcsec)', fontsize=16)
 #ax1.set_xticklabels([])
