@@ -34,8 +34,8 @@ DATASETS:
   #TEST: ("coco_2017_val",)
   TEST: ("coco_2022_val",)
 SOLVER:
-  IMS_PER_BATCH: 9 #16 #gznu 2 gpu:8 #shao: 16 
-  BASE_LR: 0.01 #0.02
+  IMS_PER_BATCH: 9 #default:16, on gznu: 9 using 3 gpus, on shao: 16 using 8 gpus, if uses 2 gpus need to be change to 8
+  BASE_LR: 0.01 #default: 0.02
   STEPS: (60000, 80000)
   MAX_ITER: 90000
 INPUT:
