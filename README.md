@@ -90,7 +90,7 @@ Prepare for [train]() dataset and [val]() following [this instruction](https://g
 
 Multi-GPU Training and Evaluation on Validation set
 ---------------
-Refer to our [scripts folder](https://github.com/SysCV/transfiner/tree/main/scripts) for more traning, testing and visualization commands:
+Refer to our [scripts folder](https://github.com/lao19881213/RGC-Mask-Transfiner/tree/main/scripts) for more traning, testing and visualization commands:
  
 ```
 bash scripts/train_transfiner_3x_101_deform_plain_gznu_3gpu.sh
