@@ -15,14 +15,14 @@ for fn in ${IMGS};
 do
     #for snr in $SNRS;
     #do
-    if [ ! -d "${IMG_DIR}/RACS-DR1_${fn}_split_png" ];then
+    if [ ! -d "${IMG_DIR}/RACS-DR1_${fn}_split_fits_png" ];then
        mkdir -p ${IMG_DIR}/RACS-DR1_${fn}_split_png
     else
-       echo "${IMG_DIR}/RACS-DR1_${fn}_split_png is already exists"
+       echo "${IMG_DIR}/RACS-DR1_${fn}_split_fits_png is already exists"
     fi
     echo "Processing ${fn} ... ..."
 
-    python fits2png_RACS_plt.py --inpdir ${IMG_DIR}/RACS-DR1_${fn}_split_fits --outdir ${IMG_DIR}/RACS-DR1_${fn}_split_png 
+    python fits2png_RACS_plt.py --inpdir ${IMG_DIR}/RACS-DR1_${fn}_split_fits_png --outdir ${IMG_DIR}/RACS-DR1_${fn}_split_fits_png 
     #done
 done
 

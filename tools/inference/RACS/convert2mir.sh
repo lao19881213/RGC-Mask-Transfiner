@@ -4,7 +4,7 @@ source /home/data0/lbq/RGC-Mask-Transfiner/bashrc_gznu
 export PATH=/home/data0/lbq/software/miriad/linux64/bin:$PATH
 
 DATA_DIR="/home/data0/lbq/inference_data/ASKAP_RACS"
-FIST_DIR="${DATA_DIR}/RACS-DR1_0037-06A_split_fits"
+FIST_DIR="${DATA_DIR}/RACS-DR1_0037-06A_split_fits_png"
 LIST_FILE="${DATA_DIR}/RACS-DR1_0037-06A.txt"
 MIR_DIR="RACS-DR1_0037-06A_split_mir"
 

@@ -10,10 +10,12 @@ HeTu-v2 is built on the pioneering works of [Transfiner](https://arxiv.org/abs/2
 ```
 # install python3.7 (need gcc > 5.0, cuda 11.0)
 ./Anaconda3-2020.02-Linux-x86_64.sh  
- 
+
+# install pytorch
+## for cuda 11.0
 conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=11.0 -c pytorch
 
-# on gznu 380
+## for cuda 11.7 (gznu 380) 
 conda install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia
 
 # Coco api and visualization dependencies

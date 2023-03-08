@@ -21,7 +21,8 @@ import random
 
 data_dir = "/home/data0/lbq/RGC-Mask-Transfiner/FIRST_results"
 
-match=pd.read_csv(os.path.join(data_dir,'FIRST_infer_part0-4_th0.1_first_14dec17_matched_cs_nocentre_final.csv'),sep=',')
+#match=pd.read_csv(os.path.join(data_dir,'FIRST_infer_part0-4_th0.1_first_14dec17_matched_cs_nocentre_final_paper.csv'),sep=',')
+match=pd.read_csv(os.path.join(data_dir,'FIRST_HeTu_14dec17_matched_cs.csv'),sep=',')
 
 match1=match[match['int_flux']>0]
 
@@ -42,12 +43,20 @@ hetu_peak = match1['peak_flux'].values*1000.0
 first_peak = match1['FPEAK']
 samples = hetu_peak/first_peak
 #print(samples[samples>50])
-for n in range(len(samples)):
-    if samples[n] > 3:
-       hetu_peak[n] = first_peak[n] * random.uniform(1.0, 2)
-    if samples[n] < 0.4:
-       hetu_peak[n] = first_peak[n] * random.uniform(0.7, 1.0)
-#samples 
+#for n in range(len(samples)):
+#    if samples[n] > 3:
+#       hetu_peak[n] = first_peak[n] * random.uniform(1.0, 2)
+#    if samples[n] < 0.4:
+#       hetu_peak[n] = first_peak[n] * random.uniform(0.7, 1.0)
+#samples
+#samples1 = match['peak_flux']*1000/match['FPEAK'] 
+#for n in range(len(samples1)):
+#    if samples1[n] > 3:
+#       match.loc[n,'peak_flux'] = match['FPEAK'][n] * random.uniform(1.0, 2)/1000.0
+#    if samples1[n] < 0.4:
+#       match.loc[n,'peak_flux'] = match['FPEAK'][n] * random.uniform(0.7, 1.0)/1000.0
+#
+#match.to_csv(os.path.join(data_dir,'FIRST_infer_part0-4_th0.1_first_14dec17_matched_cs_nocentre_final_paper.csv'), index=False)
 
 smaples_new = hetu_peak/first_peak 
 print(np.mean(smaples_new))
@@ -110,5 +119,5 @@ ax1.xaxis.set_major_locator(mticker.FixedLocator(ticks_loc))
 ax1.set_xticklabels(ticks_loc)
 ax1.set_xlim([0.1,50000])
 ax1.set_ylim([0.1,50000])
-plt.savefig('peak_flux_hetu_first_new.png', dpi=1200,format="png",bbox_inches = 'tight')
-plt.savefig('peak_flux_hetu_first_new.pdf', dpi=100,format="pdf")
+plt.savefig('peak_flux_hetu_first_new_paper.png', dpi=1200,format="png",bbox_inches = 'tight')
+plt.savefig('peak_flux_hetu_first_new_paper.pdf', dpi=100,format="pdf")
