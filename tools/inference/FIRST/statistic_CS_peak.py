@@ -23,7 +23,7 @@ data_dir = "/home/data0/lbq/RGC-Mask-Transfiner/FIRST_results"
 
 #match=pd.read_csv(os.path.join(data_dir,'FIRST_infer_part0-4_th0.1_first_14dec17_matched_cs_nocentre_final_paper.csv'),sep=',')
 match=pd.read_csv(os.path.join(data_dir,'FIRST_HeTu_14dec17_matched_cs.csv'),sep=',')
-
+#match=pd.read_csv(os.path.join(data_dir,'FIRST_infer_part0-4_th0.1_first_14dec17_matched_cs_nocentre_final.csv'),sep=',')
 match1=match[match['int_flux']>0]
 
 coefficients_flux,covariance_flux=np.polyfit(match['FPEAK'],match['peak_flux']*1000,deg=1,full=False,cov=True)

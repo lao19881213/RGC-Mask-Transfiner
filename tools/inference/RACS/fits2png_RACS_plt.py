@@ -52,8 +52,8 @@ for fn in file_nms:
        #img_rms = args.rms #0.0000214 #0.0000296
        #img_std = np.std(hdu.data)
        #snr = args.snr
-       #RACS -0.0005 (-0.5 mJy) to 0.005 (5 mJy)
-       plt.imsave(os.path.join(outdir, pngfile), img_data, vmin=-0.0005, vmax=0.005, origin='lower', cmap=CoolColormap()) # , cmap='Blues')
+       #RACS -0.0005 (-0.5 mJy) to 0.005 (5 mJy) or -0.02 (-20 mJy) to 0.02 (20 mJy)
+       plt.imsave(os.path.join(outdir, pngfile), img_data, vmin=-0.02, vmax=0.02, origin='lower', cmap=CoolColormap()) # , cmap='Blues')
        #cmap=CoolColormap())
        print("Successful generate %s" % fn)
 
