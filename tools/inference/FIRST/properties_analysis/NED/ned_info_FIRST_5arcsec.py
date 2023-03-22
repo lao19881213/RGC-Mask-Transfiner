@@ -48,6 +48,8 @@ csv = pd.read_csv(csv_filename)
 
 ra = csv['centre_ra'].values
 dec = csv['centre_dec'].values
+ra_peak = csv['ra'].values
+dec_peak = csv['dec'].values
 label = csv['label'].values
 print(len(ra))
 
@@ -81,8 +83,23 @@ for i in range(len(ra)):#pro_arr[rank]:
                   break
            tags.append(result_table_final)
        except: #ValueError:
-           print('Not found ', i)#name)
-           tags_non.append("{},{},{},{},{}".format(i,label[i],name,ra[i],dec[i]))
+           try:
+               co = coordinates.SkyCoord(ra=ra_peak[i], dec=dec_peak[i], unit=(u.deg, u.deg), frame='fk5')# fk5
+               # FIRST resolution is 5 arcsec i.e. 0.00139 deg 
+               result_table = Ned.query_region(co, radius=0.00139 * u.deg, equinox='J2000.0')# J2000
+               #print(result_table)
+               result_table.sort(['Separation', 'Redshift'])
+               result_table_final = "{},{},{},{},{},{},{}".format(i,label[i],name,result_table['Object Name'][0],result_table['Type'][0],\
+                              result_table['Redshift'][0],result_table['Separation'][0])
+               for m in range(len(result_table)):
+                   if result_table['Redshift'][m]>0:
+                      result_table_final = "{},{},{},{},{},{},{}".format(i,label[i],name,result_table['Object Name'][m],result_table['Type'][m],\
+                              result_table['Redshift'][m],result_table['Separation'][m])
+                      break
+               tags.append(result_table_final)          
+           except: 
+               print('Not found ', i)#name)
+               tags_non.append("{},{},{},{},{}".format(i,label[i],name,ra[i],dec[i]))
         
 
 #comm.Barrier()
