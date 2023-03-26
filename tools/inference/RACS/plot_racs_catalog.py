@@ -66,7 +66,7 @@ for n in range(len(file_nms)):
     ax.set_xlim([0, image.shape[1]])
     ax.set_ylim([image.shape[0], 0])
     ax.set_axis_off()
-    plt.imshow(np.flipud(image), origin='lower', vmin=-0.0005, vmax=0.02, cmap='Blues')
+    plt.imshow(np.flipud(image), origin='lower', vmin=-0.0005, vmax=0.005, cmap='Blues')
     k= 15
     wb = (k,0,image.shape[1]-15,k)
     #print("bmaj %f" % h['bmaj'])
