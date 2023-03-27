@@ -114,6 +114,7 @@ for i in range(len(ra)):#pro_arr[rank]:
 
        cnt = 0
        except_cnt = 0
+       result_table_final = ""
        for m in range(len(ned_ras)):
            try:
               co = coordinates.SkyCoord(ra=ned_ras[m], dec=ned_decs[m], unit=(u.deg, u.deg), frame='fk5')# fk5
@@ -138,9 +139,9 @@ for i in range(len(ra)):#pro_arr[rank]:
               except_cnt = except_cnt + 1
               continue        
            
-           if(cnt==len(ned_ras) or except_cnt==len(ned_ras)): 
-               print('Not found ', i)#name)
-               tags_non.append("{},{},{},{},{}".format(i,label[i],name,ra[i],dec[i]))
+       if(result_table_final==""):#(cnt==len(ned_ras) or except_cnt==len(ned_ras)): 
+          print('Not found ', i)#name)
+          tags_non.append("{},{},{},{},{}".format(i,label[i],name,ra[i],dec[i]))
         
 
 #comm.Barrier()

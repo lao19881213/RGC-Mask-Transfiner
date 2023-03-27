@@ -2,7 +2,7 @@
 
 source /home/data0/lbq/RGC-Mask-Transfiner/bashrc_gznu
 
-labels="fr2 ht"
+labels="fr1 fr2 ht cj"
 
 for label in $labels;
 do
