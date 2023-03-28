@@ -37,6 +37,7 @@ class VLASS(SurveyABC):
     @staticmethod
     # based on larger QL url
     def get_cutout_url(ql_url,coords, radius):
+        #standard_front = 'https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/caom2ops/sync?ID=ad%3AVLASS%2F'
         standard_front = 'https://ws.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/caom2ops/sync?ID=ad%3AVLASS%2F'
         # '?RUNID' messes everything up, don't need it
         encoded_ql = urllib.parse.quote(ql_url.split("/")[-1])
@@ -58,7 +59,7 @@ class VLASS(SurveyABC):
                    "1-arcsec, and the flux density uncertainties are ~10-20%. \
                    "),after=-1)
         hdu.header.add_comment(pad_string_lines("The direct data service at CADC was used to provide this cutout: " \
-                                " (https://ws.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/doc/data/) \
+                                " (https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/doc/data/) \
                                 "), after=-1)
 
     # this will work for ANY collection from CADC
@@ -78,19 +79,20 @@ class VLASS(SurveyABC):
                                     AND INTERSECTS( CIRCLE('ICRS', {position.ra.value}, {position.dec.value},  {radius.value}), Plane.position_bounds ) = 1) \
                                     AND ( Observation.requirements_flag IS NULL OR Observation.requirements_flag != 'fail') ")
 
-        if len(all_rows)>0:
-            ql_urls = cadc.get_data_urls(all_rows)
-            if ql_urls:
-                for url in ql_urls:
-                    cutout_url = VLASS.get_cutout_url(url, position, radius)
-                    urls.append(cutout_url)
+        #if len(all_rows)>0:
+        #    ql_urls = cadc.get_data_urls(all_rows)
+        #    if ql_urls:
+        #        for url in ql_urls:
+        #            cutout_url = VLASS.get_cutout_url(url, position, radius)
+        #            urls.append(cutout_url)
         ### If adding any filters in then this is where would do it!!!#####
         #### e.g. filtered_results = results[results['time_exposure'] > 120.0] #####
 
-        # if len(results) == 0:
-        #     return list()
+        if len(all_rows) == 0:
+             return list()
         # print("or this one?")
-        # urls = cadc.get_image_list(results, position, radius)
+        results = all_rows
+        urls = cadc.get_image_list(results, position, radius)
         # if len(urls)==0:
         #     self.print("Cannot find {position.to_string('hmsdms')}, perhaps this hasn't been covered by VLASS.")
         if self.filter:
@@ -101,7 +103,7 @@ class VLASS(SurveyABC):
                     final_urls.append(url)
             urls = final_urls
         if len(urls) == 0:
-            self.print(f"Cannot find ({position.to_string('hmsdms')}), perhaps this hasn't been covered by VLASS.")
+            self.print("Cannot find {position.to_string('hmsdms')}, perhaps this hasn't been covered by VLASS.")
             return list()
         return urls
 
