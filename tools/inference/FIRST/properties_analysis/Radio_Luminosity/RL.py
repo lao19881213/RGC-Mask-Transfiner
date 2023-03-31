@@ -37,25 +37,26 @@ for zj in masked_z_arr:  # for each redshift, find their luminosity distance
 
 
 D_L = lum_dist_list
-
+#DL = D_L*u.pc.to(u.m)
 DL = []
-#print(D_L)
+print(D_L[0])
 for n in range(len(D_L)):
     try:
-       DL.append(D_L[n].value)
+       DL.append(D_L[n].to(u.m).value)
     except:
        DL.append(D_L[n])
 
-#print(DL)
+print(DL[0])
 alpha = -0.7 #slope of the radio spectrum in Lum-freq log-log space
 
 total_flux_masked_arr = ma.masked_array(total_flux, mask=[~(z > 0.0) for z in z_arr])
 
-Lum_1400MHz = np.array(total_flux_masked_arr)* 4*math.pi * np.array(DL)**2 *(1+np.array(masked_z_arr))**(1+alpha)
+#Lum_1400MHz(W/Hz), total_flux_masked_arr(Jy, 1Jy=10^(-26) W*m^-2*Hz^-1), DL(m), The spectral index (alpha) is typically -0.7.
+Lum_1400MHz = (10**26)*np.array(total_flux_masked_arr)* 4*math.pi * np.array(DL)**2 *(1+np.array(masked_z_arr))**(1+alpha)
 
-
+print(np.log10(Lum_1400MHz[0]), np.log10(Lum_1400MHz[1]))
 z = masked_z_arr
-plt.plot(z, Lum_1400MHz)
+plt.plot(z, Lum_1400MHz, '+')
 #plt.title('Luminosity of Radio Sources increasing with redshift')
 plt.ylabel('Luminosity at 1.4GHz (units)')
 plt.xlabel('Redshift z')
