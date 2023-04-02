@@ -61,7 +61,7 @@ for m in range(len(labels)):
                                               
 
 resultsData_non = tags_non 
-with open(os.path.join('./', 'NOT_FOUND_NED_%s.txt' % cln), 'w') as fn:
+with open(os.path.join('./', 'NOT_FOUND_GLEAM.txt'), 'w') as fn:
      fn.write(os.linesep.join(resultsData_non))
                #os.system('wget %s -O %s/%s/%s/%s' % (links_gleam, args.outdir, clns[cln], surveys[args.surveys], fits_fn))
                #SkyView.get_images(position=object_coord,
