@@ -1,3 +1,5 @@
+""" Surveys to be accessed through the HEASARC interface (via astroquery"""
+
 import pdb
 import pandas as pd
 from astropy import coordinates
@@ -35,33 +37,37 @@ for m in range(len(labels)):
         for cln in clns.keys():
             #print(cln)
             if(labels[m]==cln):
-               RA = float(ras[m])
-               DEC = float(decs[m])
-               x1 = float(boxs[m].split('-')[0])
-               y1 = float(boxs[m].split('-')[1])
-               x2 = float(boxs[m].split('-')[2])
-               y2 = float(boxs[m].split('-')[3])
-               xw = x2 - x1
-               yw = y2 - y1
-               r = (np.max([xw, yw]) + 2) *1.8/2.0 #arcmin
-               radius = r * u.arcsec
-               object_coord = coordinates.SkyCoord(ra=ras[m], dec=decs[m], unit=(u.deg, u.deg))#, frame='icrs')#frame='fk5')
-               band="170-231 MHz"
                fits_fn = '%s_%s.fits' % (surveys[args.surveys], source_names[m])
-               try:
-                  paths_gleam = SkyView.get_images(position=object_coord.to_string('hmsdms'),
-                                  coordinates='J2000',
-                                  survey='GLEAM {0}'.format(band))[0]
-                  #print(links_gleam)
-                  print("download %s ..." % source_names[m])
-                  paths_gleam.writeto("%s/%s/%s/%s" % (args.outdir, clns[cln], surveys[args.surveys], fits_fn), overwrite=True)
-               except:
-                  print('Not found ', source_names[m])#name)
-                  tags_non.append("{},{},{},{},{}".format(m,labels[m],source_names[m],ras[m],decs[m]))
+               if os.path.isfile(f'%s/%s/%s/%s' % (args.outdir, clns[cln], surveys[args.surveys], fits_fn)):
+                   print('%s already exists!' % (fits_fn))
+               else:
+                   RA = float(ras[m])
+                   DEC = float(decs[m])
+                   x1 = float(boxs[m].split('-')[0])
+                   y1 = float(boxs[m].split('-')[1])
+                   x2 = float(boxs[m].split('-')[2])
+                   y2 = float(boxs[m].split('-')[3])
+                   xw = x2 - x1
+                   yw = y2 - y1
+                   r = (np.max([xw, yw]) + 2) *1.8/2.0 #arcmin
+                   radius = r * u.arcsec
+                   object_coord = coordinates.SkyCoord(ra=ras[m], dec=decs[m], unit=(u.deg, u.deg))#, frame='icrs')#frame='fk5')
+                   band="170-231 MHz"
+                   fits_fn = '%s_%s.fits' % (surveys[args.surveys], source_names[m])
+                   try:
+                      paths_gleam = SkyView.get_images(position=object_coord.to_string('hmsdms'),
+                                      coordinates='J2000',
+                                      survey='GLEAM {0}'.format(band))[0]
+                      #print(links_gleam)
+                      print("download %s ..." % source_names[m])
+                      paths_gleam.writeto("%s/%s/%s/%s" % (args.outdir, clns[cln], surveys[args.surveys], fits_fn), overwrite=True)
+                   except:
+                      print('Not found ', source_names[m])#name)
+                      tags_non.append("{},{},{},{},{}".format(m,labels[m],source_names[m],ras[m],decs[m]))
                                               
 
 resultsData_non = tags_non 
-with open(os.path.join('./', 'NOT_FOUND_GLEAM.txt'), 'w') as fn:
+with open(os.path.join('./', 'NOT_FOUND_NED_%s.txt' % cln), 'w') as fn:
      fn.write(os.linesep.join(resultsData_non))
                #os.system('wget %s -O %s/%s/%s/%s' % (links_gleam, args.outdir, clns[cln], surveys[args.surveys], fits_fn))
                #SkyView.get_images(position=object_coord,

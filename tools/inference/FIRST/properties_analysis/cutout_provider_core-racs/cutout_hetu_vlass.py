@@ -50,7 +50,7 @@ for m in range(len(labels)):
           xw = x2 - x1
           yw = y2 - y1
           r = 2 #(np.max([xw, yw]) + 2) *1.8/60.0/2.0 #arcmin 
-          cmd = 'python fetch_cutouts.py fetch -c %f,%f -s %s -r %d -g MOSAIC -o %s/%s --overwrite' \
+          cmd = 'python fetch_cutouts.py fetch -c %f,%f -s %s -r %d -o %s/%s --overwrite' \
                 % (RA, DEC, surveys_final, math.ceil(r), args.outdir, clns[cln])    
           print(cmd)
           os.system(cmd) 
