@@ -63,12 +63,12 @@ data_optical = hdu_optical.data
 #print(data_optical.shape)
 #f.show_grayscale() 
 #f.show_colorscale(vmin=np.percentile(data_optical,5),vmax=np.percentile(data_optical,50), cmap='plasma')#,stretch='log')
-f.show_colorscale(vmax=21.0, cmap='plasma')#,stretch='log')
+f.show_colorscale(vmax=21.0, cmap='gray_r')#cmap='plasma')#,stretch='log')
 rms =0.9* np.median(abs(img-np.median(img)))
-#Plot the image in contours:
-levs_positive = 5*rms*np.array([1,np.sqrt(2),2,np.sqrt(2)*2,4,4*np.sqrt(2),8,8*np.sqrt(2),16,16*np.sqrt(2),32,32*np.sqrt(2),64,64*np.sqrt(2),128,128*np.sqrt(2),256,256*np.sqrt(2)])
-levs_negative = 5*rms*np.array([-1])
-f.show_contour(temp,dimensions=[0,1],colors='white',zorder=5,levels=levs_positive,slices=[0])
+#Plot the image in contours: 3 or 5
+levs_positive = 3*rms*np.array([1,np.sqrt(2),2,np.sqrt(2)*2,4,4*np.sqrt(2),8,8*np.sqrt(2),16,16*np.sqrt(2),32,32*np.sqrt(2),64,64*np.sqrt(2),128,128*np.sqrt(2),256,256*np.sqrt(2)])
+levs_negative = 3*rms*np.array([-1])
+f.show_contour(temp,dimensions=[0,1],colors='black',zorder=5,levels=levs_positive,slices=[0])
 f.show_contour(temp,dimensions=[0,1],colors='red',zorder=5,levels=levs_negative,linestyles='dashed',alpha=0.4)
 #Here need to add the position of sources(RA,DEC)(radio) in catalogue, pixel scale 1.8 asec
 f.recenter(171.18248,38.76319158543373, radius=0.009)
@@ -79,7 +79,7 @@ f.axis_labels.set_font(size=14, weight='medium', stretch='normal', family='sans-
 #plt.xlabel('Right Ascension (J2000)',fontsize=14)#'xx-large')
 #plt.ylabel('Declination (J2000)',fontsize=14)#'xx-large')
 
-plt.tick_params(axis='both',direction='in',color='white', labelsize=14)
+plt.tick_params(axis='both',direction='in',color='black', labelsize=14)
 f.add_colorbar()
 f.colorbar.set_width(0.2)
 f.colorbar.set_location('right')
