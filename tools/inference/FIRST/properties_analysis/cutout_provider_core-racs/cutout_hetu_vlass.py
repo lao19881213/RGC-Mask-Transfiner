@@ -54,3 +54,4 @@ for m in range(len(labels)):
                 % (RA, DEC, surveys_final, math.ceil(r), args.outdir, clns[cln])    
           print(cmd)
           os.system(cmd) 
+             

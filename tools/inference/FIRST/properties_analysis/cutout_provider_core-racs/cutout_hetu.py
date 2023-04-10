@@ -24,7 +24,7 @@ surveys = {'0': 'FIRST',
            '2': 'RACS', 
            '3': 'GLEAM(f1,f2,f3,f4)', 
            '4': 'NVSS', 
-           '5': 'WISE(w1,w2,w3,w4)', 
+           '5': 'WISE', 
            '6': 'PanSTARRS[g,r,i,z,y]', 
            '7': 'SDSS[g,r,i]'}
 
