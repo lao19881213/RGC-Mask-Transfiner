@@ -18,7 +18,7 @@ decs = hetu_data['centre_dec'].values
 ras_wise = hetu_data['RAJ2000'].values
 decs_wise = hetu_data['DEJ2000'].values
 boxs = hetu_data['box'].values
-
+#wise_names = hetu_data['AllWISE'].values
 
 clns = {'fr1': 'FRI', 'fr2': 'FRII', 'ht': 'HT', 'cj': 'CJ'}
 surveys = {'0': 'FIRST', 
@@ -30,11 +30,11 @@ surveys = {'0': 'FIRST',
            '6': 'PanSTARRS[g,r,i,z,y]', 
            '7': 'SDSS[g,r,i]'}
 
-surveys_download = []
-for ss in args.surveys.split(','):
-    surveys_download.append(surveys[ss])
-
-surveys_final = ','.join(surveys_download)
+#surveys_download = []
+#for ss in args.surveys.split(','):
+#    surveys_download.append(surveys[ss])
+#
+surveys_final = surveys[args.surveys]
 
 #print(surveys_final)
 
@@ -55,4 +55,19 @@ for m in range(len(labels)):
           cmd = 'python fetch_cutouts.py fetch -c %f,%f -s %s -r %d -o %s/%s --overwrite' \
                 % (RA, DEC, surveys_final, math.ceil(r), args.outdir, clns[cln])    
           print(cmd)
-          os.system(cmd) 
+          os.system(cmd)
+          #fn = os.listdir('%s/%s/WISE' % (args.outdir, clns[cln]))
+          #do_next = 0
+          #for n in range(len(fn)):
+          #    if wise_names[m] in fn[n]:
+          #       do_next = 0
+          #       break
+          #    else:
+          #       do_next = 1
+          #if do_next == 1:
+          #   cmd = 'python fetch_cutouts.py fetch -c %f,%f -s %s[w2,w3,w4] -r %d -o %s/%s --overwrite' \
+          #      % (RA, DEC, surveys_final, math.ceil(r), args.outdir, clns[cln])
+          #   print(cmd)
+          #   os.system(cmd)
+                 
+            
