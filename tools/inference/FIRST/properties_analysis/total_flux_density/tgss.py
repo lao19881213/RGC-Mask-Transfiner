@@ -68,7 +68,7 @@ for m in range(len(ras)):
       for cln in clns.keys():
           #print(cln)
           if(labels[m]==cln):
-             FIRST_fits = '%s/%s/FIRST/FIRST_%s.fits' % (root_dir, clns[labels[m]], source_names[m])
+             FIRST_fits = '%s/%s/FIRST/%s.fits' % (root_dir, clns[labels[m]], source_names[m])
              hdu_FIRST = fits.open(FIRST_fits)[0] 
              try:
                  pix_scale_hetu = hdu_FIRST.header["CD2_2"]
@@ -76,7 +76,10 @@ for m in range(len(ras)):
                  pix_scale_hetu = hdu_FIRST.header["CDELT2"]
              
              TGSS_fits = '%s/%s/TGSS/%s.FITS' % (root_dir, clns[labels[m]], source_names[m])
-             hdu_TGSS = fits.open(TGSS_fits)[0]
+             try:
+                 hdu_TGSS = fits.open(TGSS_fits)[0]
+             except:
+                 continue
              try:
                  pix_scale_tgss = hdu_TGSS.header["CD2_2"]
              except KeyError:
@@ -93,10 +96,10 @@ for m in range(len(ras)):
              centre_x, centre_y = w.wcs_world2pix([[ras[m],decs[m]]],0).transpose() 
              width_new = width / factor
              height_new = height / factor
-             x1_new = centre_x - width_new/2.0
-             x2_new = centre_x + width_new/2.0
-             y1_new = centre_y - height_new/2.0
-             y2_new = centre_y + height_new/2.0 
+             x1_new = centre_x - width/2.0
+             x2_new = centre_x + width/2.0
+             y1_new = centre_y - height/2.0
+             y2_new = centre_y + height/2.0 
              
              out_dir = '%s/%s/TGSS_png' % (root_dir, clns[labels[m]])
              if len(hdu_TGSS.data.shape)==4:

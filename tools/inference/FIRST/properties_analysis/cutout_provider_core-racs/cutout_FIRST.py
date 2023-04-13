@@ -100,24 +100,27 @@ for m in range(len(objn)):#pro_arr[rank]:
              print ('Dec is.....: ',Dec)
 
              out_dir = args.outdir
-             outfile=os.path.join('%s/%s/FIRST' % (out_dir, clns[cln]), ObjName+'.fits')
-             parameters = {'Equinox': Equinox, 'RA': RA, 'Dec': Dec, 'ImageSize': ImageSize, 'ImageType': ImageType, 'MaxInt': MaxInt}
-             print(parameters)
-             try:
-                 res = requests.post('https://third.ucllnl.org/cgi-bin/firstcutout', data=parameters, stream=False, timeout=200)
-                 with open(outfile, 'wb') as out:
-                      for i in res:
-                          out.write(i)
-             except (ReadTimeout, IncompleteRead, SSLError, ConnectionError, ChunkedEncodingError):
-                 continue
-             #except (requests.exceptions.SSLError, requests.exceptions.ConnectionError) as e:
-             #    if 'bad handshake' in str(e) or '10054' in str(e):
-             #       continue
-             #    else:
-             #       raise Exception(e)
-             
-             #time.sleep(10)
-             print ('Source ',ObjName,' processed, output in '+ObjName+'.fits')
+             outfile=os.path.join('%s/%s/FIRST/%s.fits' % (out_dir, clns[cln], ObjName))
+             if os.path.isfile(f'%s/%s/FIRST/%s.fits' % (out_dir, clns[cln], ObjName)):
+                  print('%s/%s/FIRST/%s.fits already exists!' % (out_dir, clns[cln], ObjName))
+             else: 
+                  parameters = {'Equinox': Equinox, 'RA': RA, 'Dec': Dec, 'ImageSize': ImageSize, 'ImageType': ImageType, 'MaxInt': MaxInt}
+                  print(parameters)
+                  try:
+                      res = requests.post('https://third.ucllnl.org/cgi-bin/firstcutout', data=parameters, stream=False, timeout=200)
+                      with open(outfile, 'wb') as out:
+                           for i in res:
+                               out.write(i)
+                  except (ReadTimeout, IncompleteRead, SSLError, ConnectionError, ChunkedEncodingError):
+                      continue
+                  #except (requests.exceptions.SSLError, requests.exceptions.ConnectionError) as e:
+                  #    if 'bad handshake' in str(e) or '10054' in str(e):
+                  #       continue
+                  #    else:
+                  #       raise Exception(e)
+                  
+                  #time.sleep(10)
+                  print ('Source ',ObjName,' processed, output in '+ObjName+'.fits')
 
 print ('')
 print ('------------------------------------------------------')
