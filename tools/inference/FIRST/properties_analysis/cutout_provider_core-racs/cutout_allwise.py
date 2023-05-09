@@ -90,11 +90,15 @@ for m in range(len(labels)):
                   try:
                      position = SkyCoord(ra=ras_wise[m], dec=decs_wise[m], unit=(u.deg, u.deg), frame='fk5')
                      hud = WISE_cutout(position=position, image_size=350, filter='W1')
-
                      hud.writeto('%s/%s/%s/%s_%s.fits' % (args.outdir, clns[cln], 'WISE', fits_fn, 'w1'))
                   except:
-                     print('Not found ', source_names[m])#name)
-                     tags_non.append("{},{},{},{},{}".format(m,labels[m],source_names[m],ras[m],decs[m]))
+                     try:
+                        position = SkyCoord(ra=ras[m], dec=decs[m], unit=(u.deg, u.deg), frame='fk5')
+                        hud = WISE_cutout(position=position, image_size=350, filter='W1')
+                        hud.writeto('%s/%s/%s/%s_%s.fits' % (args.outdir, clns[cln], 'WISE', fits_fn, 'w1'))
+                     except:
+                        print('Not found ', source_names[m])#name)
+                        tags_non.append("{},{},{},{},{}".format(m,labels[m],source_names[m],ras[m],decs[m]))
 
 
 resultsData_non = tags_non

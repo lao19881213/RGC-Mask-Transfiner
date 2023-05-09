@@ -62,7 +62,7 @@ def WISE_cutout(position, image_size=None, filter=None):
     return fits_image
 
 
-position = SkyCoord(ra=125.1072966, dec=46.5902029, unit=(u.deg, u.deg), frame='fk5')
+position = SkyCoord(ra=235.07271, dec=32.913036848344106, unit=(u.deg, u.deg), frame='fk5')
 hud = WISE_cutout(position=position, image_size=350, filter='W1')
 
 hud.writeto('test_wise.fits')
