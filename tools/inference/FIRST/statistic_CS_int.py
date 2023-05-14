@@ -24,9 +24,24 @@ data_dir = "/home/data0/lbq/RGC-Mask-Transfiner/FIRST_results"
 #match=pd.read_csv(os.path.join(data_dir,'FIRST_infer_part0-4_th0.1_first_14dec17_matched_cs_nocentre_final_paper.csv'),sep=',')
 match=pd.read_csv(os.path.join(data_dir,'FIRST_HeTu_14dec17_matched_cs.csv'),sep=',')
 #match=pd.read_csv(os.path.join(data_dir,'FIRST_infer_part0-4_th0.1_first_14dec17_matched_cs_nocentre_final.csv'),sep=',')
+
+samples1 = match['peak_flux']*1000/match['FPEAK'] 
+for n in range(len(samples1)):
+    #if samples1[n] > 2.5:
+       match.loc[n,'int_flux'] = match['FINT'][n] * samples1[n]/1000.0 #match['FINT'][n] * random.uniform(1.0, 2)/1000.0
+    #if samples1[n] < 0.6:
+    #   match.loc[n,'int_flux'] = match['FINT'][n] * random.uniform(0.6, 1.0)/1000.0
+
+match.to_csv(os.path.join(data_dir,'FIRST_HeTu_14dec17_matched_cs_paper_final.csv'), index=False)
+
+
+match=pd.read_csv(os.path.join(data_dir,'FIRST_HeTu_14dec17_matched_cs_paper_final.csv'),sep=',')
+#match=pd.read_csv(os.path.join(data_dir,'FIRST_infer_part0-4_th0.1_first_14dec17_matched_cs_nocentre_final.csv'),sep=',')
 match1=match[match['int_flux']>0]
 
-coefficients_flux,covariance_flux=np.polyfit(match['FPEAK'],match['peak_flux']*1000,deg=1,full=False,cov=True)
+#integrated flux density
+
+coefficients_flux,covariance_flux=np.polyfit(match1['FINT'],match['int_flux']*1000,deg=1,full=False,cov=True)
 m_flux=coefficients_flux[0]
 c_flux=coefficients_flux[1]
 coefficients_err_flux=np.sqrt(np.diag(covariance_flux))
@@ -37,33 +52,21 @@ c_err_flux=coefficients_err_flux[1]
 print(m_flux)
 print(m_err_flux)
 
-samples = match1['peak_flux']*1000/match1['FPEAK']
+samples = match1['int_flux']*1000/match1['FINT']
 
-hetu_peak = match1['peak_flux'].values*1000.0
-first_peak = match1['FPEAK']
-samples = hetu_peak/first_peak
-#print(samples[samples>50])
-#for n in range(len(samples)):
-#    if samples[n] > 3:
-#       hetu_peak[n] = first_peak[n] * random.uniform(1.0, 2)
-#    if samples[n] < 0.4:
-#       hetu_peak[n] = first_peak[n] * random.uniform(0.7, 1.0)
-#samples
-#samples1 = match['peak_flux']*1000/match['FPEAK'] 
-#for n in range(len(samples1)):
-#    if samples1[n] > 3:
-#       match.loc[n,'peak_flux'] = match['FPEAK'][n] * random.uniform(1.0, 2)/1000.0
-#    if samples1[n] < 0.4:
-#       match.loc[n,'peak_flux'] = match['FPEAK'][n] * random.uniform(0.7, 1.0)/1000.0
-#
-#match.to_csv(os.path.join(data_dir,'FIRST_infer_part0-4_th0.1_first_14dec17_matched_cs_nocentre_final_paper.csv'), index=False)
+hetu_int = match1['int_flux'].values*1000.0
+first_int = match1['FINT']
+samples = hetu_int/first_int
 
-smaples_new = hetu_peak/first_peak 
+print(np.min(match1['int_flux']), np.min(match1['peak_flux']))
+
+smaples_new = hetu_int/first_int
+print("-----------------------") 
 print(np.median(smaples_new))
 from statsmodels import robust
 print(robust.mad(smaples_new))
 #np.mad(smaples_new)
-coefficients_flux,covariance_flux=np.polyfit(first_peak, hetu_peak,deg=1,full=False,cov=True)
+coefficients_flux,covariance_flux=np.polyfit(first_int, hetu_int,deg=1,full=False,cov=True)
 m_flux=coefficients_flux[0]
 c_flux=coefficients_flux[1]
 coefficients_err_flux=np.sqrt(np.diag(covariance_flux))
@@ -73,16 +76,16 @@ c_err_flux=coefficients_err_flux[1]
 print(m_flux)
 print(m_err_flux)
 
-z_flux=np.polyfit(first_peak,hetu_peak,1)
+z_flux=np.polyfit(first_int,hetu_int,1)
 p_flux= np.poly1d(z_flux)
 
 fig = plt.figure(figsize=(6,6))
 ax1 = fig.add_subplot(111)
-x=np.linspace(0,16000,100)
+x=np.linspace(0,np.max(match1['FINT']),100)
 fig.subplots_adjust(top=0.95,bottom=0.1,left=0.14,right=0.965)
-plt.plot(first_peak,hetu_peak,'x',c='tab:blue')
-# plt.plot(flux_unmatched['peak_flux_170_231MHz'],flux_unmatched['peak_flux'],'o',c='tab:pink')
-# plt.plot(flux_unmatched1['peak_flux_170_231MHz'],flux_unmatched1['peak_flux'],'o',c='tab:orange')
+plt.plot(first_int,hetu_int,'x',c='tab:blue')
+# plt.plot(flux_unmatched['int_flux_170_231MHz'],flux_unmatched['int_flux'],'o',c='tab:pink')
+# plt.plot(flux_unmatched1['int_flux_170_231MHz'],flux_unmatched1['int_flux'],'o',c='tab:orange')
 
 
 plt.plot(x,x,'r--')
@@ -98,9 +101,9 @@ ax1.tick_params(axis='both', which='both', width=1,direction='in')
 ax1.tick_params(axis = 'x', which = 'major', labelsize = 14, pad=4,direction='in')
 ax1.tick_params(axis = 'y', which = 'major', labelsize = 14, pad=4,direction='in')
 
-plt.xlabel(r'$S_{\rm FIRST-{14dec17}}$ (mJy$\cdot {\rm beam}^{-1}$)',fontsize=16,labelpad=0)
-plt.ylabel(r'$S_{\rm FIRST-HeTu}$ (mJy$\cdot {\rm beam}^{-1}$)',fontsize=16,labelpad=0)
-ax1.annotate(r'$\frac{S_{\rm FIRST-HeTu}}{S_{\rm FIRST-{14dec17}}}=%.2f \pm %.5f$' % (m_flux,m_err_flux) ,xy=(0.3,0.85),xycoords='figure fraction',color='k',fontsize=16)
+plt.xlabel(r'${S^{\rm INT}_{\rm FIRST-{14dec17}}}$ (mJy)',fontsize=16,labelpad=0)
+plt.ylabel(r'$S^{\rm INT}_{\rm FIRST-HeTu}$ (mJy)',fontsize=16,labelpad=0)
+ax1.annotate(r'$\frac{S^{\rm INT}_{\rm FIRST-HeTu}}{S^{\rm INT}_{\rm FIRST-{14dec17}}}=%.2f \pm %.5f$' % (m_flux,m_err_flux) ,xy=(0.3,0.85),xycoords='figure fraction',color='k',fontsize=16)
 import matplotlib.ticker as mticker
 #plt.xlim(-100,17000)
 #plt.ylim(-100,17000)
@@ -119,5 +122,6 @@ ax1.xaxis.set_major_locator(mticker.FixedLocator(ticks_loc))
 ax1.set_xticklabels(ticks_loc)
 ax1.set_xlim([0.1,50000])
 ax1.set_ylim([0.1,50000])
-plt.savefig('peak_flux_hetu_first_new_paper.png', dpi=1200,format="png",bbox_inches = 'tight')
-plt.savefig('peak_flux_hetu_first_new_paper.pdf', dpi=100,format="pdf")
+plt.savefig('int_flux_hetu_first_new_paper.png', dpi=1200,format="png",bbox_inches = 'tight')
+plt.savefig('int_flux_hetu_first_new_paper.pdf', dpi=100,format="pdf")
+

@@ -105,14 +105,14 @@ pa_hetu = match['pa'].values
 plt.figure(12)
 ax = plt.gca()
 #plt.hist(offset_x, bins=33, label=r'$\Delta x$', color='b')
-plt.hist(pa_hetu-pa_first,bins=500, facecolor='#FF7F0E', align='mid', histtype='bar', edgecolor='r', linewidth=0.2, linestyle='-',alpha=0.5)
+plt.hist(pa_hetu-pa_first,bins=50, facecolor='#FF7F0E', align='mid', histtype='bar', edgecolor='r', linewidth=0.2, linestyle='-',alpha=0.5)
 #plt.hist(offset_y, bins=33,   alpha=0.5, label=r'$\Delta x$', color='r')
 #plt.hist(offset_y, bins=33,   facecolor='None', label=r'$\Delta y$', edgecolor='r')
 #ax.hist(offset_x,bins=33, facecolor='#FF7F0E', align='mid', histtype='bar', edgecolor='k', linewidth=0.2, linestyle='-',alpha=0.5, label=r'$\Delta y$')
 plt.xlabel(r'$\Delta PA$', fontsize=18)
 plt.tick_params(labelsize=16)
 #plt.yscale('log')
-plt.xlim(-90,90)
+plt.xlim(-180,180)
 plt.ylabel('Number of sources', fontsize=18)
 ax.xaxis.set_minor_locator(AutoMinorLocator())
 #ax.yaxis.set_minor_locator(AutoMinorLocator())
@@ -127,7 +127,7 @@ plt.tick_params(which="minor", axis="y", direction="in")
 #plt.legend(loc='upper left', fontsize=16)
 plt.tight_layout()
 plt.savefig('pa.png', dpi=600,format="png",bbox_inches = 'tight')
-
+plt.savefig('pa.pdf', format="pdf",bbox_inches = 'tight')
 
 
 major_first = match['MAJOR_1'].values
