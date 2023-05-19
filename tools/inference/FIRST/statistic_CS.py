@@ -60,7 +60,7 @@ plt.tight_layout()
 print(ax.get_ylim())
 yy=np.linspace(0, np.max(n), 50)
 xx=np.ones(yy.shape)*1.0
-ax.plot(xx,yy,'--k')
+#ax.plot(xx,yy,'--k')
 #plt.ylim(0,250200)
 plt.savefig('major.png', dpi=600,format="png",bbox_inches = 'tight')
 plt.savefig('major.pdf', dpi=300,format="pdf")
@@ -95,7 +95,7 @@ plt.tight_layout()
 print(ax.get_ylim())
 yy=np.linspace(0, np.max(n), 50)
 xx=np.ones(yy.shape)*1.0
-ax.plot(xx,yy,'--k')
+#ax.plot(xx,yy,'--k')
 plt.savefig('minor.png', dpi=600,format="png",bbox_inches = 'tight')
 plt.savefig('minor.pdf', dpi=300,format="pdf")
 

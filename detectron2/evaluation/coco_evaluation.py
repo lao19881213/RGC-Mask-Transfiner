@@ -585,6 +585,36 @@ def _evaluate_predictions_on_coco(
             c.pop("bbox", None)
 
     coco_dt = coco_gt.loadRes(coco_results)
+    '''
+    Calculate confusion matrix
+    '''
+    plot = True #(cfg_file != None) and (isinstance(cfg_file,CfgNode))
+    print("plot: ",plot)
+    if plot:
+        from ..utils.confusion_matrix import ConfusionMatrix,xywh2xyxy,process_batch,ap_per_class
+        C_M = ConfusionMatrix(nc=5, conf=0.5,iou_thres=0.75)
+        stats = []
+        for i in range(len(coco_gt.imgs)):#
+            bbox_gt = np.array([y['bbox'] for y in coco_gt.imgToAnns[1+i]])
+            class_gt = np.array([[y['category_id']-1] for y in coco_gt.imgToAnns[1+i]])
+            labels = np.hstack((class_gt,bbox_gt))
+
+            bbox_dt = np.array([y['bbox'] for y in coco_dt.imgToAnns[1+i]])
+            conf_dt = np.array([[y['score']] for y in coco_dt.imgToAnns[1+i]])
+            class_dt = np.array([[y['category_id']-1] for y in coco_dt.imgToAnns[1+i]])
+            predictions = np.hstack((np.hstack((bbox_dt,conf_dt)),class_dt))
+
+            C_M.process_batch(predictions, labels)
+
+            #'''P-R curves'''
+            # detects = torch.tensor(xywh2xyxy(predictions))
+            # labs = torch.tensor(np.hstack((labels[:, 0][:, None], xywh2xyxy(labels[:, 1:]))))
+            # iouv = torch.linspace(0.5, 0.95, 10)  # iou vector for mAP@0.5:0.95
+            # correct = process_batch(detects, labs, iouv)
+            # tcls = labs[:, 0].tolist()  # target class
+            # stats.append((correct.cpu(), detects[:, 4].cpu(), detects[:, 5].cpu(), tcls))
+
+        C_M.print()
     coco_eval = (COCOeval_opt if use_fast_impl else COCOeval)(coco_gt, coco_dt, iou_type)
     # For COCO, the default max_dets_per_image is [1, 10, 100].
     if max_dets_per_image is None:
