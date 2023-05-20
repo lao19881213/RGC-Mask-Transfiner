@@ -29,7 +29,7 @@ export INSTALL_DIR=$PWD
  
 # install pycocotools. Please make sure you have installed cython.
 cd $INSTALL_DIR
-git clone https://github.com/cocodataset/cocoapi.git
+git clone https://github.com/lao19881213/cocoapi.git
 cd cocoapi/PythonAPI
 python setup.py build_ext install
  
