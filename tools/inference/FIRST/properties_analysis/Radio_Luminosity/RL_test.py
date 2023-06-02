@@ -17,17 +17,14 @@ cosmo = LambdaCDM(H0=70, Om0=0.3, Ode0=0.7) #creates an instance of the LambdaCD
 #cosmo = LambdaCDM(H0=67.4, Om0=0.315, Ode0=0.685)
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--resultcsv', help='hetu results file')
 parser.add_argument('--nedresult', help='ned results file')
-parser.add_argument('--outdir', help='output directory')
 args = parser.parse_args()
 
 ned_table = pd.read_csv(args.nedresult)
-hetu_num = ned_table['HeTu_num'].values
-hetu_name = ned_table['HeTu_name'].values 
-source_name = ned_table['source_name'].values
+hetu_name = ned_table['source_name'].values 
+source_name = ned_table['NED_name'].values
 redshift = ned_table['Redshift'].values
-total_flux = ned_table['total_flux'].values
+total_flux = ned_table['int_flux'].values
     
 
 z_arr = redshift
@@ -63,5 +60,5 @@ plt.plot(z, Lum_1400MHz, 'o', markersize=2.0, markerfacecolor='none', markeredge
 plt.ylabel(r'$L$ (${\rm M} \cdot {\rm Hz}^{-1}$)')
 plt.xlabel('Redshift z')
 plt.semilogy()
-plt.savefig('L_z.png')
+plt.savefig('L_z_test.png')
 #plt.savefig('L_z.pdf')
