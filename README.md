@@ -132,13 +132,21 @@ Citation
 ---------------
 If you find HeTu-v2 useful in your research or refer to the provided baseline results, please consider citing :pencil::
 ```
-@misc{lao2023radio,
-      title={Radio Sources Segmentation and Classification with Deep Learning}, 
-      author={Baoqiang Lao and Sumit Jaiswal and Zhen Zhao and Leping Lin and Junyi Wang and Xiaohui Sun and Shengli Qin},
-      year={2023},
-      eprint={2306.01426},
-      archivePrefix={arXiv},
-      primaryClass={astro-ph.IM}
+@ARTICLE{2023arXiv230601426L,
+       author = {{Lao}, Baoqiang and {Jaiswal}, Sumit and {Zhao}, Zhen and {Lin}, Leping and {Wang}, Junyi and {Sun}, Xiaohui and {Qin}, Shengli},
+        title = "{Radio Sources Segmentation and Classification with Deep Learning}",
+      journal = {arXiv e-prints},
+     keywords = {Astrophysics - Instrumentation and Methods for Astrophysics},
+         year = 2023,
+        month = jun,
+          eid = {arXiv:2306.01426},
+        pages = {arXiv:2306.01426},
+          doi = {10.48550/arXiv.2306.01426},
+archivePrefix = {arXiv},
+       eprint = {2306.01426},
+ primaryClass = {astro-ph.IM},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2023arXiv230601426L},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
 }
 ```
 
