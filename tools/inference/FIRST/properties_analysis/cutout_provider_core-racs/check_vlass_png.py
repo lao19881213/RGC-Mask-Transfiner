@@ -10,12 +10,15 @@ from astropy.coordinates import SkyCoord
 parser = argparse.ArgumentParser()
 parser.add_argument('--catalogfile', dest='catalogfile', type=str, default='/home/data0/lbq/RGC-Mask-Transfiner/FIRST_results', help='catalog file')
 parser.add_argument('--pngdir', dest='pngdir', type=str, default='/tmp', help='output fits file directory')
+parser.add_argument('--cln', dest='classname', type=str, default='ht', help='class name')
 args = parser.parse_args()
 
 CatalogFile = args.catalogfile
 
 re_csv = pd.read_csv(CatalogFile)
 objn = re_csv['source_name'].values
+
+cln = args.classname
 
 vlass_pngns = os.listdir(args.pngdir)
 tags = []
@@ -64,6 +67,6 @@ for m in range(len(objn)):#pro_arr[rank]:
            if n == len(vlass_pngns) - 1:
               tags.append("{},{}".format(m,objn[m])) 
 
-with open(os.path.join('./', 'NOT_FOUND_VLASS_PNG.txt'), 'w') as fn:
+with open(os.path.join('./', 'NOT_FOUND_VLASS_PNG_%s.txt' % cln), 'w') as fn:
      fn.write(os.linesep.join(tags))
             

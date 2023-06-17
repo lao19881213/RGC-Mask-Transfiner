@@ -4,15 +4,15 @@ import collections
 
 data_dir = "/home/data0/lbq/RGC-Mask-Transfiner/FIRST_results"
 
-sdss_name_final = []
-ned_type_final = []
-ned_name_final = []
-redshift_final = []
-panstarrs_ra_final = []
-panstarrs_dec_final = []
-optical_final = []
-
 for cln in ['fr1', 'fr2', 'ht', 'cj']:
+    sdss_name_final = []
+    ned_type_final = []
+    ned_name_final = []
+    redshift_final = []
+    panstarrs_ra_final = []
+    panstarrs_dec_final = []
+    optical_final = []
+
     ned_table = pd.read_csv('../NED/centre_peaks_5arcsec/info_%s.csv' % cln)
     ned_hetu_name = ned_table['HeTu_name'].values
     #ned_total_flux = ned_table['total_flux'].values
@@ -85,7 +85,7 @@ for cln in ['fr1', 'fr2', 'ht', 'cj']:
 
 
 
-for cln in ['fr1', 'fr2', 'ht', 'cj']: 
+    #for cln in ['fr1', 'fr2', 'ht', 'cj']: 
     hetu_table = pd.read_csv('%s/FIRST_HeTu_paper_%s.csv' % (data_dir, cln))
     hetu_table['SDSS16'] = sdss_name_final
     hetu_table['panstarrs_ra'] = panstarrs_ra_final
