@@ -132,20 +132,21 @@ Citation
 ---------------
 If you find HeTu-v2 useful in your research or refer to the provided baseline results, please consider citing :pencil::
 ```
-@ARTICLE{2023arXiv230601426L,
-       author = {{Lao}, Baoqiang and {Jaiswal}, Sumit and {Zhao}, Zhen and {Lin}, Leping and {Wang}, Junyi and {Sun}, Xiaohui and {Qin}, Shengli},
-        title = "{Radio Sources Segmentation and Classification with Deep Learning}",
-      journal = {arXiv e-prints},
-     keywords = {Astrophysics - Instrumentation and Methods for Astrophysics},
+@ARTICLE{2023A&C....4400728L,
+       author = {{Lao}, B. and {Jaiswal}, S. and {Zhao}, Z. and {Lin}, L. and {Wang}, J. and {Sun}, X. and {Qin}, S. -L.},
+        title = "{Radio sources segmentation and classification with deep learning}",
+      journal = {Astronomy and Computing},
+     keywords = {Radio continuum survey, Radio sources, Image segmentation, Morphological classification, Deep learning, Astrophysics - Instrumentation and Methods for Astrophysics},
          year = 2023,
-        month = jun,
-          eid = {arXiv:2306.01426},
-        pages = {arXiv:2306.01426},
-          doi = {10.48550/arXiv.2306.01426},
+        month = jul,
+       volume = {44},
+          eid = {100728},
+        pages = {100728},
+          doi = {10.1016/j.ascom.2023.100728},
 archivePrefix = {arXiv},
        eprint = {2306.01426},
  primaryClass = {astro-ph.IM},
-       adsurl = {https://ui.adsabs.harvard.edu/abs/2023arXiv230601426L},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2023A&C....4400728L},
       adsnote = {Provided by the SAO/NASA Astrophysics Data System}
 }
 ```
