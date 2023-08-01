@@ -32,6 +32,11 @@ for n in range(len(file_nms)):#pro_arr[rank]:
        continue
    
     fits_file = fn
+    outdir = args.outdir
+    pngfile = "J" + os.path.splitext(fn)[0].split('J')[1] + ".png"
+    if os.path.isfile(f"%s/%s" % (outdir, pngfile)):
+       print("png image %s already plot!" % pngfile)
+       continue
     try:
        hdu = fits.open(os.path.join(input_dir, fits_file))[0]
     except:

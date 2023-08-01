@@ -6,6 +6,8 @@ data_dir = "/home/data0/lbq/RGC-Mask-Transfiner/FIRST_results"
 
 for cln in ['fr1', 'fr2', 'ht', 'cj']:
     sdss_name_final = []
+    sdss_ra_final = []
+    sdss_dec_final = []
     ned_type_final = []
     ned_name_final = []
     redshift_final = []
@@ -30,6 +32,8 @@ for cln in ['fr1', 'fr2', 'ht', 'cj']:
     sdss_total_flux = sdss['int_flux'].values
     sdss_box = sdss['box'].values
     sdss16_name = sdss['SDSS16'].values
+    sdss_ra = sdss['RA_ICRS'].values
+    sdss_dec = sdss['DE_ICRS'].values
 
     panstarrs = pd.read_csv('%s/FIRST_HeTu_paper_%s_SDSS_DR16_PanSTARRS_DR1_diff.csv' % (data_dir, cln))
     panstarrs_source_name = panstarrs['source_name'].values
@@ -64,12 +68,16 @@ for cln in ['fr1', 'fr2', 'ht', 'cj']:
         for s in range(len(sdss_source_name)):
               if sdss_source_name[s] == hetu_source_name[m] and sdss_box[s] == hetu_box[m] and sdss_total_flux[s] == hetu_total_flux[m]:
                  sdss_name_final.append(sdss16_name[s])
+                 sdss_ra_final.append(sdss_ra[s])
+                 sdss_dec_final.append(sdss_dec[s])
                  yes_s = 1
                  ss = ss + 1       
                  print(ss)
                  break
         if yes_s == 0:
-           sdss_name_final.append('')      
+           sdss_name_final.append('')    
+           sdss_ra_final.append('')
+           sdss_dec_final.append('')  
 
         for p in range(len(panstarrs_source_name)):
               if panstarrs_source_name[p] == hetu_source_name[m] and panstarrs_box[p] == hetu_box[m]: #and panstarrs_total_flux[p] == hetu_total_flux[m]:
@@ -87,6 +95,8 @@ for cln in ['fr1', 'fr2', 'ht', 'cj']:
 
     #for cln in ['fr1', 'fr2', 'ht', 'cj']: 
     hetu_table = pd.read_csv('%s/FIRST_HeTu_paper_%s.csv' % (data_dir, cln))
+    hetu_table['sdss_ra'] = sdss_ra_final
+    hetu_table['sdss_dec'] = sdss_dec_final
     hetu_table['SDSS16'] = sdss_name_final
     hetu_table['panstarrs_ra'] = panstarrs_ra_final
     hetu_table['panstarrs_dec'] = panstarrs_dec_final

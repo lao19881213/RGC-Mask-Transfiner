@@ -58,7 +58,7 @@ for m in range(len(objn)):#pro_arr[rank]:
         #ra_vlass = sky_vlass.ra.value
         #dec_vlass = sky_vlass.dec.value
          
-        if((abs((ra_first-ra_vlass)*3600.0) <=1.0) and (abs((dec_first-dec_vlass)*3600.0) <=1.0)):
+        if((abs((ra_first-ra_vlass)*3600.0) <=1.5) and (abs((dec_first-dec_vlass)*3600.0) <=1.5)):
            #print(pngn)
            #print((ra_first-ra_vlass)*3600.0, dec_first - dec_vlass)
            print('Cross matched FIRST and VLASS: %s, %s' % (items, pngn))

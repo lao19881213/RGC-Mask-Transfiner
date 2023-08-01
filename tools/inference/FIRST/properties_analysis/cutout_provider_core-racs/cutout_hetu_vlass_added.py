@@ -38,7 +38,7 @@ surveys_final = ','.join(surveys_download)
 
 nn=0
 
-added_csv = pd.read_csv('NOT_FOUND_VLASS_PNG.csv')
+added_csv = pd.read_csv('NOT_FOUND_VLASS_PNG_cj.csv')
 added_ids = added_csv['id'].values
 
 for n in range(len(added_ids)):
@@ -54,7 +54,7 @@ for n in range(len(added_ids)):
           y2 = float(boxs[m].split('-')[3])
           xw = x2 - x1
           yw = y2 - y1
-          r = 2 #(np.max([xw, yw]) + 2) *1.8/60.0/2.0 #arcmin 
+          r = 3 #(np.max([xw, yw]) + 2) *1.8/60.0/2.0 #arcmin 
           cmd = 'python fetch_cutouts.py fetch -c %f,%f -s %s -r %d -o %s/%s --overwrite' \
                 % (RA, DEC, surveys_final, math.ceil(r), args.outdir, clns[cln])    
           print(cmd)
