@@ -21,34 +21,8 @@ from spectral_cube import SpectralCube as sc
 import aplpy
 import pandas as pd
 import argparse
+import cubehelix
 
-# In[16]:
-
-
-#This step is mainly to process the data of the radio so that aplpy can read that data.
-
-#parser = argparse.ArgumentParser()
-#parser.add_argument('--resultf', help='hetu results file')
-#parser.add_argument('--firstdir', help='input FIRST fits file directory')
-#parser.add_argument('--wisedir', help='input WISE fits file directory')
-#parser.add_argument('--outdir', help='output raido IR file directory')
-#args = parser.parse_args()
-#
-#csv_re = pd.read_csv(args.resultf)
-#ra = csv_re['centre_ra'].values
-#dec = csv_re['centre_dec'].values
-#
-#objn = csv_re['object_name'].values
-#
-#first_dir = args.firstdir
-#wise_dir = args.wisedir
-
-#for m in range(len(objn)):
-#    print("Processing %s ......" % objn[m])
-#    fits_f = '%s.fits' % objn[m]
-#    if(os.path.exists(os.path.join(wise_dir, fits_f))):
-#radio image
-#fig = plt.figure() 
 hdu= fits.open('FIRST_J001357-091951.fits')[0]
 data = hdu.data[:,:]
 img = hdu.data[:,:]
@@ -77,13 +51,13 @@ data_optical = hdu_optical.data
 #f.show_grayscale(invert=True) #pass test
 #f.show_grayscale() 
 #f.show_colorscale(vmin=np.percentile(data_optical,5),vmax=np.percentile(data_optical,50), cmap='plasma')#,stretch='log')
-f.show_colorscale(cmap='gray_r')#cmap='plasma')#,stretch='log')
+f.show_colorscale(vmin=0.0, smooth=3, cmap=cubehelix.cmap(reverse=True))#cmap='plasma')#,stretch='log')
 #f.show_colorscale(vmin=1e-1, cmap='gray_r',stretch='log')
 
 
 rms =0.9* np.median(abs(img-np.median(img)))
 #Plot the image in contours: 3 or 5
-levs_positive = 5*rms*np.array([1,2,4,8,16,32,64])
+levs_positive = 3*rms*np.array([1,2,4,8,16,32,64])
 #[1,np.sqrt(2),2,np.sqrt(2)*2,4,4*np.sqrt(2),8,8*np.sqrt(2),16,16*np.sqrt(2),32,32*np.sqrt(2),64,64*np.sqrt(2)])#,128,128*np.sqrt(2),256,256*np.sqrt(2)])
 levs_negative = 5*rms*np.array([-1])
 
@@ -100,10 +74,10 @@ levs_negative_vlass = 3*rms_vlass*np.array([-1])
 #FIRST magenta
 #VLASS blue
 #NVSS coral
-f.show_contour(temp,dimensions=[0,1],colors='magenta',zorder=5,levels=levs_positive,slices=[0])#, alpha=0.3)
+f.show_contour(temp,dimensions=[0,1],colors='red',zorder=5,levels=levs_positive,slices=[0])#, alpha=0.3)
 #f.show_contour(temp,dimensions=[0,1],colors='red',zorder=5,levels=levs_negative,linestyles='dashed',alpha=0.4)
-f.show_contour(temp_vlass,dimensions=[0,1],colors='blue',zorder=5,levels=levs_positive_vlass,slices=[0])#, alpha=0.3)
-f.show_contour(temp_nvss,dimensions=[0,1],colors='coral',zorder=5,levels=levs_positive_nvss,slices=[0])
+#f.show_contour(temp_vlass,dimensions=[0,1],colors='blue',zorder=5,levels=levs_positive_vlass,slices=[0])#, alpha=0.3)
+#f.show_contour(temp_nvss,dimensions=[0,1],colors='coral',zorder=5,levels=levs_positive_nvss,slices=[0])
 #bounding box
 boxs = '51.88499-34.50135-73.47312-78.67483'
 x1 = float(boxs.split('-')[0])
@@ -113,7 +87,7 @@ y2 = float(boxs.split('-')[3])
 width = x2 - x1
 height = y2 - y1
 
-radius = (max(width, height)/2.0 + 20) * pix_scale #deg
+radius = (max(width, height)/2.0 + 4) * pix_scale #deg
 centre_ra = 3.48822
 centre_dec = -9.33098195660072      
 print(radius) 
@@ -123,7 +97,7 @@ f.recenter(centre_ra, centre_dec, radius=radius)
 host_ra = 3.488499
 host_dec = -9.330378
 
-f.show_markers(host_ra, host_dec, edgecolor='c', facecolor='c',
+f.show_markers(host_ra, host_dec, edgecolor='b', facecolor='b',
                 marker='x', s=100, zorder=6)#, alpha=-0.5)
 
 f.axis_labels.set_xtext('Right Ascension (J2000)')
@@ -144,7 +118,7 @@ f.tick_labels.set_font(size=14, weight='medium', stretch='normal', family='sans-
 #plt.tight_layout()
 #the name of file need to change
 #f.save()
-f.save('%s.png' % 'J001357.2-091951.5')
+f.save('%s_cubehelix.png' % 'J001357.2-091951.5')
 
 
 
