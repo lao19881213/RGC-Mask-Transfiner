@@ -22,14 +22,14 @@ import cubehelix
 from astropy.coordinates import SkyCoord
 from astropy import units as u
 
-out_dir = '/home/data0/lbq/inference_data/radio_optical/FRII_cubehelix'
+out_dir = '/home/data0/lbq/inference_data/radio_optical/FRII_cubehelix_centroid'
 data_dir = '/home/data0/lbq/RGC-Mask-Transfiner/tools/inference/FIRST/properties_analysis/FRII'
 FIRST_dir = '%s/FIRST' % data_dir
 NVSS_dir = '%s/NVSS' % data_dir
 VLASS_dir = '%s/VLASS_final' % data_dir
 SDSS_dir = '%s/SDSS' % data_dir
 
-resultf = '/home/data0/lbq/RGC-Mask-Transfiner/FIRST_results/FIRST_HeTu_paper_fr2_SDSS_DR16.csv'
+resultf = '/home/data0/lbq/RGC-Mask-Transfiner/FIRST_results/FIRST_HeTu_paper_fr2_SDSS_DR16_flux_centroid_fixed.csv'
 
 csv_re = pd.read_csv(resultf)
 ras = csv_re['centre_ra'].values
@@ -38,7 +38,6 @@ bboxs = csv_re['box'].values
 objns = csv_re['source_name'].values
 sdss_ras = csv_re['RA_ICRS'].values
 sdss_decs = csv_re['DE_ICRS'].values 
-sdss_names = csv_re['SDSS16'].values
 vlass_fitsns = os.listdir(VLASS_dir)
 
 #
@@ -175,8 +174,6 @@ for m in range(len(objns)):
        f.show_markers(host_fk5.ra.value, host_fk5.dec.value, edgecolor='b', facecolor='b',
                        marker='x', s=100, zorder=6)#, alpha=-0.5)
        
-       source_name = sdss_names[m].split(' ')[1][0:5] + sdss_names[m].split(' ')[1][10:15]
-       f.set_title(source_name, size=18, fontname = 'serif') 
        f.axis_labels.set_xtext('Right Ascension (J2000)')
        f.axis_labels.set_ytext('Declination (J2000)')
        f.axis_labels.set_font(size=16, weight='medium', stretch='normal', family='sans-serif', style='normal', variant='normal')

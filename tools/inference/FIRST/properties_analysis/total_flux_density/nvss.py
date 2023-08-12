@@ -51,7 +51,7 @@ def find_bbox_flux(bbox, fitsfile):
     return int_flux
 
 
-hetu_csv = pd.read_csv('/home/data0/lbq/RGC-Mask-Transfiner/FIRST_results/FIRST_HeTu_paper_fr2_flux_fixed.csv')
+hetu_csv = pd.read_csv('/home/data0/lbq/RGC-Mask-Transfiner/FIRST_results/FIRST_HeTu_paper_fr2.csv')
 
 ras = hetu_csv['centre_ra'].values
 decs = hetu_csv['centre_dec'].values
@@ -75,15 +75,15 @@ for m in range(len(ras)):
              except KeyError:
                  pix_scale_hetu = hdu_FIRST.header["CDELT2"]
              
-             TGSS_fits = '%s/%s/TGSS/%s.FITS' % (root_dir, clns[labels[m]], source_names[m])
+             NVSS_fits = '%s/%s/NVSS/NVSS_%s.fits' % (root_dir, clns[labels[m]], source_names[m])
              try:
-                 hdu_TGSS = fits.open(TGSS_fits)[0]
+                 hdu_NVSS = fits.open(NVSS_fits)[0]
              except:
                  continue
              try:
-                 pix_scale_tgss = hdu_TGSS.header["CD2_2"]
+                 pix_scale_nvss = hdu_NVSS.header["CD2_2"]
              except KeyError:
-                 pix_scale_tgss = hdu_TGSS.header["CDELT2"]
+                 pix_scale_nvss = hdu_NVSS.header["CDELT2"]
 
              x1 = float(boxs[m].split('-')[0])
              y1 = float(boxs[m].split('-')[1])
@@ -91,22 +91,22 @@ for m in range(len(ras)):
              y2 = float(boxs[m].split('-')[3])
              width = x2 - x1
              height = y2 - y1
-             factor = pix_scale_tgss / pix_scale_hetu
-             w = wcs.WCS(hdu_TGSS.header, naxis=2)
+             factor = pix_scale_nvss / pix_scale_hetu
+             w = wcs.WCS(hdu_NVSS.header, naxis=2)
              centre_x, centre_y = w.wcs_world2pix([[ras[m],decs[m]]],0).transpose() 
-             width_new = width / factor
-             height_new = height / factor
+             width_new = width / factor * 4.0
+             height_new = height / factor * 4.0
              x1_new = centre_x - width/2.0
              x2_new = centre_x + width/2.0
              y1_new = centre_y - height/2.0
              y2_new = centre_y + height/2.0 
              
-             out_dir = '%s/%s/TGSS_png' % (root_dir, clns[labels[m]])
-             if len(hdu_TGSS.data.shape)==4:
-                img_data = hdu_TGSS.data[0,0,:,:]
+             out_dir = '%s/%s' % ('/home/data0/lbq/inference_data/NVSS_boxs', clns[labels[m]])
+             if len(hdu_NVSS.data.shape)==4:
+                img_data = hdu_NVSS.data[0,0,:,:]
              else :
-                img_data = hdu_TGSS.data
-             #w = wcs.WCS(hdu_TGSS.header, naxis=2)
+                img_data = hdu_NVSS.data
+             #w = wcs.WCS(hdu_NVSS.header, naxis=2)
              fig = plt.figure()
              ax = plt.subplot(projection=w)
              ax.set_xlim([0, img_data.shape[1]])
@@ -120,11 +120,13 @@ for m in range(len(ras)):
              #img_rms = 0.00002
              ax.imshow(image_data, origin='lower', cmap=CoolColormap()) 
              #boxs_new.append('%s,%.5f-%.5f-%.5f-%.5f' % (source_names[m], x1_new, y1_new, x2_new, y2_new))
-             top, left, bottom, right = hdu_TGSS.data.shape[0]-y2_new, x1_new, hdu_TGSS.data.shape[0]-y1_new, x2_new
+             top, left, bottom, right = hdu_NVSS.data.shape[0]-y2_new, x1_new, hdu_NVSS.data.shape[0]-y1_new, x2_new
              ax.add_patch(
              plt.Rectangle((left, top),abs(left - right),abs(top - bottom), \
                           fill=False, edgecolor='r', linewidth=2)
                          )
+             plt.xlim([120,180])
+             plt.ylim([120,180])
              plt.savefig(os.path.join(out_dir, '%s.png' % source_names[m]))
              plt.clf()
 

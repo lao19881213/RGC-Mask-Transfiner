@@ -22,14 +22,14 @@ import cubehelix
 from astropy.coordinates import SkyCoord
 from astropy import units as u
 
-out_dir = '/home/data0/lbq/inference_data/radio_optical/FRII_cubehelix'
-data_dir = '/home/data0/lbq/RGC-Mask-Transfiner/tools/inference/FIRST/properties_analysis/FRII'
+out_dir = '/home/data0/lbq/inference_data/radio_optical/HT_cubehelix_centroid'
+data_dir = '/home/data0/lbq/RGC-Mask-Transfiner/tools/inference/FIRST/properties_analysis/HT'
 FIRST_dir = '%s/FIRST' % data_dir
 NVSS_dir = '%s/NVSS' % data_dir
 VLASS_dir = '%s/VLASS_final' % data_dir
 SDSS_dir = '%s/SDSS' % data_dir
 
-resultf = '/home/data0/lbq/RGC-Mask-Transfiner/FIRST_results/FIRST_HeTu_paper_fr2_SDSS_DR16.csv'
+resultf = '/home/data0/lbq/RGC-Mask-Transfiner/FIRST_results/FIRST_HeTu_paper_ht_SDSS_DR16_flux_centroid_fixed.csv'
 
 csv_re = pd.read_csv(resultf)
 ras = csv_re['centre_ra'].values
@@ -40,6 +40,7 @@ sdss_ras = csv_re['RA_ICRS'].values
 sdss_decs = csv_re['DE_ICRS'].values 
 sdss_names = csv_re['SDSS16'].values
 vlass_fitsns = os.listdir(VLASS_dir)
+
 
 #
 for m in range(len(objns)):
@@ -196,7 +197,6 @@ for m in range(len(objns)):
        #the name of file need to change
        #f.save()
        f.save('%s/%s_optical_radio_cubehelix.png' % (out_dir, objns[m]))
-       f.save('%s/%s_optical_radio_cubehelix.pdf' % (out_dir, objns[m]))
        #else:
        #   print('VLASS image not found!')
 
