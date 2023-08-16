@@ -10,14 +10,15 @@ import numpy as np
 import matplotlib as mpl
 import os
 import argparse
+import pycocotools.mask as cocomask
 from astropy.io import fits
 import astropy.wcs as wcs
 import cv2
+from photutils.datasets import make_4gaussians_image
+from photutils.centroids import (centroid_1dg, centroid_2dg,
+                                 centroid_com, centroid_quadratic)
 
-def CoolColormap():
-    return mpl.colors.LinearSegmentedColormap.from_list('cmap', ['#000000', '#000069', '#00188a', '#0d6bff', '#1abaff',
-                                                                 '#d9ffff', '#ffffff'], 256)
-
+from photutils.centroids import centroid_sources
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--recsv', dest='recsv', type=str, default='', help='pred results file')
@@ -29,7 +30,7 @@ args = parser.parse_args()
 
 def find_bbox_flux(bbox, fitsfile):
     hdu = fits.open(fitsfile)[0]
-    print('Processing %s ...' % fitsfile)
+
     # Set any NaN areas to zero or the interpolation will fail
     hdu.data[np.isnan(hdu.data)] = 0.0
 
@@ -60,22 +61,6 @@ def find_bbox_flux(bbox, fitsfile):
     box_data = hdu.data[hdu.data.shape[0]-y2:hdu.data.shape[0]-y1,x1:x2]
     int_flux = np.sum(box_data) #Jy/pix
     int_flux = int_flux * (pix2deg**2) / beamvolume #Jy
-    #test
-    #w = wcs.WCS(hdu.header, naxis=2)
-    #fig = plt.figure()
-    #ax = plt.subplot(projection=w)
-    #ax.set_xlim([0, box_data.shape[1]])
-    #ax.set_ylim([box_data.shape[0], 0])
-    #ax.set_axis_off()
-    #datamax = np.nanmax(box_data)
-    #datamin = np.nanmin(box_data)
-    #datawide = datamax - datamin
-    #image_data = np.log10((box_data - datamin) / datawide * 1000 + 1) / 3 
-    #ax.imshow(image_data, origin='lower', cmap=CoolColormap())
-    #pngf = 'J' + fitsfile.split('J')[1].replace('fits', 'png') 
-    #plt.savefig(os.path.join('/home/data0/lbq/inference_data/FIRST_flux_test/', pngf))
-    #print(os.path.join('/home/data0/lbq/inference_data/FIRST_flux_test/', pngf))
-    #plt.clf()
     return int_flux
 
 
@@ -103,8 +88,64 @@ for m in range(len(ras)):
       bkg_flux = find_bbox_flux(boxs[m], bkg_fits)
       final_flux = total_flux - bkg_flux
       hetu_csv.loc[m,'int_flux'] = final_flux
+
+      image = cv2.imread(os.path.join(fits_dir, pngs[m]))
+      (height, width) = image.shape[:2]
+      segm = {
+                "size": [width, height],
+                "counts": masks[m]}
+      mask = cocomask.decode(segm)
+
+      #method 1
+      #cnts = cv2.findContours(mask, cv2.RETR_EXTERNAL,
+      #    cv2.CHAIN_APPROX_SIMPLE)
+      #cnts = imutils.grab_contours(cnts)
+      ##method 1
+      #M = cv2.moments(cnts[0])
+      #cX = int(M["m10"] / M["m00"])
+      #cY = int(M["m01"] / M["m00"])
       
-hetu_csv.to_csv(os.path.splitext(args.recsv)[0] + '_flux_fixed.csv', index = False)
+      hdu = fits.open(FIRST_fits)[0]
+      #box_data = hdu.data[hdu.data.shape[0]-y2:hdu.data.shape[0]-y1,x1:x2]
+      if len(hdu.data.shape)==4:
+         data = hdu.data[0,0,:,:]
+      else :
+         data = hdu.data
+      w1=wcs.WCS(hdu.header, naxis=2)
+      #ra, dec = w1.wcs_pix2world([[cX, 132-cY]], 0)[0]
+      
+
+      
+      #fig = plt.figure()
+      #ax = plt.subplot(projection=w1)
+      #ax.set_xlim([0, data.shape[1]])
+      #ax.set_ylim([data.shape[0], 0])
+      #ax.set_axis_off()
+
+      img_x, img_y = w1.wcs_world2pix([[ras[m],decs[m]]],0).transpose()
+      #ax.imshow(data, vmin=0, vmax=0.01, cmap='gist_heat', origin='lower')
+      #ax.scatter(ra, dec, transform=ax.get_transform('fk5'), linewidths=1, marker="x", s=25,
+      #     color='w')
+      #ax.scatter(ras[m], decs[m], transform=ax.get_transform('fk5'), linewidths=1, marker="x", s=25,
+      #     color='y')
+      #method 2
+      hdu_bkg = fits.open(bkg_fits)[0] 
+      photutils_x, photutils_y = centroid_sources(data - hdu_bkg.data, img_x, img_y, mask=mask,
+                        centroid_func=centroid_com)
+      
+      #photutils_x, photutils_y = centroid_quadratic(data, img_x, img_y, mask=mask)
+      
+      photutils_ra, photutils_dec = w1.wcs_pix2world([[photutils_x[0], photutils_y[0]]], 0)[0]
+      #ax.scatter(photutils_ra, photutils_dec, transform=ax.get_transform('fk5'), linewidths=1, marker="x", s=25,
+      #     color='g')
+      if photutils_ra < 0 :
+         photutils_ra = photutils_ra + 360
+      centroid_ra.append(photutils_ra)
+      centroid_dec.append(photutils_dec)
+
+hetu_csv['centroid_ra'] = centroid_ra
+hetu_csv['centroid_dec'] = centroid_dec
+hetu_csv.to_csv(os.path.splitext(args.recsv)[0] + '_flux_centroid_fixed.csv', index = False)
 
 
 

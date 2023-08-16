@@ -21,6 +21,8 @@ for n in range(linecount):
 #for fn in file_nms:
     line = linecache.getline(args.fitslists, n+1)
     fits_file = line.split('\n')[0]
-
-    os.system('BANE %s/%s --out %s/%s' % (input_dir, fits_file, args.outdir, os.path.splitext(fits_file)[0]))
-    print("Successful generate %s" % fits_file)
+    if os.path.exists(os.path.join(args.outdir, os.path.splitext(fits_file)[0] + '_bkg.fits')):
+       print('%s already exists!' % (os.path.splitext(fits_file)[0] + '_bkg.fits'))
+    else:    
+       os.system('BANE %s/%s --out %s/%s' % (input_dir, fits_file, args.outdir, os.path.splitext(fits_file)[0]))
+       print("Successful generate %s" % fits_file)

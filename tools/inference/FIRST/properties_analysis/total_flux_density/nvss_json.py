@@ -13,11 +13,11 @@ import cv2
 import json
 import base64
 
-class NumpyEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, np.ndarray):
-            return obj.tolist()
-        return json.JSONEncoder.default(self, obj)
+#class NumpyEncoder(json.JSONEncoder):
+#    def default(self, obj):
+#        if isinstance(obj, np.ndarray):
+#            return obj.tolist()
+#        return json.JSONEncoder.default(self, obj)
 
 NVSS_dir = '/home/data0/lbq/RGC-Mask-Transfiner/tools/inference/FIRST/properties_analysis/FRII/NVSS4flux_png'
 

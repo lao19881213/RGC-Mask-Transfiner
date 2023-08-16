@@ -1,6 +1,3 @@
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
 from astropy.io import fits
 import astropy.wcs as wcs
 from astropy import coordinates
@@ -9,10 +6,6 @@ import pandas as pd
 import numpy as np
 import matplotlib as mpl
 import os
-
-def CoolColormap():
-    return mpl.colors.LinearSegmentedColormap.from_list('cmap', ['#000000', '#000069', '#00188a', '#0d6bff', '#1abaff',
-                                                                 '#d9ffff', '#ffffff'], 256)
 
 
 def find_bbox_flux(bbox, fitsfile):
