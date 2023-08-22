@@ -40,7 +40,7 @@ def find_bbox_flux(bbox, fitsfile):
     y1 = int(y1)
     x2 = int(x2)
     y2 = int(y2)
-    print(hdu.data.shape)
+    #print(hdu.data.shape)
     box_data = hdu.data[hdu.data.shape[0]-y2:hdu.data.shape[0]-y1,x1:x2]
     int_flux = np.sum(box_data) #Jy/pix
     int_flux = int_flux * (pix2deg**2) / beamvolume #Jy
@@ -92,15 +92,18 @@ for m in range(len(fitsfs)):
              bkg_flux = find_bbox_flux(box, bkg_fits)
              final_flux = total_flux - bkg_flux
              NVSS_int_flux_s.append(final_flux)
+             if final_flux/FIRST_int_flux[mm] <= 1.0:
+                print(source_name, final_flux/FIRST_int_flux[mm])
+             break 
 
 FIRST_int_flux_s = np.array(FIRST_int_flux_s)
 NVSS_int_flux_s = np.array(NVSS_int_flux_s)
 
-plt.figure()
+plt.figure(1)
 ax1 = plt.gca()
-x=np.linspace(0,np.max(FIRST_int_flux_s*1000.0),100)
-
-plt.plot(FIRST_int_flux_s*1000.0, NVSS_int_flux_s*1000.0, 'x', c='b') #'tab:blue')
+x=np.linspace(0,np.max(NVSS_int_flux_s*1000.0),100)
+for mm in range(len(FIRST_int_flux_s)): 
+    plt.plot(FIRST_int_flux_s[mm]*1000.0, NVSS_int_flux_s[mm]*1000.0, '+', c='b', markersize=5, alpha=0.5, linewidth=0.5) #'tab:blue')
 
 plt.plot(x,x,'r--')
 
@@ -125,3 +128,47 @@ ax1.set_yscale('log')
 ax1.set_aspect('equal')
 
 plt.savefig('FIRSTvsNVSS_flux.png')
+
+FIRST_results = '/home/data0/lbq/RGC-Mask-Transfiner/FIRST_results/FIRST_HeTu_paper_fr2_sdss_ned_flux_fixed_vlass.csv'
+
+hetu_csv = pd.read_csv(FIRST_results)
+
+LAS = hetu_csv['LAS'].values
+source_names = hetu_csv['source_name'].values
+LAS_NVSS = []
+for m in range(len(fitsfs)):
+      source_name = os.path.splitext(fitsfs[m])[0].split('_')[1]
+      for mm in range(len(LAS)):
+          if source_name == source_names[mm]:
+             LAS_NVSS.append(LAS[mm])
+             break
+
+
+LAS_NVSS = np.array(LAS_NVSS)
+ratio_flux = NVSS_int_flux_s/FIRST_int_flux_s
+#print(ratio_flux.shape, LAS_NVSS.shape)
+
+plt.figure(2)
+ax2 = plt.gca()
+
+plt.plot(LAS_NVSS, ratio_flux, '+', c='b', markersize=5, alpha=0.5, linewidth=0.5) #'tab:blue')
+
+plt.tick_params(labelsize=20)
+labels = ax2.get_xticklabels() + ax1.get_yticklabels()
+[label.set_fontname('Times New Roman') for label in labels]
+plt.tick_params(which='major', length=8,direction='in')
+plt.tick_params(which='minor', length=4,direction='in')
+ax2.tick_params(axis='both', which='both', width=1,direction='in')
+ax2.tick_params(axis = 'x', which = 'major', labelsize = 14, pad=4,direction='in')
+ax2.tick_params(axis = 'y', which = 'major', labelsize = 14, pad=4,direction='in')
+
+plt.xlabel(r'LAS (arcminute)',fontsize=16,labelpad=0)
+plt.ylabel(r'Flux ratio',fontsize=16,labelpad=0)
+
+
+plt.xlim([0,5])
+#plt.ylim([3,np.max(NVSS_int_flux_s)*1000.+10])
+
+#ax1.set_aspect('equal')
+
+plt.savefig('LAS_flux_ratio.png')

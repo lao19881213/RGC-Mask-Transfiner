@@ -9,6 +9,7 @@ for cln in ['fr2']:
     sdss_ra_final = []
     sdss_dec_final = []
     sdss_rmag_final = []
+    sdss_objID_final = []
     ned_type_final = []
     ned_name_final = []
     redshift_final = []
@@ -24,7 +25,7 @@ for cln in ['fr2']:
     ned_Redshift = ned_table['Redshift'].values
     ned_num = ned_table['HeTu_num'].values
 
-    hetu = pd.read_csv('%s/FIRST_HeTu_paper_%s_flux_fixed.csv' % (data_dir, cln))
+    hetu = pd.read_csv('%s/FIRST_HeTu_paper_%s_flux_fixed_vlass.csv' % (data_dir, cln))
     hetu_source_name = hetu['source_name'].values
     hetu_total_flux = hetu['int_flux'].values
     hetu_box = hetu['box'].values
@@ -36,6 +37,7 @@ for cln in ['fr2']:
     sdss_ra = sdss['RA_ICRS'].values
     sdss_dec = sdss['DE_ICRS'].values
     sdss_rmag = sdss['rmag'].values
+    sdss_objID = sdss['objID'].values
     #panstarrs = pd.read_csv('%s/FIRST_HeTu_paper_%s_SDSS_DR16_PanSTARRS_DR1_diff.csv' % (data_dir, cln))
     #panstarrs_source_name = panstarrs['source_name'].values
     #panstarrs_total_flux = panstarrs['int_flux'].values
@@ -72,6 +74,7 @@ for cln in ['fr2']:
                  sdss_ra_final.append(sdss_ra[s])
                  sdss_dec_final.append(sdss_dec[s])
                  sdss_rmag_final.append(sdss_rmag[s])
+                 sdss_objID_final.append(sdss_objID[s])
                  yes_s = 1
                  ss = ss + 1       
                  print(ss)
@@ -81,6 +84,7 @@ for cln in ['fr2']:
            sdss_ra_final.append('')
            sdss_dec_final.append('') 
            sdss_rmag_final.append('') 
+           sdss_objID_final.append('')
 
         #for p in range(len(panstarrs_source_name)):
         #      if panstarrs_source_name[p] == hetu_source_name[m] and panstarrs_box[p] == hetu_box[m]: #and panstarrs_total_flux[p] == hetu_total_flux[m]:
@@ -97,7 +101,8 @@ for cln in ['fr2']:
 
 
     #for cln in ['fr1', 'fr2', 'ht', 'cj']: 
-    hetu_table = pd.read_csv('%s/FIRST_HeTu_paper_%s_flux_fixed.csv' % (data_dir, cln))
+    hetu_table = pd.read_csv('%s/FIRST_HeTu_paper_%s_flux_fixed_vlass.csv' % (data_dir, cln))
+    hetu_table['objID'] = sdss_objID_final 
     hetu_table['sdss_ra'] = sdss_ra_final
     hetu_table['sdss_dec'] = sdss_dec_final
     hetu_table['SDSS16'] = sdss_name_final
@@ -107,4 +112,4 @@ for cln in ['fr2']:
     hetu_table['Type'] = ned_type_final
     hetu_table['NED_name'] = ned_name_final
     hetu_table['Redshift'] = redshift_final
-    hetu_table.to_csv('%s/FIRST_HeTu_paper_%s_sdss_ned_flux_fixed.csv' % (data_dir, cln), index = False)
+    hetu_table.to_csv('%s/FIRST_HeTu_paper_%s_sdss_ned_flux_fixed_vlass.csv' % (data_dir, cln), index = False)

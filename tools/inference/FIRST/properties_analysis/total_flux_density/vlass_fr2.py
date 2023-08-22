@@ -14,7 +14,7 @@ def CoolColormap():
     return mpl.colors.LinearSegmentedColormap.from_list('cmap', ['#000000', '#000069', '#00188a', '#0d6bff', '#1abaff',
                                                                  '#d9ffff', '#ffffff'], 256)
 
-def find_bbox_flux(bbox, fitsfile):
+def find_bbox_flux(x1, y1, x2, y2, fitsfile):
     hdu = fits.open(fitsfile)[0]
     print('Processing %s ...' % fitsfile)
     # Set any NaN areas to zero or the interpolation will fail
@@ -34,11 +34,11 @@ def find_bbox_flux(bbox, fitsfile):
     if pix2deg == 1.0:
         pix2deg = hdu.header["PC2_2"]
     beamvolume = (1.1331 * bmaj * bmin)
-    print(bbox)
-    x1 = float(bbox.split('-')[0])
-    y1 = float(bbox.split('-')[1])
-    x2 = float(bbox.split('-')[2])
-    y2 = float(bbox.split('-')[3])
+    print(x1, y1, x2, y2)
+    #x1 = float(bbox.split('-')[0])
+    #y1 = float(bbox.split('-')[1])
+    #x2 = float(bbox.split('-')[2])
+    #y2 = float(bbox.split('-')[3])
 
     x1 = int(x1)
     y1 = int(y1)
@@ -47,27 +47,34 @@ def find_bbox_flux(bbox, fitsfile):
 
     #box_data = hdu.data[hdu.data.shape[0]-y2:hdu.data.shape[0]-y1,x1:x2]
     #for vlass fits data
-    img_data = hdu.data[0,0,:,:]
+    if len(hdu.data.shape)==4:
+       img_data = hdu.data[0,0,:,:]
+    else:
+       img_data = hdu.data
     img_data[np.isnan(img_data)] = 0.0
     box_data = img_data[y1:y2,x1:x2]
-    int_flux = np.sum(box_data) #Jy/pix
-    int_flux = int_flux * (pix2deg**2) / beamvolume #Jy
-    #test
-    w = wcs.WCS(hdu.header, naxis=2)
-    fig = plt.figure()
-    ax = plt.subplot(projection=w)
-    ax.set_xlim([0, box_data.shape[1]])
-    ax.set_ylim([box_data.shape[0], 0])
-    ax.set_axis_off()
-    datamax = np.nanmax(box_data)
-    datamin = np.nanmin(box_data)
-    datawide = datamax - datamin
-    image_data = np.log10((box_data - datamin) / datawide * 1000 + 1) / 3 
-    ax.imshow(image_data, origin='lower', cmap=CoolColormap())
-    pngf = 'J' + fitsfile.split('J')[1].replace('fits', 'png') 
-    plt.savefig(os.path.join('/home/data0/lbq/inference_data/VLASS_flux_test/', pngf))
-    #print(os.path.join('/home/data0/lbq/inference_data/VLASS_flux_test/', pngf))
-    plt.clf()
+    if box_data.shape[0] == 0 or box_data.shape[1] ==0:
+       print('zero of bbox size: %s' % fitsfile)
+       int_flux = 0.0
+    else:
+       int_flux = np.sum(box_data) #Jy/pix
+       int_flux = int_flux * (pix2deg**2) / beamvolume #Jy
+       #test
+       #w = wcs.WCS(hdu.header, naxis=2)
+       #fig = plt.figure()
+       #ax = plt.subplot(projection=w)
+       #ax.set_xlim([0, box_data.shape[1]])
+       #ax.set_ylim([box_data.shape[0], 0])
+       #ax.set_axis_off()
+       #datamax = np.nanmax(box_data)
+       #datamin = np.nanmin(box_data)
+       #datawide = datamax - datamin
+       #image_data = np.log10((box_data - datamin) / datawide * 1000 + 1) / 3 
+       #ax.imshow(image_data, origin='lower', cmap=CoolColormap())
+       #pngf = 'J' + fitsfile.split('J')[1].replace('fits', 'png') 
+       #plt.savefig(os.path.join('/home/data0/lbq/inference_data/VLASS_flux_test/', pngf))
+       ##print(os.path.join('/home/data0/lbq/inference_data/VLASS_flux_test/', pngf))
+       #plt.clf()
     return int_flux
 
 
@@ -84,7 +91,10 @@ out_dir = '/home/data0/lbq/inference_data/VLASS_bbox/FRII'
 VLASS_dir = '%s/VLASS_final' % root_dir
 vlass_fitsns = os.listdir(VLASS_dir)
 
-boxs_new = []
+VLASS_bkg_dir = '/home/data0/lbq/inference_data/VLASS_bkg'
+
+final_flux_final = []
+
 for m in range(len(ras)):
       FIRST_fits = '%s/FIRST/%s.fits' % (root_dir, source_names[m])
       hdu_FIRST = fits.open(FIRST_fits)[0] 
@@ -163,37 +173,48 @@ for m in range(len(ras)):
          x2_new = centre_x + width_new/2.0
          y1_new = centre_y - height_new/2.0
          y2_new = centre_y + height_new/2.0 
-         #print(x1_new, x2_new, y1_new, y2_new, img_vlass.shape) 
-         if len(hdu_vlass.data.shape)==4:
-            img_data = hdu_vlass.data[0,0,:,:]
-         else :
-            img_data = hdu_vlass.data
-         fig = plt.figure()
-         ax = plt.subplot(projection=w1_vlass)
-         ax.set_xlim([0, img_data.shape[1]])
-         ax.set_ylim([img_data.shape[0], 0])
-         ax.set_axis_off()
-         datamax = np.nanmax(img_data)
-         datamin = np.nanmin(img_data)
-         datawide = datamax - datamin
-         image_data = np.log10((img_data - datamin) / datawide * 1000 + 1) / 3
+         #print(x1_new, x2_new, y1_new, y2_new, img_vlass.shape)
+         #plot bbox 
+         #if len(hdu_vlass.data.shape)==4:
+         #   img_data = hdu_vlass.data[0,0,:,:]
+         #else :
+         #   img_data = hdu_vlass.data
+         #fig = plt.figure()
+         #ax = plt.subplot(projection=w1_vlass)
+         #ax.set_xlim([0, img_data.shape[1]])
+         #ax.set_ylim([img_data.shape[0], 0])
+         #ax.set_axis_off()
+         #datamax = np.nanmax(img_data)
+         #datamin = np.nanmin(img_data)
+         #datawide = datamax - datamin
+         #image_data = np.log10((img_data - datamin) / datawide * 1000 + 1) / 3
 
-         #img_rms = 0.00002
-         ax.imshow(image_data, origin='lower', cmap=CoolColormap()) 
-         #boxs_new.append('%s,%.5f-%.5f-%.5f-%.5f' % (source_names[m], x1_new, y1_new, x2_new, y2_new))
-         top, left, bottom, right = y1_new[0], x1_new[0], y2_new[0], x2_new[0]
-         #top, left, bottom, right = img_data.shape[0]-y2_new[0], x1_new[0], img_data.data.shape[0]-y1_new[0], x2_new[0]
-         ax.add_patch(
-         plt.Rectangle((left, top),abs(left - right),abs(top - bottom), \
-                      fill=False, edgecolor='r', linewidth=2)
-                     )
-         plt.savefig(os.path.join(out_dir, '%s.png' % source_names[m]))
-         plt.clf()
+         ##img_rms = 0.00002
+         #ax.imshow(image_data, origin='lower', cmap=CoolColormap()) 
+         ##boxs_new.append('%s,%.5f-%.5f-%.5f-%.5f' % (source_names[m], x1_new, y1_new, x2_new, y2_new))
+         #top, left, bottom, right = y1_new[0], x1_new[0], y2_new[0], x2_new[0]
+         ##top, left, bottom, right = img_data.shape[0]-y2_new[0], x1_new[0], img_data.data.shape[0]-y1_new[0], x2_new[0]
+         #ax.add_patch(
+         #plt.Rectangle((left, top),abs(left - right),abs(top - bottom), \
+         #             fill=False, edgecolor='r', linewidth=2)
+         #            )
+         #plt.savefig(os.path.join(out_dir, '%s.png' % source_names[m]))
+         #plt.clf()
          
          #calculate flux density
-         bbox = '{:.5f}-{:.5f}-{:.5f}-{:.5f}'.format(float(x1_new[0]), float(y1_new[0]), float(x2_new[0]), float(y2_new[0]))
-         total_flux = find_bbox_flux(bbox, '%s/%s' % (VLASS_dir, vlass_fits_f)) 
+         #bbox = '{:.5f}-{:.5f}-{:.5f}-{:.5f}'.format(float(x1_new[0]), float(y1_new[0]), float(x2_new[0]), float(y2_new[0]))
+         total_flux = find_bbox_flux(float(x1_new[0]), float(y1_new[0]), float(x2_new[0]), float(y2_new[0]), '%s/%s' % (VLASS_dir, vlass_fits_f))
+         if total_flux == 0.0:
+            final_flux = 0.0
+         else:
+            bkg_flux = find_bbox_flux(float(x1_new[0]), float(y1_new[0]), float(x2_new[0]), float(y2_new[0]), '%s/%s_bkg.fits' % (VLASS_bkg_dir, os.path.splitext(vlass_fits_f)[0]))
+            final_flux = total_flux - bkg_flux 
       else:
          print('Not Found %s' % source_names[m])
+         final_flux = 0.0
 
-   
+      final_flux_final.append(final_flux)
+
+
+hetu_csv['vlass_flux'] = final_flux_final
+hetu_csv.to_csv('/home/data0/lbq/RGC-Mask-Transfiner/FIRST_results/FIRST_HeTu_paper_fr2_flux_fixed_vlass.csv', index = False)
