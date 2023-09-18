@@ -10,6 +10,7 @@ import numpy as np
 import matplotlib as mpl
 import os
 import json
+import matplotlib.ticker as mticker
 
 def find_bbox_flux(bbox, fitsfile):
     hdu = fits.open(fitsfile)[0]
@@ -125,9 +126,22 @@ ax1.set_yscale('log')
 #plt.xlim([3,np.max(NVSS_int_flux_s)*1000.+10])
 #plt.ylim([3,np.max(NVSS_int_flux_s)*1000.+10])
 
-ax1.set_aspect('equal')
+#ax1.set_aspect('equal')
 
+ticks_loc = ax1.get_yticks().tolist()
+#print(ticks_loc, ax1.get_xticks().tolist())
+ticks_loc = [0.1, 1, 10, 100, 1000, 10000]
+ax1.yaxis.set_major_locator(mticker.FixedLocator(ticks_loc))
+ax1.set_yticklabels(ticks_loc)
+ax1.xaxis.set_major_locator(mticker.FixedLocator(ticks_loc))
+ax1.set_xticklabels(ticks_loc)
+ax1.set_xlim([4,10000])
+ax1.set_ylim([4,10000])
+
+ax1.set_aspect('equal')
+plt.tight_layout()
 plt.savefig('FIRSTvsNVSS_flux.png')
+plt.savefig('FIRSTvsNVSS_flux.pdf')
 
 FIRST_results = '/home/data0/lbq/RGC-Mask-Transfiner/FIRST_results/FIRST_HeTu_paper_fr2_sdss_ned_flux_fixed_vlass.csv'
 

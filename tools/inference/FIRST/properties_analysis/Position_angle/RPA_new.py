@@ -1,6 +1,3 @@
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
 import cv2
 import pycocotools.mask as cocomask
 from skimage.measure import find_contours
@@ -12,10 +9,27 @@ from scipy import spatial
 from astropy.io import fits
 import astropy.wcs as wcs
 import matplotlib as mpl
+import math
 
-def CoolColormap():
-    return mpl.colors.LinearSegmentedColormap.from_list('cmap', ['#000000', '#000069', '#00188a', '#0d6bff', '#1abaff',
-                                                                 '#d9ffff', '#ffffff'], 256)
+def PositionAngle(ra1,dec1,ra2,dec2):
+        """
+        Given the positions (ra,dec) in degrees,
+        calculates the position angle of the 2nd source wrt to the first source
+        in degrees. The position angle is measured North through East
+
+        Arguments:
+        (ra,dec) -- Coordinates (in degrees) of the first and second source
+
+        Returns: 
+          -- The position angle measured in degrees,
+
+        """
+
+        #convert degrees to radians
+        ra1,dec1,ra2,dec2 = ra1 * math.pi / 180. , dec1 * math.pi / 180. , ra2 * math.pi / 180. , dec2 * math.pi / 180.
+        return (math.atan( (math.sin(ra2-ra1))/(
+                        math.cos(dec1)*math.tan(dec2)-math.sin(dec1)*math.cos(ra2-ra1))
+                                )* 180. / math.pi )# convert radians to degrees
 
 
 FIRST_result = '/home/data0/lbq/RGC-Mask-Transfiner/FIRST_results/FIRST_HeTu_paper_fr2_flux_fixed_vlass.csv'
@@ -24,9 +38,10 @@ fits_dir = '/home/data0/lbq/inference_data/FIRST_fits'
 hetu_csv = pd.read_csv(FIRST_result)
 pngs = hetu_csv['image_filename'].values
 masks = hetu_csv['mask'].values
-LAS = []
-#angular size
+RPA_all = []
+#position angle
 for m in range(len(pngs)):
+    print(m)
     hdu = fits.open(os.path.join(fits_dir, os.path.splitext(pngs[m])[0]+'.fits'))[0]
     w1=wcs.WCS(hdu.header, naxis=2) 
     image = cv2.imread(os.path.join(fits_dir, pngs[m]))
@@ -59,30 +74,10 @@ for m in range(len(pngs)):
     RA1_degree, DEC1_degree = w1.wcs_pix2world([[candidates[i][0], 132-candidates[i][1]]], 0)[0]
     RA2_degree, DEC2_degree = w1.wcs_pix2world([[candidates[j][0], 132-candidates[j][1]]], 0)[0]
     #theta = np.arccos(np.sin(dec1)*np.sin(dec2)+np.cos(dec1)*np.cos(dec2)*np.cos(ra1-ra2)) 
-    angularDist_arcsec=np.degrees(np.arccos(np.sin(np.radians(DEC1_degree),dtype=np.float64)*np.sin(np.radians(DEC2_degree),dtype=np.float64) + np.cos(np.radians(DEC1_degree),dtype=np.float64)*np.cos(np.radians(DEC2_degree),dtype=np.float64)*np.cos(np.radians(RA1_degree-RA2_degree),dtype=np.float64)))*3.6E3
-    print(angularDist_arcsec, angularDist_arcsec/60.0)
-    LAS.append(angularDist_arcsec/60.0)
-    #test
-    #if (angularDist_arcsec/60.0) > 20:
-    #   print("need to be checked -> ", candidates[i][0], candidates[i][1], candidates[j][0], candidates[j][1])
-    #fig = plt.figure()
-    #ax = plt.subplot(projection=w1)
-    #ax.set_xlim([0, hdu.data.shape[1]])
-    #ax.set_ylim([hdu.data.shape[0], 0])
-    #ax.set_axis_off()
-    #datamax = np.nanmax(hdu.data)
-    #datamin = np.nanmin(hdu.data)
-    #datawide = datamax - datamin
-    #image_data = np.log10((hdu.data - datamin) / datawide * 1000 + 1) / 3 
-    #ax.imshow(image_data, origin='lower', cmap=CoolColormap())
-    #ax.scatter(RA1_degree, DEC1_degree, transform=ax.get_transform('fk5'), linewidths=1, marker="x", s=25,
-    #       color='r')
-    #ax.scatter(RA2_degree, DEC2_degree, transform=ax.get_transform('fk5'), linewidths=1, marker="x", s=25,
-    #       color='r')
-    #outdir = "/home/data0/lbq/inference_data/LAS_test"
-    #plt.savefig(os.path.join(outdir, pngs[m]))
-    #plt.clf() 
+    RPA = PositionAngle(RA1_degree, DEC1_degree, RA2_degree, DEC2_degree)
+    if RPA < 0:
+       RPA += 180.
+    RPA_all.append(RPA)
 
-
-hetu_csv['LAS'] = LAS 
+hetu_csv['RPA'] = RPA_all 
 hetu_csv.to_csv('/home/data0/lbq/RGC-Mask-Transfiner/FIRST_results/FIRST_HeTu_paper_fr2_flux_fixed_vlass.csv', index = False)

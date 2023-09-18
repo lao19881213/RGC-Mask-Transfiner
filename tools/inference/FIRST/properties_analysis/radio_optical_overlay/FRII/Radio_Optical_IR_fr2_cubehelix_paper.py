@@ -93,10 +93,10 @@ with open(paper_list, 'r') as f:
                 host_icrs = SkyCoord(ra=host_ra*u.degree, dec=host_dec*u.degree, frame='icrs') 
                 host_fk5 = host_icrs.transform_to('fk5')
                 f.show_markers(host_fk5.ra.value, host_fk5.dec.value, edgecolor='b', facecolor='b',
-                                marker='x', s=100, zorder=6)#, alpha=-0.5)
+                                marker='x', s=150, zorder=6)#, alpha=-0.5)
                 
                 source_name = sdss_names[m].split(' ')[1][0:5] + sdss_names[m].split(' ')[1][10:15]
-                f.set_title(source_name, size=24, fontname = 'serif') 
+                f.set_title(r'%s$%s$%s' % (source_name[0:5], source_name[5], source_name[6:11]), size=24)#fontname = 'serif') 
                 f.axis_labels.set_xtext('Right Ascension (J2000)')
                 f.axis_labels.set_ytext('Declination (J2000)')
                 f.axis_labels.set_font(size=28, weight='medium', stretch='normal', family='sans-serif', style='normal', variant='normal')
