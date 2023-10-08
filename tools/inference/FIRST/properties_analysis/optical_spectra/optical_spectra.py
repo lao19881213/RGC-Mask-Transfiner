@@ -60,6 +60,7 @@ nii_6584_flux_final = []
 sii_6717_flux_final = []
 sii_6731_flux_final = []
 h_beta_flux_final = []
+oi_6300_flux_final = []
 eqw_oiii_final = []
 lum_oiii_final = []
 vdisp_final = [] 
@@ -188,7 +189,8 @@ for m in range(len(source_names)):
                       TOP 1 nii_6584_flux, nii_6584_flux_err, \
                       sii_6717_flux, sii_6717_flux_err, \
                       sii_6731_flux, sii_6731_flux_err, \
-                      h_beta_flux, h_beta_flux_err \
+                      h_beta_flux, h_beta_flux_err, \
+                      oi_6300_flux, oi_6300_flux_err \
                       FROM GalSpecLine AS g  JOIN SpecObj AS s  ON s.specobjid = g.specobjid \
                       WHERE s.specobjid = %s" % (xid['specobjid'][mm])
               results_1 = SDSS.query_sql(query, data_release=16)
@@ -197,10 +199,12 @@ for m in range(len(source_names)):
                  sii_6717_flux_final.append(results_1['sii_6717_flux'][0])
                  sii_6731_flux_final.append(results_1['sii_6731_flux'][0])
                  h_beta_flux_final.append(results_1['h_beta_flux'][0])
+                 oi_6300_flux_final.append(results_1['oi_6300_flux'][0])
                  print('flux of nii_6584_flux from database -> ', results_1['nii_6584_flux'][0])
                  print('flux of sii_6717_flux from database -> ', results_1['sii_6717_flux'][0])
                  print('flux of sii_6731_flux from database -> ', results_1['sii_6731_flux'][0])
                  print('flux of h_beta_flux from database -> ', results_1['h_beta_flux'][0])
+                 print('flux of oi_6300_flux from database -> ', results_1['oi_6300_flux'][0])
                  results_y_2 = 1 
                  break
               else:
@@ -210,6 +214,7 @@ for m in range(len(source_names)):
               sii_6717_flux_final.append('--')
               sii_6731_flux_final.append('--')
               h_beta_flux_final.append('--')
+              oi_6300_flux_final.append('--')
           #Method 2 
           float_lam = 10**spectra_data['loglam'] 
           int_lam =  float_lam.astype(np.int64)
@@ -393,6 +398,7 @@ for m in range(len(source_names)):
           sii_6717_flux_final.append('--')
           sii_6731_flux_final.append('--')
           h_beta_flux_final.append('--')
+          oi_6300_flux_final.append('--')
     else:
        z_final.append('--')
        photo_z_final.append('--')
@@ -414,6 +420,7 @@ for m in range(len(source_names)):
        sii_6717_flux_final.append('--')
        sii_6731_flux_final.append('--')
        h_beta_flux_final.append('--')
+       oi_6300_flux_final.append('--')
        photo_kcorr_r_final.append('--')
        photo_absMag_r_final.append('--')
 
@@ -439,6 +446,7 @@ hetu_csv['dn4000_err'] = dn4000_err_final
 hetu_csv['nii_6584_flux'] = nii_6584_flux_final
 hetu_csv['sii_6717_flux'] = sii_6717_flux_final
 hetu_csv['sii_6731_flux'] = sii_6731_flux_final
-hetu_csv['h_beta_flux'] = h_beta_flux_final 
+hetu_csv['h_beta_flux'] = h_beta_flux_final
+hetu_csv['oi_6300_flux'] = oi_6300_flux_final 
 hetu_csv.to_csv('/home/data0/lbq/RGC-Mask-Transfiner/FIRST_results/FIRST_HeTu_paper_fr2_sdss_ned_flux_fixed_vlass_optical_spectra.csv', index = False)
 

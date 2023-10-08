@@ -67,9 +67,10 @@ with open(paper_list, 'r') as f:
                 f.show_colorscale(vmin=0.0, smooth=3, cmap=cubehelix.cmap(reverse=True))
                 
                 rms =0.9* np.median(abs(img-np.median(img)))
+                print('rms first ->', rms)
                 #Plot the image in contours: 3 or 5
-                levs_positive = 3*rms*np.array([1,np.sqrt(2),2,np.sqrt(2)*2,4,4*np.sqrt(2),8,8*np.sqrt(2),16,16*np.sqrt(2),32,32*np.sqrt(2),64,64*np.sqrt(2),128,128*np.sqrt(2),256,256*np.sqrt(2)])
-                levs_negative = 3*rms*np.array([-1])
+                levs_positive = 5*rms*np.array([1,np.sqrt(2),2,np.sqrt(2)*2,4,4*np.sqrt(2),8,8*np.sqrt(2),16,16*np.sqrt(2),32,32*np.sqrt(2),64,64*np.sqrt(2),128,128*np.sqrt(2),256,256*np.sqrt(2)])
+                levs_negative = 5*rms*np.array([-1])
                 
                 f.show_contour(temp,dimensions=[0,1],colors='red',zorder=5,levels=levs_positive,slices=[0])#, alpha=0.3)
                 #bounding box

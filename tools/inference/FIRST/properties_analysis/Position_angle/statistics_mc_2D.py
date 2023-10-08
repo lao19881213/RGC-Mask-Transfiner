@@ -1,5 +1,9 @@
+'''
+The original code from https://github.com/ErikOsinga/MRP1,
+developed by Erik Osinga.
+'''
 import sys
-sys.path.insert(0,'/net/reusel/data1/osinga/anaconda2')
+#sys.path.insert(0,'/net/reusel/data1/osinga/anaconda2')
 
 import numpy as np 
 import numexpr as ne
@@ -22,10 +26,14 @@ from general_statistics import (select_flux_bins1, select_size_bins1
 
 from astropy.io import ascii
 
+from matplotlib.ticker import (MultipleLocator, FormatStrFormatter,
+                               AutoMinorLocator)
+import pandas as pd
+
 parallel_transport = True
 print ('Using parallel_transport = %s' %parallel_transport)
 
-position_angle = sys.argv[2]
+position_angle = 'False' #sys.argv[2]
 if position_angle == 'True':
 	position_angle = True
 else:
@@ -33,7 +41,7 @@ else:
 if position_angle:
 	print ('Using position_angle')
 else: 
-	print ('Using final_PA')
+	print ('Using RPA')
 
 def histedges_equalN(x, nbin):
 	"""
@@ -171,32 +179,60 @@ def Sn_vs_n(tdata,Sn_mc,Sn_data,filename,angular_radius,ending_n=180):
 		Results.write('./data/2D/Statistics_'+filename+'_results.fits',overwrite=True)
 	
 	try:
-		fig, axarr = plt.subplots(2, sharex=True, gridspec_kw= {'height_ratios':[3, 1]})
-		axarr[0].plot(range(starting_n,ending_n+1),np.log10(all_sl))
+		#fig, axarr = plt.subplots(2, sharex=True, gridspec_kw= {'height_ratios':[3, 1]})
+                plt.figure()
+                ax = plt.gca()
+                ax.plot(range(starting_n,ending_n+1),np.log10(all_sl))
 		# print np.argmin(all_sl)
-		axarr[0].set_title('SL vs n for '+filename+'\n\n')
-		axarr[0].set_ylabel(r'$\log_{10}$ SL')
-		axarr[0].set_xlim(2,n)
-		axarr[0].set_ylim(-2.5,0)
-		
-		if angular_radius is not None:
-			ax2 = axarr[0].twiny()
-			ax2.set_xlabel('angular_radius (degrees)')
-			xticks = axarr[0].get_xticks()
-			ax2.set_xticks(xticks)
-			print (np.asarray(xticks,dtype='int'))
-			xticks2 = np.append(0,angular_radius)[np.asarray(xticks,dtype='int')]
-			ax2.set_xticklabels(tick_function(xticks2))
-		plt.subplots_adjust(top=0.850)	
+		#ax.set_title('SL vs n for '+filename+'\n\n')
+                ax.set_ylabel(r'log(SL)', fontsize=16)
+                ax.set_xlim(0,n) #2
+                ax.set_ylim(-6.0,0)
 
-		axarr[1].plot(range(starting_n,ending_n+1),all_std)
-		axarr[1].set_xlabel('n')
-		axarr[1].set_ylabel('sigma')
+                if angular_radius is not None:
+                   ax2 = ax.twiny()
+                   ax2.set_xlabel('Angular scale (deg)', fontsize=16)
+                   xticks = ax.get_xticks()
+                   ax2.set_xticks(xticks)
+                   print (np.asarray(xticks,dtype='int'))
+                   xticks2 = np.append(0,angular_radius)[np.asarray(xticks,dtype='int')]
+                   ax2.set_xticklabels(tick_function(xticks2))
+                   ax2.tick_params(labelsize=12)
+                   ax2.xaxis.set_minor_locator(AutoMinorLocator())
+                   ax2.yaxis.set_minor_locator(AutoMinorLocator())
+                   ax2.tick_params(which='both', width=2)
+                   ax2.tick_params(which='major', length=7)
+                   ax2.tick_params(which='minor', length=4, color='k')
 
-		if parallel_transport:
-			plt.savefig('./figures/2D/SL_vs_n_PT'+filename+'.png',overwrite=True)
-		else:
-			plt.savefig('./figures/2D/SL_vs_n_'+filename+'.png',overwrite=True)
+                   ax2.tick_params(axis="x", direction="in")
+                   ax2.tick_params(axis="y", direction="in")
+                   ax2.tick_params(which="minor", axis="x", direction="in")
+                   ax2.tick_params(which="minor", axis="y", direction="in")
+		#plt.subplots_adjust(top=0.850)	
+
+		#axarr[1].plot(range(starting_n,ending_n+1),all_std)
+                ax.set_xlabel('$n$', fontsize=16)
+		#axarr[1].set_ylabel('sigma')
+                ax.tick_params(labelsize=16)
+                #plt.yscale('log')
+                #ax1.set_xlim(-1.1,3.1)
+                #ax.set_ylim(22,31)
+                #a1.set_ylabel('Number', fontsize=16)
+                #ax.set_xticks([0,200,400,600,800,1000,1200,1400,1600])
+                ax.xaxis.set_minor_locator(AutoMinorLocator())
+                ax.yaxis.set_minor_locator(AutoMinorLocator())
+                ax.tick_params(which='both', width=2)
+                ax.tick_params(which='major', length=7)
+                ax.tick_params(which='minor', length=4, color='k')
+
+                ax.tick_params(axis="x", direction="in")
+                ax.tick_params(axis="y", direction="in")
+                ax.tick_params(which="minor", axis="x", direction="in")
+                ax.tick_params(which="minor", axis="y", direction="in")
+                if parallel_transport:
+                        plt.savefig('./figures/2D/SL_vs_n_PT'+filename+'.pdf')#,overwrite=True)
+                else:
+                        plt.savefig('./figures/2D/SL_vs_n_'+filename+'.pdf')#,overwrite=True)
 
 	except IndexError: # try again, but with xlim on n -= 60
 		print ('Index error, setting n-=100')
@@ -236,73 +272,91 @@ def Sn_vs_n(tdata,Sn_mc,Sn_data,filename,angular_radius,ending_n=180):
 	plt.close()
 
 def angular_radius_vs_n(tdata,filename,n=180,starting_n=2):
-	"""
+        """
 	Make a plot of the angular separation vs the amount of neighbours n
-	"""
+        """
 	# hard fix for when n > amount of sources in a bin 
-	if n > len(tdata):
-		print ('Announcement about %s'%filename)
-		print ('n = %i, but this bin only contains N=%i sources'%(n,len(tdata)))
-		n = len(tdata)-1
-		print ('Setting n=%i'%n)
+        if n > len(tdata):
+           print ('Announcement about %s'%filename)
+           print ('n = %i, but this bin only contains N=%i sources'%(n,len(tdata)))
+           n = len(tdata)-1
+           print ('Setting n=%i'%n)
 
-	n_range = range(starting_n,n+1) 
+        n_range = range(starting_n,n+1) 
 
-	N = len(tdata)
-	RAs = np.asarray(tdata['RA'])
-	DECs = np.asarray(tdata['DEC'])
-	position_angles = np.asarray(tdata['final_PA'])
+        N = len(tdata)
+        RAs = np.asarray(tdata['RA'])
+        DECs = np.asarray(tdata['DEC'])
+        position_angles = np.asarray(tdata['RPA'])
 
 	#convert RAs and DECs to an array that has following layout: [[x1,y1,z1],[x2,y2,z2],etc]
-	x = np.cos(np.radians(RAs)) * np.cos(np.radians(DECs))
-	y = np.sin(np.radians(RAs)) * np.cos(np.radians(DECs))
-	z = np.sin(np.radians(DECs))
-	coordinates = np.vstack((x,y,z)).T
+        x = np.cos(np.radians(RAs)) * np.cos(np.radians(DECs))
+        y = np.sin(np.radians(RAs)) * np.cos(np.radians(DECs))
+        z = np.sin(np.radians(DECs))
+        coordinates = np.vstack((x,y,z)).T
 	
 	#make a KDTree for quick NN searching	
-	coordinates_tree = cKDTree(coordinates,leafsize=16)
+        coordinates_tree = cKDTree(coordinates,leafsize=16)
 
-	# for every source: find n closest neighbours, calculate median dist to furthest
-	furthest_nearestN = np.zeros((N,n),dtype='int') # array of shape (N,n) that contains index of furthest_nearestN
-	for i in range(N):
-		indices = coordinates_tree.query(coordinates[i],k=n,p=2)[1] # include source itself
-		furthest_nearestN[i] = indices
-		# source = [RAs[i],DECs[i]]
+	# for every source: find n closest neighbours, calculate median dist to furthes
+        furthest_nearestN = np.zeros((N,n),dtype='int') # array of shape (N,n) that contains index of furthest_nearestN
+        for i in range(N):
+            indices = coordinates_tree.query(coordinates[i],k=n,p=2)[1] # include source itself
+            furthest_nearestN[i] = indices
+            # source = [RAs[i],DECs[i]]
 
-	temp = np.arange(0,N).reshape(N,1) - np.zeros(n,dtype='int') # Array e.g.
+        temp = np.arange(0,N).reshape(N,1) - np.zeros(n,dtype='int') # Array e.g.
 		# to make sure we calc the distance between				#[[0,0,0,0],
 		# the current source and the neighbours					#[[1,1,1,1]]
-	distance = distanceOnSphere(RAs[temp],DECs[temp]
+        distance = distanceOnSphere(RAs[temp],DECs[temp]
 						,RAs[furthest_nearestN],DECs[furthest_nearestN])
-	
-	median = np.median(distance,axis=0)
-	# std = np.std(distance,axis=0)
+      
+        median = np.median(distance,axis=0)
+        # std = np.std(distance,axis=0)
 
-	assert median.shape == (n,) # array of the median of (the distance to the furthest 
-								# neighbour n for all sources), for every n. 
-
-	plt.plot(n_range,median[starting_n-1:]) # index 1 corresponds to n=2
-	plt.title('Angular radius vs n for ' + filename)
-	plt.ylabel('Median angular radius (deg)')
-	plt.xlabel('n')
-	# plt.savefig('/data1/osinga/figures/statistics/show/angular_radius_vs_n_'+filename+'.png',overwrite=True)
+        assert median.shape == (n,) # array of the median of (the distance to the furthest 
+                                    # neighbour n for all sources), for every n. 
+        plt.figure()
+        ax = plt.gca() 
+        plt.plot(n_range,median[starting_n-1:]) # index 1 corresponds to n=2
+	#plt.title('Angular radius vs n for ' + filename)
+        ax.set_ylabel('Median angular radius (deg)', fontsize=16)
+        ax.set_xlabel('$n$', fontsize=16)
+        ax.tick_params(labelsize=16)
+        #plt.yscale('log')
+        #ax1.set_xlim(-1.1,3.1)
+        #ax.set_ylim(22,31)
+        #a1.set_ylabel('Number', fontsize=16)
+        #ax.set_xticks([0,200,400,600,800,1000,1200,1400,1600])
+        ax.xaxis.set_minor_locator(AutoMinorLocator())
+        ax.yaxis.set_minor_locator(AutoMinorLocator())
+        ax.tick_params(which='both', width=2)
+        ax.tick_params(which='major', length=7)
+        ax.tick_params(which='minor', length=4, color='k')
+        
+        ax.tick_params(axis="x", direction="in")
+        ax.tick_params(axis="y", direction="in")
+        ax.tick_params(which="minor", axis="x", direction="in")
+        ax.tick_params(which="minor", axis="y", direction="in")
+   
+        plt.savefig('./figures/2D/angular_radius_vs_n_'+filename+'.pdf') #,overwrite=True)
 	# plt.savefig('./figures/angular_radius_vs_n_'+filename+'.png',overwrite=True)
-	plt.close()
-		
-	return median
+        plt.close()
+
+        return median
 
 def statistics(filename,tdata,redshift=False):
 	if parallel_transport:
 		if n < 998:
 			Sn_mc = Table(fits.open('./data/2D/Sn_monte_carlo_PT'+filename+'.fits')[1].data)
 		else: 
-			Sn_mc = ascii.read('./data/2D/Sn_monte_carlo_PT'+filename+'.csv')
+			Sn_mc = ascii.read('./data/2D/Sn_monte_carlo_PT'+filename+'_%d.csv' % n)
 
 	else:
 		if n < 998:
 			Sn_mc = Table(fits.open('./data/2D/Sn_monte_carlo_'+filename+'.fits')[1].data)
 		else:
-			Sn_mc = ascii.read('./data/2D/Sn_monte_carlo_'+filename+'.csv')
+			Sn_mc = ascii.read('./data/2D/Sn_monte_carlo_'+filename+'_%d.csv' % n)
 	# calculate angular radius for number of nn, 
 	angular_radius = angular_radius_vs_n(tdata,filename,n)
 	if parallel_transport:
@@ -311,219 +365,62 @@ def statistics(filename,tdata,redshift=False):
 		Sn_data = angular_dispersion_vectorized_n(tdata,n,redshift)
 	Sn_vs_n(tdata,Sn_mc,Sn_data,filename,angular_radius,n)
 
-n = 800
+n = 1600
 
 if __name__ == '__main__':
 
-	'''
-	#Running just one file
-
-	filename = sys.argv[1]
-	print (filename)
-	tdata = Table(fits.open('../%s.fits'%filename)[1].data)
-	tdata['RA'] = tdata['RA_2']
-	tdata['DEC'] = tdata['DEC_2']
-
-	print ('Using redshift.., but only for selecting sources') ## edited for not actually using z
-	z_available = np.invert(np.isnan(tdata['z_best']))
-	z_zero = tdata['z_best'] == 0#
-	# also remove sources with redshift 0, these dont have 3D positions
-	z_available = np.logical_xor(z_available,z_zero)
-	print ('Number of sources with available redshift:', np.sum(z_available))
-	filename += '_redshift_' ## edited for not actually using z
-
-	tdata_original = tdata
-	filename_original = filename
-
-	filename += '_astropy'
-
-	# fluxbins1 = select_flux_bins1(tdata_original)
-	# tdata = fluxbins1['2']
-	# fluxbins11 = select_flux_bins11(tdata_original)
-	# tdata = fluxbins11
-	# filename = filename_original + 'flux2'
-	tdata = tdata[z_available]
-	statistics(filename,tdata)
-	'''
-
-	
 	#Running all the statistics without redshift
-	redshift = False
-	equal_width = False # If equal_width is false use the same flux and size cuts as the initial subsample
+        redshift = False
+        equal_width = False # If equal_width is false use the same flux and size cuts as the initial subsample
 
-	filename = sys.argv[1]
-	print (filename)
-	tdata = Table(fits.open('../%s.fits'%filename)[1].data)
-	if position_angle: tdata['final_PA'] = tdata['position_angle'] # overwrite to use 'position_angle' only
+        results_dir = '/home/data0/lbq/RGC-Mask-Transfiner/FIRST_results'
+        filename = 'FRIIRGcat_final'#sys.argv[1]
+        print(filename)
+        tdata1 = pd.read_csv('%s/%s.csv' % (results_dir, filename)) #Table(fits.open('../%s.fits'%filename)[1].data)
+        tdata2 = tdata1[tdata1['RA']>=90]
+        tdata = tdata2[tdata2['RA']<=270]
+        print('data length -->', len(tdata))
+	#filename = sys.argv[1]
+	#filenamprint (filename)
+	#filenamtdata = Table(fits.open('../%s.fits'%filename)[1].data)
+	#filenamif position_angle: tdata['RPA'] = tdata['position_angle'] # overwrite to use 'position_angle' only
 
-	if position_angle: filename += '_PA' # only when using 'position_angle'
+	#filenamif position_angle: filename += '_PA' # only when using 'position_angle'
 
-	try:
-		tdata['RA'] = tdata['RA_2']
-		tdata['DEC'] = tdata['DEC_2']
-	except KeyError:
-		pass # then we're doing biggest_selection
-
-
-	tdata_original = tdata
-	filename_original = filename
-
-	statistics(filename,tdata,redshift)
-
-
-	if equal_width: 
-		fluxbins = select_flux_bins1(tdata_original)
-	else:
-		fluxbins = select_flux_bins_cuts_biggest_selection(tdata_original)
-	for key in fluxbins:
-		tdata = fluxbins[key]
-		filename = filename_original + 'flux%s'%key
-		
-		statistics(filename,tdata,redshift)
-
-	if equal_width:
-		sizebins = select_size_bins1(tdata_original)
-	else:
-		sizebins = select_size_bins_cuts_biggest_selection(tdata_original)
-	for key in sizebins:
-		tdata = sizebins[key]
-		filename = filename_original + 'size%s'%key
-		
-		if len(tdata) != 0:
-			statistics(filename,tdata,redshift)
-		else:
-			print ('This bin contains 0 sources:')
-			print (filename)
-
-	# fluxbins11 = select_flux_bins11(tdata_original)
-	# tdata = fluxbins11
-	# filename = filename_original + 'flux11'
-
-	# statistics(filename,tdata,redshift)
-	
-
-	'''
-	#Running all the statistics with redshift
-	redshift = True 
-
-	filename = sys.argv[1]
-	print (filename)
-	tdata = Table(fits.open('../%s.fits'%filename)[1].data)
-	if position_angle: tdata['final_PA'] = tdata['position_angle'] # overwrite to use 'position_angle' only
-	tdata['RA'] = tdata['RA_2']
-	tdata['DEC'] = tdata['DEC_2']
-
-	print ('Using redshift..')
-	z_available = np.invert(np.isnan(tdata['z_best']))
-	z_zero = tdata['z_best'] == 0#
-	# also remove sources with redshift 0, these dont have 3D positions
-	z_available = np.logical_xor(z_available,z_zero)
-	print ('Number of sources with available redshift:', np.sum(z_available))
-	# filename += '_only_redshift_sources_' ## edited for not actually using z
-	if position_angle: filename += '_PA' # only when using 'position_angle'
-	filename += '_redshift_'
-
-	tdata_original = tdata
-	filename_original = filename
-
-	tdata = tdata[z_available]
-
-	tdata_original = tdata # use redshift data for power bins and size bins !!
-	statistics(filename,tdata,redshift)
+	#filenamtry:
+	#filenam	tdata['RA'] = tdata['RA_2']
+	#filenam	tdata['DEC'] = tdata['DEC_2']
+	#filenamexcept KeyError:
+	#	pass # then we're doing biggest_selection
 
 
-	fluxbins = select_power_bins(tdata_original)
-	for key in fluxbins:
-		tdata = fluxbins[key]
-		filename = filename_original + 'power%s'%key
-		
-		z_available = np.invert(np.isnan(tdata['z_best']))
-		z_zero = tdata['z_best'] == 0#
-		# also remove sources with redshift 0, these dont have 3D positions
-		z_available = np.logical_xor(z_available,z_zero)
-		print ('Number of sources with available redshift:', np.sum(z_available))
-		tdata = tdata[z_available]
+        tdata_original = tdata
+        filename_original = filename
 
-		statistics(filename,tdata,redshift)
-
-	sizebins = select_physical_size_bins(tdata_original)
-	for key in sizebins:
-		tdata = sizebins[key]
-		filename = filename_original + 'physicalsize%s'%key
-		
-		z_available = np.invert(np.isnan(tdata['z_best']))
-		z_zero = tdata['z_best'] == 0#
-		# also remove sources with redshift 0, these dont have 3D positions
-		z_available = np.logical_xor(z_available,z_zero)
-		print ('Number of sources with available redshift:', np.sum(z_available))
-		tdata = tdata[z_available]
-
-		statistics(filename,tdata,redshift)
+        statistics(filename,tdata,redshift)
 
 
-	#Running all the statistics with redshift, but not using redshift
-	redshift = False
+	#if equal_width: 
+	#	fluxbins = select_flux_bins1(tdata_original)
+	#else:
+	#	fluxbins = select_flux_bins_cuts_biggest_selection(tdata_original)
+	#for key in fluxbins:
+	#	tdata = fluxbins[key]
+	#	filename = filename_original + 'flux%s'%key
+	#	
+	#	statistics(filename,tdata,redshift)
 
-	filename = sys.argv[1]
-	print (filename)
-	tdata = Table(fits.open('../%s.fits'%filename)[1].data)
-	if position_angle: tdata['final_PA'] = tdata['position_angle'] # overwrite to use 'position_angle' only
-	tdata['RA'] = tdata['RA_2']
-	tdata['DEC'] = tdata['DEC_2']
+	#if equal_width:
+	#	sizebins = select_size_bins1(tdata_original)
+	#else:
+	#	sizebins = select_size_bins_cuts_biggest_selection(tdata_original)
+	#for key in sizebins:
+	#	tdata = sizebins[key]
+	#	filename = filename_original + 'size%s'%key
+	#	
+	#	if len(tdata) != 0:
+	#		statistics(filename,tdata,redshift)
+	#	else:
+	#		print ('This bin contains 0 sources:')
+	#		print (filename)
 
-	print ('Using redshift.. but only for selection')
-	z_available = np.invert(np.isnan(tdata['z_best']))
-	z_zero = tdata['z_best'] == 0#
-	# also remove sources with redshift 0, these dont have 3D positions
-	z_available = np.logical_xor(z_available,z_zero)
-	print ('Number of sources with available redshift:', np.sum(z_available))
-	if position_angle: filename += '_PA' # only when using 'position_angle'
-	filename += '_only_redshift_sources_' ## edited for not actually using z
-
-	tdata_original = tdata
-	filename_original = filename
-
-	tdata = tdata[z_available]
-
-	tdata_original = tdata # use redshift data for power bins and size bins !!
-	statistics(filename,tdata,redshift)
-
-
-	fluxbins = select_power_bins(tdata_original)
-	for key in fluxbins:
-		tdata = fluxbins[key]
-		filename = filename_original + 'power%s'%key
-		
-		z_available = np.invert(np.isnan(tdata['z_best']))
-		z_zero = tdata['z_best'] == 0#
-		# also remove sources with redshift 0, these dont have 3D positions
-		z_available = np.logical_xor(z_available,z_zero)
-		print ('Number of sources with available redshift:', np.sum(z_available))
-		tdata = tdata[z_available]
-
-		statistics(filename,tdata,redshift)
-
-	sizebins = select_physical_size_bins(tdata_original)
-	for key in sizebins:
-		tdata = sizebins[key]
-		filename = filename_original + 'physicalsize%s'%key
-		
-		z_available = np.invert(np.isnan(tdata['z_best']))
-		z_zero = tdata['z_best'] == 0#
-		# also remove sources with redshift 0, these dont have 3D positions
-		z_available = np.logical_xor(z_available,z_zero)
-		print ('Number of sources with available redshift:', np.sum(z_available))
-		tdata = tdata[z_available]
-
-		statistics(filename,tdata,redshift)
-
-	# fluxbins11 = select_flux_bins11(tdata_original)
-	# tdata = fluxbins11
-	# filename = filename_original + 'flux11'
-
-	# z_available = np.invert(np.isnan(tdata['z_best']))
-	# print ('Number of sources with available redshift:', np.sum(z_available))
-	# tdata = tdata[z_available]
-
-	# statistics(filename,tdata,redshift)
-	'''
