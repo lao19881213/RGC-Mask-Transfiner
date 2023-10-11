@@ -207,7 +207,7 @@ for mm in range(len(objns)):
        z_final.append(np.nan)
        f_z_final.append(' ')  
     #RPA
-    RPA_final.append(float(RPAs[mm]))       
+    RPA_final.append(round(float(RPAs[mm]), 1))       
     #LAS 
     LAS_final.append(round(float(LASs[mm])*60.0))
     #flux density

@@ -38,17 +38,18 @@ plt.figure()
 ax1 = plt.gca()
 class_H_Lrad = []
 class_H_LOIII= []
+#10^7 erg s^-1 = 1 W
 for mm in range(len(OIII_rad_class['class'].values)):
     if class_hl[mm] == 'LERG':
-       plt.plot(Lrad[mm], L_OIII[mm], 'o', markerfacecolor='None', markeredgecolor='g', zorder=0)#, markersize=4)
+       plt.plot(Lrad[mm]+7, L_OIII[mm], 'o', markerfacecolor='None', markeredgecolor='g', zorder=0)#, markersize=4)
     elif class_hl[mm] == 'HERG':
-       plt.plot(Lrad[mm], L_OIII[mm], 'o', markerfacecolor='None', markeredgecolor='m', zorder=1)#, markersize=4)
+       plt.plot(Lrad[mm]+7, L_OIII[mm], 'o', markerfacecolor='None', markeredgecolor='m', zorder=1)#, markersize=4)
        class_H_Lrad.append(Lrad[mm])
        class_H_LOIII.append(L_OIII[mm])
 
 p0 = [1, 20]
 
-X = np.array(class_H_Lrad)
+X = np.array(class_H_Lrad) + 7
 Y = np.array(class_H_LOIII)
 
 Para = leastsq(error, p0, args=(X, Y))
@@ -56,7 +57,7 @@ Para = leastsq(error, p0, args=(X, Y))
 k, b = Para[0]
 print("k=", k, "b=", b)
 
-x = np.linspace(22.0, 29.0, 100)  #
+x = np.linspace(29.0, 36.0, 100)  #
 y = k*x+b  # 
 ax1.plot(x, y, "b--", label="NH", linewidth=2)
 
@@ -80,10 +81,10 @@ print(ticks_loc, ax1.get_xticks().tolist())
 #ax1.set_xticklabels([])
 ax1.tick_params(labelsize=16)
 #plt.yscale('log')
-ax1.set_xlim(22.5,29)
+ax1.set_xlim(29.5,36)
 #ax1.set_ylim(-1.7,4.3)
 #ax1.set_xticks([-28, -26, -24, -22, -20, -18, -16, -14])
-ax1.set_xlabel(r'log($L_{\rm rad}$) (${\rm W} \cdot {\rm Hz}^{-1}$)', fontsize=16)
+ax1.set_xlabel(r'log($L_{\rm rad}$) (${\rm erg} \cdot {\rm s}^{-1} \cdot {\rm Hz}^{-1}$)', fontsize=16)
 ax1.set_ylabel(r'log($L_{\rm [OIII]}$) (${\rm erg} \cdot {\rm s}^{-1}$)', fontsize=16)
 ax1.xaxis.set_minor_locator(AutoMinorLocator())
 ax1.yaxis.set_minor_locator(AutoMinorLocator())
