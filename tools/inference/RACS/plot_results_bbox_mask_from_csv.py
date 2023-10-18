@@ -36,7 +36,7 @@ out_dir = args.out_dir
 cls = ['cs','fr1','fr2','ht','cj']
 
 csv_hetu = pandas.read_csv(results)
-imagefiles = csv_hetu['imagefilename'].values
+imagefiles = csv_hetu['image_filename'].values
 labels = csv_hetu['label'].values
 scores = csv_hetu['score'].values
 boxs = csv_hetu['box'].values

@@ -3,18 +3,19 @@
 source /home/data0/lbq/RGC-Mask-Transfiner/bashrc_gznu
 export PATH=/home/data0/lbq/software/miriad/linux64/bin:$PATH
 
-IMG_FILES="/home/data0/lbq/inference_data/ASKAP_RACS/image_cubes/fits_test.txt"
+IMG_FILES="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid/part1_fits_fixed.txt"
 
 
-DATA_DIR="/home/data0/lbq/inference_data/ASKAP_RACS"
+DATA_DIR="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid"
 
 
 for fn in `cat $IMG_FILES`;
 do
-    FIST_DIR="${DATA_DIR}/RACS-DR1_${fn}_split_fits_png"
+    SBID=${fn: 21:7}
+    FIST_DIR="${DATA_DIR}/${SBID}_split_fits_png"
     
-    LIST_FILE="${DATA_DIR}/RACS-DR1_${fn}.txt"
-    MIR_DIR="RACS-DR1_${fn}_split_mir"
+    LIST_FILE="${DATA_DIR}/${SBID}.txt"
+    MIR_DIR="${SBID}_split_mir"
     
     if [ ! -d "${DATA_DIR}/${MIR_DIR}" ];then
        mkdir -p ${DATA_DIR}/${MIR_DIR}

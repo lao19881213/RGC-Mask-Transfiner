@@ -21,8 +21,8 @@ do
 
     mpirun -np 1 python generate_rms_files.py \
         --inpdir $DATA_DIR/RACS-DR1_${fn}_split_fits_png \
-        --outdir $RMS_DIR \
-        --fitslists $DATA_DIR/RACS-DR1_${fn}.txt
+        --outdir $RMS_DIR 
+        #--fitslists $DATA_DIR/RACS-DR1_${fn}.txt
 
 done
 

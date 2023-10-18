@@ -1,20 +1,20 @@
 #!/bin/bash
 
 
-IMG_FILES="/home/data0/lbq/inference_data/ASKAP_RACS/image_cubes/fits_test.txt"
+IMG_FILES="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid/part1_fits_conv.txt"
 
 
-DATA_DIR="/home/data0/lbq/inference_data/ASKAP_RACS"
+DATA_DIR="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid"
 
 
 for fn in `cat $IMG_FILES`;
 do
-
-    FIST_DIR="${DATA_DIR}/RACS-DR1_${fn}_split_fits_png"
+    SBID=${fn: 21:7}
+    FIST_DIR="${DATA_DIR}/${SBID}_split_fits_png"
     cd $FIST_DIR    
-    LIST_FILE="${DATA_DIR}/RACS-DR1_${fn}.txt"
+    LIST_FILE="${DATA_DIR}/${SBID}.txt"
     ls *.fits > $LIST_FILE
-    LIST_FILE="${DATA_DIR}/RACS-DR1_${fn}_png.txt"
+    LIST_FILE="${DATA_DIR}/${SBID}_png.txt"
     ls *.png > $LIST_FILE
 
 done

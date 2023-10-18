@@ -292,7 +292,7 @@ if __name__ == "__main__":
          linecount=len(file.readlines())
     
     if not no_source_finding:
-       tags.append("objectname,imagefilename,label,score,box,mask,local_rms,peak_flux,err_peak_flux,int_flux,err_int_flux,ra,dec,centre_ra,centre_dec,major,err_major,minor,err_minor,pa,err_pa,deconv_major,deconv_minor,deconv_pa")
+       tags.append("source_name,image_filename,label,score,box,mask,local_rms,peak_flux,err_peak_flux,int_flux,err_int_flux,ra,dec,centre_ra,centre_dec,major,err_major,minor,err_minor,pa,err_pa,deconv_major,deconv_minor,deconv_pa")
     else:
        tags.append("imagefilename,label,score,box,mask")
     if args.input:
@@ -486,7 +486,13 @@ if __name__ == "__main__":
                          ra = peak_ra#np.nan #'None'
                          dec = peak_dec#np.nan #'None' 
                          err_peak_flux = np.nan #'None'
-                         int_flux = find_segm_flux(masks_re[:,:,k], os.path.join(input_dir, fits_file))
+                         total_flux = find_segm_flux(masks_re[:,:,k], os.path.join(input_dir, fits_file))
+                         if os.path.exists(os.path.join(rms_dir, os.path.splitext(imagefilename)[0] + "_bkg.fits")):
+                            bkg_fits = os.path.splitext(imagefilename)[0] + "_bkg.fits"
+                            bkg_flux = find_segm_flux(masks_re[:,:,k], os.path.join(rms_dir, bkg_fits))
+                            int_flux = total_flux - bkg_flux
+                         else:
+                            int_flux = total_flux
                          #find_segm_flux(instances.pred_masks[k], os.path.join(input_dir, fits_file)) #find_bbox_flux(box_str,os.path.join(input_dir, fits_file))#np.nan #'None' 
                          err_int_flux = np.nan #'None'  
                          major = np.nan #'None' 
