@@ -28,7 +28,7 @@ fits_dir = args.inpdir
 png_dir = args.outdir
 
 print(ds9_targets())
-d = DS9('7f000001:39380')
+d = DS9()
 
 file_nms = os.listdir(fits_dir)
 for fn in file_nms:

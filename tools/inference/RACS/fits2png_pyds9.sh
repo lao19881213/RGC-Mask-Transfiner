@@ -12,7 +12,7 @@ IMG_DIR="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid"
 #IMGS=([SB9287]='0.0000268' [SB9325]='0.0000255' [SB9351]='0.0000295' [SB9410]='0.0000258' [SB9434]='0.0000216' [SB9437]='0.0000258' [SB9442]='0.0000239' [SB9501]='0.0000246' [SB10083]='0.0000233' [SB10635]='0.0000248')
 
 #IMGS="0037-06A"
-IMG_FILES="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid/part1_fits_fixed.txt"
+IMG_FILES="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid/part1_test.txt" #fits_fixed_1.txt"
 
 for fn in `cat $IMG_FILES`;
 do
