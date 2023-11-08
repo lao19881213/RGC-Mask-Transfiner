@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-IMG_FILES="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid/part1_fits_conv.txt"
+IMG_FILES="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid/part1_fits_fixed.txt"
 
 
 DATA_DIR="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid"
