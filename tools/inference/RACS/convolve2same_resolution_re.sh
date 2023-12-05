@@ -7,9 +7,9 @@ IMG_DIR="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid"
 #bmaj_fnl="9.0" #arcsec 0.0025 deg `echo "$bmin*3600.0" | bc -l`
 #bmin_fnl="7.6" #arcsec 0.00211111111111111 deg
 #bpa_fnl="71.5" #deg 
-for id in {1..4};
+for id in {1..1};
 do
-IMG_FILES="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid/part${id}_fits.txt"
+IMG_FILES="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid/part${id}_fits_re.txt"
 
 for fn in `cat $IMG_FILES`;
 do
@@ -28,6 +28,7 @@ do
        #bmaj=`echo "$bmaj" | awk -F"E" 'BEGIN{OFMT="%10.10f"} {print $1 * (10 ^ $2)}'`
        bmaj=`echo "$bmaj*3600.0" | bc -l` # convert from deg to arcsec
        bmaj=`echo $bmaj | awk '{print ($0-int($0)<0.000001)?int($0):int($0)+1}'` # int
+       bmaj=$(($bmaj+1))
        bmin=`echo "scale=2; $bmaj/1.125" | bc`
        bmin=`echo $bmin | awk '{print ($0-int($0)<0.000001)?int($0):int($0)+1}'`
        

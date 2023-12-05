@@ -34,7 +34,7 @@ import pandas as pd
 
 # Parameters
 n_sim = 1000
-n = 1600 #800 #1600
+n = 600 #1600 #800 #1600
 n_cores = 4 #multiprocessing.cpu_count()
 
 parallel_transport = True
@@ -208,6 +208,7 @@ tdata1 = pd.read_csv('%s/%s.csv' % (results_dir, filename)) #Table(fits.open('..
 #	tdata['DEC'] = tdata['DEC_2']
 #except KeyError:
 #	pass # then we're doing biggest_selection
+tdata1 = tdata1[tdata1['LAS']>=80]
 tdata2 = tdata1[tdata1['RA']>=90]
 tdata = tdata2[tdata2['RA']<=270]
 print('data length -->', len(tdata))
