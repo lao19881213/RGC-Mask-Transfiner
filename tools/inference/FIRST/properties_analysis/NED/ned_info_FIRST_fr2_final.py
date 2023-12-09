@@ -61,8 +61,8 @@ for i in range(len(ra)):
           result_table = Ned.query_region(co, radius=0.00139 * u.deg, equinox='J2000.0')# J2000
           #print(result_table)
           result_table.sort(['Separation']) 
-          result_table_final = "{},{},{},{},{},{},{},{},{}".format(i,label[i],name,result_table['Object Name'][0],result_table['Type'][0],\
-                             result_table['Redshift'][0],result_table['Separation'][0],result_table['RA'][0],result_table['DEC'][0])
+          result_table_final = "{},{},{},{},{},{},{},{},{},{}".format(i,label[i],name,result_table['Object Name'][0],result_table['Type'][0],\
+                             result_table['Redshift'][0],result_table['Separation'][0],result_table['RA'][0],result_table['DEC'][0],result_table['Redshift Flag'][0])
           tags.append(result_table_final)
        except:
           print('Not found ', i)#name)
