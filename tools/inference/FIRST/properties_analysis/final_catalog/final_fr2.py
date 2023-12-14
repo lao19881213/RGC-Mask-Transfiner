@@ -88,6 +88,7 @@ decs = hetu_csv['centre_dec'].values
 image_filename = hetu_csv['image_filename'].values
 sdss_names = hetu_csv['SDSS16'].values
 NED_Redshifts = hetu_csv['NED_Redshift']
+z_fs = hetu_csv['NED_Redshift_flag']
 spec_z = hetu_csv['z']
 photo_z = hetu_csv['photo_z']
 RPAs = hetu_csv['RPA']#RPA_csv['RPA']#hetu_csv['RPA']
@@ -97,6 +98,7 @@ S_3 = hetu_csv['S_3GHz'].values
 alpha_3v1_4 = hetu_csv['alpha_3v1.4'].values
 NED_name = hetu_csv['NED_name'].values
 NED_RA = hetu_csv['NED_RA'].values
+NED_DEC = hetu_csv['NED_DEC'].values
 NED_DEC = hetu_csv['NED_DEC'].values
 dn4000s = hetu_csv['dn4000'].values
 Ci = hetu_csv['Ci'].values
@@ -185,12 +187,14 @@ for mm in range(len(objns)):
        Ref_final.append('HeTu')
        RA_deg_final.append(ras[mm])
        DEC_deg_final.append(decs[mm])
-     
     if spec_z[mm] != '--' and round(float(spec_z[mm]), 2) > 0.0:
        if round(float(spec_z[mm]), 2) > 4.0:
           if NED_Redshifts[mm] != '--' and round(float(NED_Redshifts[mm]), 2) > 0.0:
              z_final.append(round(float(NED_Redshifts[mm]), 2))
-             f_z_final.append('s')
+             if z_fs[mm] == 'SUN' or z_fs[mm] == 'SST' or z_fs[mm] == 'SMU' or z_fs[mm] == 'SLS' or z_fs[mm] == 'S1L':
+                f_z_final.append('s') 
+             else:
+                f_z_final.append('p')
           else:
              z_final.append(np.nan)
              f_z_final.append(' ')             
@@ -202,7 +206,10 @@ for mm in range(len(objns)):
        f_z_final.append('p')
     elif NED_Redshifts[mm] != '--' and (NED_name[mm] in NED_name_IR) and round(float(NED_Redshifts[mm]), 2) > 0.0:
        z_final.append(round(float(NED_Redshifts[mm]), 2))
-       f_z_final.append('s')
+       if z_fs[mm] == 'SUN' or z_fs[mm] == 'SST' or z_fs[mm] == 'SMU' or z_fs[mm] == 'SLS' or z_fs[mm] == 'S1L':
+          f_z_final.append('s') 
+       else:
+          f_z_final.append('p')
     else:
        z_final.append(np.nan)
        f_z_final.append(' ')  
@@ -246,7 +253,10 @@ for mm in range(len(objns)):
        M_BH_final.append(np.nan) 
     if lum_oiii[mm] != '--' and flux_oiii[mm] != '--':
        if float(flux_oiii[mm]) > 0.0:
-          lum_oiii_final.append(round(float(lum_oiii[mm]), 2))
+          if float(lum_oiii[mm]) < 48.0: #delete poor S/N data
+             lum_oiii_final.append(round(float(lum_oiii[mm]), 2))
+          else:
+             lum_oiii_final.append(np.nan)
        else:
           lum_oiii_final.append(np.nan)
     else: 
@@ -258,8 +268,8 @@ for mm in range(len(objns)):
     else:
        u_r_final.append(np.nan) 
     #class
-    if flux_oiii[mm] != '--' and flux_h_alpha[mm] != '--' and flux_nii_6584[mm] != '--' and flux_sii_6717[mm] != '--' and flux_h_beta[mm] != '--' and flux_oi_6300[mm] != '--':
-       if float(flux_oiii[mm]) > 0.0 and float(flux_h_alpha[mm]) > 0.0 and float(flux_nii_6584[mm]) > 0.0 and float(flux_sii_6717[mm]) > 0.0 and float(flux_h_beta[mm]) > 0.0 and float(flux_oi_6300[mm]) > 0.0:
+    if flux_oiii[mm] != '--' and flux_h_alpha[mm] != '--' and flux_nii_6584[mm] != '--' and flux_sii_6717[mm] != '--' and flux_h_beta[mm] != '--' and flux_oi_6300[mm] != '--' and lum_oiii[mm] != '--':
+       if float(flux_oiii[mm]) > 0.0 and float(flux_h_alpha[mm]) > 0.0 and float(flux_nii_6584[mm]) > 0.0 and float(flux_sii_6717[mm]) > 0.0 and float(flux_h_beta[mm]) > 0.0 and float(flux_oi_6300[mm]) > 0.0 and float(lum_oiii[mm]) < 48.0:
           EI = np.log10(float(flux_oiii[mm])/float(flux_h_beta[mm])) - 1.0/3.0*np.log10(float(flux_nii_6584[mm])/float(flux_h_alpha[mm])) + \
                np.log10(float(flux_sii_6717[mm])/float(flux_h_alpha[mm])) + np.log10(float(flux_oi_6300[mm])/float(flux_h_alpha[mm]))
           EI_final.append(EI)
@@ -271,12 +281,17 @@ for mm in range(len(objns)):
           EI_final.append(np.nan)  
     else:
        EI_final.append(np.nan)
-    if flux_h_alpha[mm] != '--' and flux_nii_6584[mm] != '--' and flux_sii_6717[mm] != '--' and flux_oi_6300[mm] != '--':
-       LERG_id.append(mm)
-    if flux_oiii[mm] != '--' and flux_h_alpha[mm] != '--' and flux_nii_6584[mm] != '--':
-       LERG_id.append(mm)
-    if eqw_oiii[mm] != '--':
+    if flux_h_alpha[mm] != '--' and flux_nii_6584[mm] != '--' and flux_sii_6717[mm] != '--' and flux_oi_6300[mm] != '--' and lum_oiii[mm] != '--':
+       if float(lum_oiii[mm]) < 48.0:
+          LERG_id.append(mm)
+    if flux_oiii[mm] != '--' and flux_h_alpha[mm] != '--' and flux_nii_6584[mm] != '--' and lum_oiii[mm] != '--':
+       if float(lum_oiii[mm]) < 48.0:
+          LERG_id.append(mm)
+    if eqw_oiii[mm] != '--':# and lum_oiii[mm] != '--':
+       #if float(lum_oiii[mm]) < 48.0:
        eqw_oiii_final.append(float(eqw_oiii[mm]))
+       #else: 
+       #eqw_oiii_final.append(np.nan)
        if abs(float(eqw_oiii[mm])) > 5.0:
           HERG_id.append(mm) 
     else:
@@ -322,7 +337,8 @@ for mm in range(len(objns)):
     else:
        class_final.append('')
       
-
+#check data
+#print(len(DEC_final), len(name_final),len(lum_oiii_final), len(EI_final))
 FRIIcat = pd.DataFrame({'Name':name_final,'R.A.':RA_final,'Decl.':DEC_final,'Ref.':Ref_final,\
           'z':z_final,'f_z':f_z_final, 'RPA':RPA_final, 'LAS':LAS_final, 'LLS':LLS_final,\
           'S1.4':S_1_4_final, 'S3':S_3_final,'alpha':alpha_final, 'log(Lrad)':lum_final,\

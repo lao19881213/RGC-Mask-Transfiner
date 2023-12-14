@@ -200,10 +200,12 @@ if __name__ == '__main__':
 	#print ('Number of sources with available redshift:', np.sum(z_available))
 	## filename += '_only_redshift_sources_' ## edited for not actually using z
 	#if position_angle: filename += '_PA' # only when using 'position_angle'
-        filename += '_redshift_'
+        filename += '_redshift'
+
+        z_available = z_available[z_available['f_z']=='s']
+        print ('Number of sources with available spectroscopic redshift:', len(z_available))
 
         tdata = z_available #tdata[z_available]
-        print('data length for redshift -->', len(tdata))
         filename_original = filename
         tdata_original = tdata # use redshift data for power bins and size bins !!
         SL_z, angular_radius_z = statistics(filename,tdata,redshift)

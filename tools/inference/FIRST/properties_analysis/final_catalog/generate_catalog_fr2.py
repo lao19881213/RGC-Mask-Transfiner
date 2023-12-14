@@ -13,18 +13,20 @@ for cln in ['fr2']:
     ned_type_final = []
     ned_name_final = []
     redshift_final = []
+    redshift_flag_final = []
     ned_ra_final = []
     ned_dec_final = []
     #panstarrs_ra_final = []
     #panstarrs_dec_final = []
     optical_final = []
 
-    ned_table = pd.read_csv('../NED/fr2/info_%s.csv' % cln)
+    ned_table = pd.read_csv('../NED/fr2/info_%s_flag.csv' % cln)
     ned_hetu_name = ned_table['HeTu_name'].values
     #ned_total_flux = ned_table['total_flux'].values
     ned_source_name = ned_table['source_name'].values
     ned_type = ned_table['Type'].values
     ned_Redshift = ned_table['Redshift'].values
+    ned_Redshift_flag = ned_table['Redshift_flag'].values
     ned_num = ned_table['HeTu_num'].values
     ned_RA = ned_table['RA'].values
     ned_DEC = ned_table['DEC'].values
@@ -62,6 +64,7 @@ for cln in ['fr2']:
                  ned_type_final.append(ned_type[n])
                  ned_name_final.append(ned_source_name[n])
                  redshift_final.append(ned_Redshift[n])
+                 redshift_flag_final.append(ned_Redshift_flag[n])
                  ned_ra_final.append(ned_RA[n])
                  ned_dec_final.append(ned_DEC[n])
                  nn = nn + 1
@@ -73,6 +76,7 @@ for cln in ['fr2']:
            ned_type_final.append('')
            ned_name_final.append('')
            redshift_final.append('--')
+           redshift_flag_final.append('')
            ned_ra_final.append('')
            ned_dec_final.append('')
         
@@ -120,6 +124,7 @@ for cln in ['fr2']:
     hetu_table['NED_Type'] = ned_type_final
     hetu_table['NED_name'] = ned_name_final
     hetu_table['NED_Redshift'] = redshift_final
+    hetu_table['NED_Redshift_flag'] = redshift_flag_final
     hetu_table['NED_RA'] = ned_ra_final
     hetu_table['NED_DEC'] = ned_dec_final 
     hetu_table.to_csv('%s/FIRST_HeTu_paper_%s_sdss_ned_flux_fixed_vlass.csv' % (data_dir, cln), index = False)

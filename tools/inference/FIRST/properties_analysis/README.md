@@ -9,6 +9,20 @@
 - **spectral_indexes:** Calculation and analysis of radio spectral index between 1.4 GHz and 3 GHz.
 - **total_flux_density:** Calculate integrated or total flux density for 1.4 GHz and 3 GHz data.
 
-We have used this code to build a FR-II Radio Galaxy Catalog ([FRIIRGcat](https://drive.google.com/file/d/19m_ma-2fFIWVZ8WJphXxr5W_HXkyIAeX/view?usp=drive_link)), which contains 45241 candidates. 
+We have used this code to build a FR-II Radio Galaxy Catalog ([FRIIRGcat](https://drive.google.com/file/d/19m_ma-2fFIWVZ8WJphXxr5W_HXkyIAeX/view?usp=drive_link)), which contains 45,241 candidates. 
+
+# Step by step to build FRIIRGcat:
+```
+1. cd ./total_flux_density && ./fix_FIRST_flux_fr2.sh
+2. cd ./total_flux_density && python3 vlass_fr2.py
+3. cd ./linear_size && python3 LAS.py
+4. cd ./total_flux_density && python3 nvss_fr2_all.py
+5. cd ./total_flux_density && python3 final_flux.py
+6. cd ./spectral_indexes && python3 spix.py
+7. cd ./Position_angle && python3 RPA_new.py
+8. cd ./final_catalog && python3 generate_catalog_fr2.py
+9. cd ./optical_spectra && ./optical_spectra.sh
+9. cd ./final_catalog && python3 final_fr2.py
+```
 
 

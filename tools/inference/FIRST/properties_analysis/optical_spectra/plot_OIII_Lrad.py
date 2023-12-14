@@ -37,11 +37,15 @@ class_hl = OIII_rad_class['class'].values
 plt.figure()
 ax1 = plt.gca()
 class_H_Lrad = []
-class_H_LOIII= []
+class_L_Lrad = []
+class_H_LOIII = []
+class_L_LOIII = []
 #10^7 erg s^-1 = 1 W
 for mm in range(len(OIII_rad_class['class'].values)):
     if class_hl[mm] == 'LERG':
        plt.plot(Lrad[mm]+7, L_OIII[mm], 'o', markerfacecolor='None', markeredgecolor='g', zorder=0)#, markersize=4)
+       class_L_Lrad.append(Lrad[mm])
+       class_L_LOIII.append(L_OIII[mm])
     elif class_hl[mm] == 'HERG':
        plt.plot(Lrad[mm]+7, L_OIII[mm], 'o', markerfacecolor='None', markeredgecolor='m', zorder=1)#, markersize=4)
        class_H_Lrad.append(Lrad[mm])
@@ -60,6 +64,18 @@ print("k=", k, "b=", b)
 x = np.linspace(29.0, 36.0, 100)  #
 y = k*x+b  # 
 ax1.plot(x, y, "b--", label="NH", linewidth=2)
+
+X1 = np.array(class_L_Lrad) + 7
+Y1 = np.array(class_L_LOIII)
+
+Para1 = leastsq(error, p0, args=(X1, Y1))
+
+k1, b1 = Para1[0]
+print("k1=", k1, "b1=", b1)
+
+x1 = np.linspace(29.0, 36.0, 100)  #
+y1 = k1*x1+b1  # 
+ax1.plot(x1, y1, "k--", label="NH1", linewidth=2)
 
 ticks_loc = ax1.get_xticks().tolist()
 print(ticks_loc, ax1.get_xticks().tolist())

@@ -26,9 +26,9 @@ Crs = Dn4000['Cr'].values
 Dn4000s = Dn4000['Dn4000'].values
 print(np.mean(Dn4000s))
 class_hl_L = Dn4000[Dn4000['class']=='LERG']
-print(len(class_hl_L))
+print('len LERGs ->',len(class_hl_L))
 class_hl_L_1 = class_hl_L[class_hl_L['Dn4000']>=1.7]
-print(len(class_hl_L_1[class_hl_L_1['Cr']>=2.6]))
+print('Cr > = 2.6 and Dn4000 > 1.7 ->', len(class_hl_L_1[class_hl_L_1['Cr']>=2.6]))
 #class_hl_L_2 = class_hl_L_1[class_hl_L_1['z']<=0.15]
 #print('red galaxies ->', len(class_hl_L_2[class_hl_L_2['z']>=0.1]))
 #class_hl_L_3 = class_hl_L_1[class_hl_L_1['Cr']>=2.6]
@@ -38,10 +38,10 @@ print(len(class_hl_L_1[class_hl_L_1['Cr']>=2.6]))
 print(len(Dn4000['Cr'].values))
 
 class_hl_H = Dn4000[Dn4000['class']=='HERG']
-print(len(class_hl_H))
+print('len HERGs ->', len(class_hl_H))
 class_hl_H_1 = class_hl_H[class_hl_H['Dn4000']<=1.45]
-print(len(class_hl_H_1))#
-print(len(class_hl_H_1[class_hl_H_1['Cr']>=2.6]))
+print('len Dn4000 <=1.45 ->', len(class_hl_H_1))#
+print('len Dn4000 <=1.45 and Cr >= 2.6 ->',len(class_hl_H_1[class_hl_H_1['Cr']>=2.6]))
 
 plt.figure()
 ax1 = plt.gca()
@@ -227,8 +227,8 @@ ax3.plot(Mr_final, regression_line, 'r--', lw=0.8)
 ax3.plot(Mr_final, np.array(regression_line)-0.6, 'r--', lw=0.8)
 print(np.where(density==np.max(density)))
 
-print(Mr_final[1451])
-print(u_r_final[1451])
+#print(Mr_final[1451])
+#print(u_r_final[1451])
 ax3.scatter(x=Mr_final, y=u_r_final, c=density, cmap='plasma')
 ax3.invert_xaxis()
 plt.savefig('Mr_ur_dens.pdf')
