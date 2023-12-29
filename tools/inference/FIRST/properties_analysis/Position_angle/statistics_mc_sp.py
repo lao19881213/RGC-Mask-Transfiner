@@ -144,15 +144,15 @@ def angular_radius_vs_n(tdata,filename,n=180,starting_n=2):
 def statistics(filename,tdata,redshift=False):
         if parallel_transport:
                 if n < 998:
-                        Sn_mc = Table(fits.open('./data/Sn_monte_carlo_PT'+filename+'.fits')[1].data)
+                        Sn_mc = Table(fits.open('./data/Sn_monte_carlo_PT'+filename+'_%s_sp.fits' % n)[1].data)
                 else:
-                        Sn_mc = ascii.read('./data/Sn_monte_carlo_PT'+filename+'.csv')
+                        Sn_mc = ascii.read('./data/Sn_monte_carlo_PT'+filename+'_%s_sp.csv' % n)
 
         else:
                 if n < 998:
-                        Sn_mc = Table(fits.open('./data/Sn_monte_carlo_'+filename+'.fits')[1].data)
+                        Sn_mc = Table(fits.open('./data/Sn_monte_carlo_'+filename+'_%s_sp.fits' % n)[1].data)
                 else:
-                        Sn_mc = ascii.read('./data/Sn_monte_carlo_'+filename+'.csv')
+                        Sn_mc = ascii.read('./data/Sn_monte_carlo_'+filename+'_%s_sp.csv' % n)
 
 	# calculate angular radius for number of nn, 
         angular_radius = angular_radius_vs_n(tdata,filename,n)
@@ -248,7 +248,7 @@ if __name__ == '__main__':
         # print np.argmin(all_sl)
         #axarr[0].set_title('SL vs n for '+filename+'\n\n')
         ax.set_ylabel('log(SL)', fontsize=16)
-        ax.set_xlim(0,n)#400)#n)
+        ax.set_xlim(0,n)#200)#n)
         ax.set_ylim(-6,0)
         
         if angular_radius is not None:
@@ -289,7 +289,7 @@ if __name__ == '__main__':
         ax.tick_params(which="minor", axis="y", direction="in")
         ax.legend()
         if parallel_transport:
-                plt.savefig('./figures/SL_vs_n_PT'+filename+'_3D.pdf')#,overwrite=True)
+                plt.savefig('./figures/SL_vs_n_PT'+filename+'_3D_sp.pdf')#,overwrite=True)
         else:
-                plt.savefig('./figures/SL_vs_n_'+filename+'_3D.pdf')#,overwrite=True)
+                plt.savefig('./figures/SL_vs_n_'+filename+'_3D_sp.pdf')#,overwrite=True)
 

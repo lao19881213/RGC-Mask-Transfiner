@@ -33,7 +33,7 @@ import pandas as pd
 
 # Parameters
 n_sim = 1000 #960
-n = 800
+n = 1600
 n_cores = 4 #multiprocessing.cpu_count()
 
 parallel_transport = True
@@ -139,18 +139,18 @@ def monte_carlo(totally_random=False,filename=''):
 	if parallel_transport:
 		# np.save('./data/Sn_monte_carlo_PT'+filename,Sn_datasets)
 		if n < 998:
-			Result.write('./data/Sn_monte_carlo_PT'+filename+'_%s.fits' % n,overwrite=True)
+			Result.write('./data/Sn_monte_carlo_PT'+filename+'_%s_sp.fits' % n,overwrite=True)
 		else:
 			print ('Creating csv file')
-			Result.write('./data/Sn_monte_carlo_PT'+filename+'_%s.csv' % n,overwrite=True)
+			Result.write('./data/Sn_monte_carlo_PT'+filename+'_%s_sp.csv' % n,overwrite=True)
 
 	else:
 		# np.save('./data/Sn_monte_carlo_'+filename,Sn_datasets)
 		if n < 998:
-			Result.write('./data/Sn_monte_carlo_'+filename+'_%s.fits' % n,overwrite=True)
+			Result.write('./data/Sn_monte_carlo_'+filename+'_%s_sp.fits' % n,overwrite=True)
 		else:
 			print ('Creating csv file')
-			Result.write('./data/Sn_monte_carlo_'+filename+'_%s.csv'% n,overwrite=True)
+			Result.write('./data/Sn_monte_carlo_'+filename+'_%s_sp.csv'% n,overwrite=True)
 
 
 

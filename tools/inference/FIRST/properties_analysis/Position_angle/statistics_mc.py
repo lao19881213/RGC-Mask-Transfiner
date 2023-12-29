@@ -144,15 +144,15 @@ def angular_radius_vs_n(tdata,filename,n=180,starting_n=2):
 def statistics(filename,tdata,redshift=False):
         if parallel_transport:
                 if n < 998:
-                        Sn_mc = Table(fits.open('./data/Sn_monte_carlo_PT'+filename+'.fits')[1].data)
+                        Sn_mc = Table(fits.open('./data/Sn_monte_carlo_PT'+filename+'_%s.fits' % n)[1].data)
                 else:
-                        Sn_mc = ascii.read('./data/Sn_monte_carlo_PT'+filename+'.csv')
+                        Sn_mc = ascii.read('./data/Sn_monte_carlo_PT'+filename+'_%s.csv' % n)
 
         else:
                 if n < 998:
-                        Sn_mc = Table(fits.open('./data/Sn_monte_carlo_'+filename+'.fits')[1].data)
+                        Sn_mc = Table(fits.open('./data/Sn_monte_carlo_'+filename+'_%s.fits' % n)[1].data)
                 else:
-                        Sn_mc = ascii.read('./data/Sn_monte_carlo_'+filename+'.csv')
+                        Sn_mc = ascii.read('./data/Sn_monte_carlo_'+filename+'_%s.csv' % n)
 
 	# calculate angular radius for number of nn, 
         angular_radius = angular_radius_vs_n(tdata,filename,n)
@@ -200,7 +200,7 @@ if __name__ == '__main__':
 	#print ('Number of sources with available redshift:', np.sum(z_available))
 	## filename += '_only_redshift_sources_' ## edited for not actually using z
 	#if position_angle: filename += '_PA' # only when using 'position_angle'
-        filename += '_redshift_'
+        filename += '_redshift'
 
         tdata = z_available #tdata[z_available]
         print('data length for redshift -->', len(tdata))

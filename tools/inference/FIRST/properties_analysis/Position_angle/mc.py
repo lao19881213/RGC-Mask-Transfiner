@@ -139,18 +139,18 @@ def monte_carlo(totally_random=False,filename=''):
 	if parallel_transport:
 		# np.save('./data/Sn_monte_carlo_PT'+filename,Sn_datasets)
 		if n < 998:
-			Result.write('./data/Sn_monte_carlo_PT'+filename+'.fits',overwrite=True)
+			Result.write('./data/Sn_monte_carlo_PT'+filename+'_%s.fits' % n,overwrite=True)
 		else:
 			print ('Creating csv file')
-			Result.write('./data/Sn_monte_carlo_PT'+filename+'.csv',overwrite=True)
+			Result.write('./data/Sn_monte_carlo_PT'+filename+'_%s.csv' % n,overwrite=True)
 
 	else:
 		# np.save('./data/Sn_monte_carlo_'+filename,Sn_datasets)
 		if n < 998:
-			Result.write('./data/Sn_monte_carlo_'+filename+'.fits',overwrite=True)
+			Result.write('./data/Sn_monte_carlo_'+filename+'_%s.fits' % n,overwrite=True)
 		else:
 			print ('Creating csv file')
-			Result.write('./data/Sn_monte_carlo_'+filename+'.csv',overwrite=True)
+			Result.write('./data/Sn_monte_carlo_'+filename+'_%s.csv' % n,overwrite=True)
 
 
 
@@ -176,7 +176,7 @@ print ('Number of sources with available redshift:', len(z_available))
 # filename += '_only_redshift_sources_' ## edited for not actually using z
 #if position_angle: filename += '_PA' # only when using 'position_angle'
 #if redshift:
-filename += '_redshift_'
+filename += '_redshift'
 
 
 tdata = z_available #tdata[z_available]

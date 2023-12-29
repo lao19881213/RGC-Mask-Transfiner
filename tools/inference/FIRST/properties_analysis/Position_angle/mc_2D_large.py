@@ -208,7 +208,7 @@ tdata1 = pd.read_csv('%s/%s.csv' % (results_dir, filename)) #Table(fits.open('..
 #	tdata['DEC'] = tdata['DEC_2']
 #except KeyError:
 #	pass # then we're doing biggest_selection
-tdata1 = tdata1[tdata1['LAS']>=80]
+tdata1 = tdata1[tdata1['S1.4']>=300]
 tdata2 = tdata1[tdata1['RA']>=90]
 tdata = tdata2[tdata2['RA']<=270]
 print('data length -->', len(tdata))

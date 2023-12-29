@@ -310,10 +310,12 @@ for m in range(len(source_names)):
                 # flux_oiii = flux_oiii * 3e+18 / wave**2. * wave
                 lum = np.log10(flux_oiii * 4. * np.pi * distance**2.)
                 print('[OIII] line luminosity -> ', lum)
-             else:
+             else: #should be remove
+                #for negative flux need to be remove
                 flux_rms = 1.4826 * np.median(abs(flux - np.median(flux)))
                 lum = np.log10(flux_rms * 4. * np.pi * distance**2.)
                 print('[OIII] line luminosity -> ', lum)
+                #should be enable this
                 #lum = '--'  
           else:
              lum = '--'
