@@ -22,7 +22,8 @@ do
   
     if [ ! -f "${IMG_DIR}/part${id}_conv/${fn%%.fits}_fixed.fits" ]; then 
        cd ${IMG_DIR}/part${id}_conv  
-       cp ${IMG_DIR}/part${id}/${fn} ${fn%%.fits}_fixed.fits
+       #cp ${IMG_DIR}/part${id}/${fn} ${fn%%.fits}_fixed.fits
+       echo "${fn}" >> ${IMG_DIR}/part${id}_fits_re.txt       
      fi
 done
 done
