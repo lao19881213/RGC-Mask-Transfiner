@@ -1,10 +1,10 @@
 #!/bin/bash
 
-IMG_FILES="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid/part1_fits_fixed.txt"
+IMG_FILES="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid/part2_fits_fixed.txt"
 
 IMG_DIR=/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid
 
-PART='part1'
+PART='part2'
 
 for fn in `cat $IMG_FILES`;
 do

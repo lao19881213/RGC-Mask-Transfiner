@@ -3,10 +3,10 @@
 source /home/data0/lbq/RGC-Mask-Transfiner/bashrc_gznu
 
 
-IMG_FILES="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid/part2_fits_fixed.txt"
+IMG_FILES="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid/part3_fits_fixed.txt"
 
 
-DATA_DIR="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid"
+DATA_DIR="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid/part3_split_fits_png"
 
 
 for fn in `cat $IMG_FILES`;
