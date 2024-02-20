@@ -8,7 +8,7 @@ export PATH=/home/data0/lbq/software/miriad/linux64/bin:$PATH
 
 # export CUDA_LAUNCH_BLOCKING=1 # for debug
 
-IMG_FILES="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid/part1_fits_fixed.txt"
+IMG_FILES="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid/part2_fits_fixed.txt"
 
 DATA_DIR="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid"
 

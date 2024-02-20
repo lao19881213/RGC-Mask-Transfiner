@@ -24,7 +24,7 @@ do
        cd ${IMG_DIR}/part${id}_conv  
        ln -s ${IMG_DIR}/part${id}/${fn} ${fn}
        image=${fn}
-       bmaj=$(fitsheader $image | grep BMAJ | awk '{print $3}')
+       bmaj=$(fitsheader $image | grep BMAJ | awk 'NR==1{print $3}')
        #bmaj=`echo "$bmaj" | awk -F"E" 'BEGIN{OFMT="%10.10f"} {print $1 * (10 ^ $2)}'`
        bmaj=`echo "$bmaj*3600.0" | bc -l` # convert from deg to arcsec
        bmaj=`echo $bmaj | awk '{print ($0-int($0)<0.000001)?int($0):int($0)+1}'` # int

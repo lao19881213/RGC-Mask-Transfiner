@@ -7,7 +7,7 @@ IMG_DIR="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid"
 #bmaj_fnl="9.0" #arcsec 0.0025 deg `echo "$bmin*3600.0" | bc -l`
 #bmin_fnl="7.6" #arcsec 0.00211111111111111 deg
 #bpa_fnl="71.5" #deg 
-for id in {3..3};
+for id in {4..4};
 do
 IMG_FILES="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid/part${id}_fits_re.txt"
 

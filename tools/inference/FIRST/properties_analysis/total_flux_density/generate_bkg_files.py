@@ -24,5 +24,5 @@ for n in range(linecount):
     if os.path.exists(os.path.join(args.outdir, os.path.splitext(fits_file)[0] + '_bkg.fits')):
        print('%s already exists!' % (os.path.splitext(fits_file)[0] + '_bkg.fits'))
     else:    
-       os.system('BANE %s/%s --out %s/%s' % (input_dir, fits_file, args.outdir, os.path.splitext(fits_file)[0]))
+       os.system('BANE --cores 1 %s/%s --out %s/%s' % (input_dir, fits_file, args.outdir, os.path.splitext(fits_file)[0]))
        print("Successful generate %s" % fits_file)
