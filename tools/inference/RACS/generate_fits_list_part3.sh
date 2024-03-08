@@ -1,10 +1,10 @@
 #!/bin/bash
 
 
-IMG_FILES="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid/part3_fits_fixed.txt"
+IMG_FILES="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid/part4_fits_fixed.txt"
 
 
-DATA_DIR="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid/part3_split_fits_png"
+DATA_DIR="/home/data0/lbq/inference_data/ASKAP_RACS/RACS_mid/part4_split_fits_png"
 
 
 for fn in `cat $IMG_FILES`;

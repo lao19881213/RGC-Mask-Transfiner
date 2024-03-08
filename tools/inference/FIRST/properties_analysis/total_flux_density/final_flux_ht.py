@@ -59,3 +59,20 @@ bad_id_final = list(set(bad_id))
 final_csv.drop(bad_id_final, inplace=True)
 
 final_csv.to_csv("/home/data0/lbq/RGC-Mask-Transfiner/FIRST_results/FIRST_HeTu_paper_ht_flux_fixed_vlass.csv",index=False,sep=',')
+
+final1_csv = pd.read_csv('/home/data0/lbq/RGC-Mask-Transfiner/FIRST_results/FIRST_HeTu_paper_ht_flux_fixed_vlass.csv')
+objns = final1_csv['source_name'].values
+duplicate_id = []
+
+for mm in range(len(objns)):
+    name = objns[mm]
+    print(mm)
+    for nn in range(mm+1,len(objns)):
+        if objns[nn] == name :
+           duplicate_id.append(nn)
+
+
+duplicate_id_final = list(set(duplicate_id))
+final1_csv.drop(duplicate_id_final, inplace=True)
+
+final1_csv.to_csv("/home/data0/lbq/RGC-Mask-Transfiner/FIRST_results/FIRST_HeTu_paper_ht_flux_fixed_vlass.csv",index=False,sep=',')
