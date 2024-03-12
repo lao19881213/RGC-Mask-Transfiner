@@ -11,20 +11,22 @@
 
 We have used this code to build a FR-II Radio Galaxy Catalog ([FRIIRGcat](https://drive.google.com/file/d/19m_ma-2fFIWVZ8WJphXxr5W_HXkyIAeX/view?usp=drive_link)), which contains 45,241 candidates. If you benefit from FRIIRGcat, please cite the [FRIIRGcat paper](https://ui.adsabs.harvard.edu/abs/2024arXiv240108048L/abstract):
 ```
-@ARTICLE{2024arXiv240108048L,
+@ARTICLE{2024RAA....24c5021L,
        author = {{Lao}, Bao-Qiang and {Yang}, Xiao-Long and {Jaiswal}, Sumit and {Mohan}, Prashanth and {Sun}, Xiao-Hui and {Qin}, Sheng-Li and {Zhao}, Ru-Shuang},
-        title = "{A Machine Learning made Catalog of FR II Radio Galaxies from the FIRST Survey}",
-      journal = {arXiv e-prints},
-     keywords = {Astrophysics - Astrophysics of Galaxies},
+        title = "{A Machine Learning Made Catalog of FR-II Radio Galaxies from the FIRST Survey}",
+      journal = {Research in Astronomy and Astrophysics},
+     keywords = {radio continuum: galaxies, galaxies: active, galaxies: jets, galaxies: statistics, Astrophysics - Astrophysics of Galaxies},
          year = 2024,
-        month = jan,
-          eid = {arXiv:2401.08048},
-        pages = {arXiv:2401.08048},
-          doi = {10.48550/arXiv.2401.08048},
+        month = mar,
+       volume = {24},
+       number = {3},
+          eid = {035021},
+        pages = {035021},
+          doi = {10.1088/1674-4527/ad204f},
 archivePrefix = {arXiv},
        eprint = {2401.08048},
  primaryClass = {astro-ph.GA},
-       adsurl = {https://ui.adsabs.harvard.edu/abs/2024arXiv240108048L},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2024RAA....24c5021L},
       adsnote = {Provided by the SAO/NASA Astrophysics Data System}
 }
 ```
