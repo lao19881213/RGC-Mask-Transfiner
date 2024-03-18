@@ -53,5 +53,6 @@ archivePrefix = {arXiv},
 3. cd ./total_flux_density && python3 nvss_ht_all.py
 4. cd ./total_flux_density && python3 final_flux_ht.py
 5. cd ./total_flux_density && python3 remove_lower_score_flux.py
+6. cd ./linear_size && python3 LAS_ht.py
 TBD ...
 ```
