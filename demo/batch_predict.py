@@ -465,8 +465,8 @@ if __name__ == "__main__":
                          peak_flux = np.nanmax(box_data)
                          #logger.info('%d, %d, %d, %d' % (hdu.data.shape[0]-y2, hdu.data.shape[0]-y1, x1,x2))
                          peak_xy_offset = np.where(box_data==np.nanmax(box_data))
-                         peak_x = x1 + peak_xy_offset[0][0]
-                         peak_y = hdu.data.shape[0]-y2 + peak_xy_offset[1][0]
+                         peak_x = x1 + peak_xy_offset[1][0]
+                         peak_y = hdu.data.shape[0]-y2 + peak_xy_offset[0][0]
                          peak_ra, peak_dec = w.wcs_pix2world([[peak_x, peak_y]], 0)[0][0:2]
                          if peak_ra < 0 :  #
                             peak_ra = peak_ra + 360
