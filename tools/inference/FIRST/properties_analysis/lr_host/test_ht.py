@@ -125,7 +125,7 @@ print(type(hostdata['hosts']['AllWISE']))
 
 print(hostdata['hosts'])
 
-image_info = Table.read('LR_host_finding/AllWISE-image_atlas_metadata-lite.fits')
+image_info = Table.read('lr_host_finding/AllWISE-image_atlas_metadata-lite.fits')
 
 if type(hostdata['hosts']['AllWISE'])==MaskedColumn:
    hostdata['hosts'] = hostdata['hosts'][~hostdata['hosts']['AllWISE'].mask]
